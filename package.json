@@ -1,0 +1,13 @@
+{
+  "name": "mi-bot-baileys",
+  "version": "1.0.0",
+  "description": "Bot de WhatsApp con carpetas",
+  "main": "index.js",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^7.0.0-rc.9",
+    "axios": "^1.13.2",
+    "pino": "^10.1.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
