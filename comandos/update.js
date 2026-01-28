@@ -5,10 +5,10 @@ module.exports = {
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
 
-        // ✅ Solo el owner puede usar este comando
+        // 🧐 𝑺𝒐𝒍𝒐 𝒆𝒍 𝒐𝒘𝒏𝒆𝒓 𝒑𝒖𝒆𝒅𝒆 𝒖𝒔𝒂𝒓 𝒆𝒔𝒕𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐
         if (!isOwner) {
             await sock.sendMessage(from, { 
-                text: "❌ Solo el owner puede usar este comando."
+                text: "❌ 𝑺𝒐𝒍𝒐 𝒆𝒍 𝒐𝒘𝒏𝒆𝒓 𝒑𝒖𝒆𝒅𝒆 𝒖𝒔𝒂𝒓 𝒆𝒔𝒕𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐."
             }, { quoted: msg });
             return;
         }
