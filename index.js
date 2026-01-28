@@ -112,45 +112,48 @@ async function iniciarBot() {
                           msg.message.extendedTextMessage?.text || 
                           msg.message.imageMessage?.caption || "").toLowerCase();
 
-                        // --- SISTEMA AUTOMÁTICO ANTI-LINK (MEJORADO) ---
-            if (from.endsWith('@g.us')) {
-                let chatData = {};
-                
-                // Si el archivo no existe, lo inicializamos como un objeto vacío en memoria
-                if (fs.existsSync(chatsPath)) {
-                    try {
-                        chatData = JSON.parse(fs.readFileSync(chatsPath));
-                    } catch (e) {
-                        chatData = {};
-                    }
-                }
+      // --- SISTEMA AUTOMÁTICO ANTI-LINK (VERSIÓN DEFINITIVA) ---
+if (from.endsWith('@g.us')) {
+    let chatData = {};
+    if (fs.existsSync(chatsPath)) {
+        try {
+            chatData = JSON.parse(fs.readFileSync(chatsPath));
+        } catch (e) { chatData = {}; }
+    }
 
-                // Solo ejecutamos la lógica si el grupo tiene el antilink en 'true'
-                if (chatData[from] && chatData[from].antilink) {
-                    const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i;
-                    
-                    if (linkRegex.test(body)) {
-                        const metadata = await sock.groupMetadata(from);
-                        const participants = metadata.participants;
-                        
-                        const botId = sock.user.id.split(':')[0] + '@s.whatsapp.net';
-                        const botAdmin = participants.find(p => p.id === botId)?.admin !== null;
-                        const senderAdmin = participants.find(p => p.id === sender)?.admin !== null;
+    if (chatData[from] && chatData[from].antilink) {
+        const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i;
 
-                        if (!senderAdmin && !isOwner) {
-                            if (botAdmin) {
-                                await sock.sendMessage(from, { delete: msg.key });
-                                await sock.groupParticipantsUpdate(from, [sender], "remove");
-                                await sock.sendMessage(from, { 
-                                    text: `*『 𝑱𝑼𝑻𝑺𝑼 𝑫𝑬 𝑫𝑬𝑺𝑻𝑰𝑬𝑹𝑶 』*\n\n┃ 👤 @${senderLimpio} 𝒇𝒖𝒆 𝒆𝒍𝒊𝒎𝒊𝒏𝒂𝒅𝒐.\n┃ ⚔️ *𝑹𝒂𝒛𝒐́𝒏:* 𝑬𝒏𝒗𝒊𝒂𝒓 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒑𝒓𝒐𝒉𝒊𝒃𝒊𝒅𝒐𝒔.\n┃\n🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎*`,
-                                    mentions: [sender]
-                                });
-                            }
-                            return; 
-                        }
-                    }
+        if (linkRegex.test(body)) {
+            const metadata = await sock.groupMetadata(from);
+            const participants = metadata.participants;
+            const botId = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+            
+            // Verificación mejorada de Admins
+            const botData = participants.find(p => p.id === botId);
+            const senderData = participants.find(p => p.id === sender);
+            
+            // Si el bot o el sender tienen cualquier rango de admin (admin o superadmin)
+            const botIsAdmin = botData?.admin !== null && botData?.admin !== undefined;
+            const senderIsAdmin = senderData?.admin !== null && senderData?.admin !== undefined;
+
+            if (!senderIsAdmin && !isOwner) {
+                if (botIsAdmin) {
+                    await sock.sendMessage(from, { delete: msg.key });
+                    await sock.groupParticipantsUpdate(from, [sender], "remove");
+                    await sock.sendMessage(from, { 
+                        text: `*『 𝑱𝑼𝑻𝑺𝑼 𝑫𝑬 𝑫𝑬𝑺𝑻𝑰𝑬𝑹𝑶 』*\n\n┃ 👤 @${senderLimpio} 𝒇𝒖𝒆 𝒆𝒍𝒊𝒎𝒊𝒏𝒂𝒅𝒐.\n┃ ⚔️ *𝑹𝒂𝒛𝒐́𝒏:* 𝑬𝒏𝒗𝒊𝒂𝒓 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒑𝒓𝒐𝒉𝒊𝒃𝒊𝒅𝒐𝒔.\n┃\n🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎*`,
+                        mentions: [sender]
+                    });
+                } else {
+                    // Esto saldrá en tu terminal si el bot no es admin
+                    console.log("\x1b[33m%s\x1b[0m", `[!] Link detectado en ${metadata.subject}, pero no soy admin.`);
                 }
+                return; 
             }
+        }
+    }
+}
 
             // --- DISEÑO DE CONSOLA ---
             const hora = new Date().toLocaleTimeString();
