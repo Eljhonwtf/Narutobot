@@ -2,7 +2,7 @@ const fs = require('fs');
 
 module.exports = {
     name: 'menu',
-    description: 'Menú Estilo Ninja para Narutobot con comandos resaltados',
+    description: 'Menú con diseño de líneas verticales idéntico a la imagen',
     run: async (sock, msg, body, args, isOwner) => {
         try {
             const from = msg.key.remoteJid;
@@ -16,7 +16,7 @@ module.exports = {
             const userData = db[from];
             let nombreUser = isOwner ? "𝑱𝒉𝒐𝒏 🏴‍☠️" : (userData?.split('|')[0] || "𝑨𝒈𝒆𝒏𝒕𝒆");
 
-            // 2. Construcción del Menú
+            // 2. Construcción del Menú (Estilo de la imagen)
             let textoMenu = `𝐇𝐨𝐥𝐚! 𝐒𝐨𝐲 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕* 🍥\n`;
             textoMenu += `_¡𝑩𝒊𝒆𝒏𝒗𝒆𝒏𝒊𝒅𝒐, ${nombreUser}!_ \n\n`;
             
@@ -26,43 +26,54 @@ module.exports = {
             textoMenu += `┃ ✐ *𝑬𝒔𝒕𝒂𝒅𝒐:* 𝑨𝒄𝒕𝒊𝒗𝒐 ✅\n`;
             textoMenu += `╰━━━━━━━━━━━━━━━━━━━\n\n`;
 
-            textoMenu += `» ˚୨•(⚔️)• ⊹ 𝑳𝑰𝑺𝑻𝑨 𝑫𝑬 𝑴𝑬𝑵𝑼 ⊹\n\n`;
+            // --- SECCIÓN: ADMINISTRACIÓN ---
+            textoMenu += `┃ ✐ *𝑨𝑫𝑴𝑰𝑵𝑰𝑺𝑻𝑹𝑨𝑪𝑰𝑶𝑵 𝑫𝑬 𝑮𝑹𝑼𝑷𝑶𝑺*\n`;
+            textoMenu += `┃\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒂𝒅𝒎𝒊𝒏𝒔\`\n`;
+            textoMenu += `┃ 𝑴𝒆𝒏𝒄𝒊𝒐𝒏𝒂 𝒂 𝒍𝒐𝒔 𝒂𝒅𝒎𝒊𝒏𝒊𝒔𝒕𝒓𝒂𝒅𝒐𝒓𝒆𝒔.\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒂𝒏𝒕𝒊𝒍𝒊𝒏𝒌\`\n`;
+            textoMenu += `┃ 𝑨𝒄𝒕𝒊𝒗𝒂/𝑫𝒆𝒔𝒂𝒄𝒕𝒊𝒗𝒂 𝒆𝒍 𝒂𝒏𝒕𝒊-𝒆𝒏𝒍𝒂𝒄𝒆𝒔.\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒌𝒊𝒄𝒌\`\n`;
+            textoMenu += `┃ 𝑬𝒙𝒑𝒖𝒍𝒔𝒂 𝒂 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐.\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒑𝒓𝒐𝒎𝒐𝒕𝒆\` | \`† /𝒅𝒆𝒎𝒐𝒕𝒆\`\n`;
+            textoMenu += `┃ 𝑺𝒖𝒃𝒆 𝒐 𝒃𝒂𝒋𝒂 𝒆𝒍 𝒓𝒂𝒏𝒈𝒐 𝒅𝒆 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐.\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒕𝒂𝒈𝒂𝒍𝒍\` | \`† /𝒉𝒊𝒅𝒆𝒕𝒂𝒈\`\n`;
+            textoMenu += `┃ 𝑴𝒆𝒏𝒄𝒊𝒐𝒏𝒂 𝒂 𝒕𝒐𝒅𝒐𝒔 𝒍𝒐𝒔 𝒎𝒊𝒆𝒎𝒃𝒓𝒐𝒔.\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒅𝒆𝒍𝒆𝒕𝒆\`\n`;
+            textoMenu += `┃ 𝑬𝒍𝒊𝒎𝒊𝒏𝒂 𝒆𝒍 𝒎𝒆𝒏𝒔𝒂𝒋𝒆 𝒄𝒊𝒕𝒂𝒅𝒐.\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒓𝒆𝒔𝒆𝒕𝒍𝒊𝒏𝒌\`\n`;
+            textoMenu += `┃ 𝑪𝒂𝒎𝒃𝒊𝒂 𝒆𝒍 𝒆𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐.\n`;
+            textoMenu += `✧ ⚔️ \`† /𝒋𝒐𝒊𝒏\` | \`† /𝒐𝒖𝒕\`\n`;
+            textoMenu += `┃ 𝑬𝒏𝒕𝒓𝒂𝒓 𝒐 𝒔𝒂𝒍𝒊𝒓 𝒅𝒆 𝒖𝒏 𝒈𝒓𝒖𝒑𝒐.\n`;
+            textoMenu += `┃\n`;
 
-            textoMenu += `🛡️ *𝑮𝑬𝑺𝑻𝑰𝑶́𝑵 𝑫𝑬 𝑲𝑶𝑵𝑶𝑯𝑨*\n`;
-            textoMenu += `> _𝑪𝒐𝒏𝒕𝒓𝒐𝒍 𝒅𝒆 𝒈𝒓𝒖𝒑𝒐𝒔_\n`;
-            textoMenu += `✧ \`† /𝒂𝒅𝒎𝒊𝒏𝒔\`\n   └ _𝑳𝒊𝒔𝒕𝒂 𝒅𝒆 𝒂𝒅𝒎𝒊𝒏𝒔_\n`;
-            textoMenu += `✧ \`† /𝒂𝒏𝒕𝒊𝒍𝒊𝒏𝒌\`\n   └ _𝑬𝒗𝒊𝒕𝒂 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒆𝒙𝒕𝒆𝒓𝒏𝒐𝒔_\n`;
-            textoMenu += `✧ \`† /𝒌𝒊𝒄𝒌\`\n   └ _𝑬𝒙𝒑𝒖𝒍𝒔𝒂𝒓 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐_\n`;
-            textoMenu += `✧ \`† /𝒑𝒓𝒐𝒎𝒐𝒕𝒆\`\n   └ _𝑫𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
-            textoMenu += `✧ \`† /𝒅𝒆𝒎𝒐𝒕𝒆\`\n   └ _𝑸𝒖𝒊𝒕𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
-            textoMenu += `✧ \`† /𝒕𝒂𝒈𝒂𝒍𝒍\`\n   └ _𝑰𝒏𝒗𝒐𝒄𝒂𝒓 𝒂 𝒕𝒐𝒅𝒐𝒔_\n`;
-            textoMenu += `✧ \`† /𝒈𝒓𝒖𝒑𝒐\`\n   └ _𝑨𝒃𝒓𝒊𝒓/𝑪𝒆𝒓𝒓𝒂𝒓 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ \`† /𝒅𝒆𝒍𝒆𝒕𝒆\`\n   └ _𝑩𝒐𝒓𝒓𝒂𝒓 𝒎𝒆𝒏𝒔𝒂𝒋𝒆𝒔_\n\n`;
+            // --- SECCIÓN: UTILIDADES ---
+            textoMenu += `» ˚୨•(📡)• ⊹ *𝑼𝑻𝑰𝑳𝑰𝑫𝑨𝑫𝑬𝑺* ⊹\n`;
+            textoMenu += `┃\n`;
+            textoMenu += `✧ 📡 \`† /𝒑𝒊𝒏𝒈\`\n`;
+            textoMenu += `┃ 𝑴𝒖𝒆𝒔𝒕𝒓𝒂 𝒍𝒂 𝒗𝒆𝒍𝒐𝒄𝒊𝒅𝒂𝒅 𝒅𝒆𝒍 𝒃𝒐𝒕.\n`;
+            textoMenu += `✧ 📡 \`† /𝒊𝒏𝒇𝒐\` | \`† /𝒊𝒏𝒇𝒐𝒈𝒑\`\n`;
+            textoMenu += `┃ 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊𝒐́𝒏 𝒅𝒆𝒍 𝒃𝒐𝒕 𝒐 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐.\n`;
+            textoMenu += `✧ 📡 \`† /𝒍𝒊𝒏𝒌\`\n`;
+            textoMenu += `┃ 𝑶𝒃𝒕𝒆́𝒏 𝒆𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐 𝒂𝒄𝒕𝒖𝒂𝒍.\n`;
+            textoMenu += `✧ 📡 \`† /𝒔𝒆𝒕𝒏𝒂𝒎𝒆\` | \`† /𝒔𝒆𝒕𝒊𝒏𝒇𝒐\`\n`;
+            textoMenu += `┃ 𝑪𝒂𝒎𝒃𝒊𝒂 𝒅𝒂𝒕𝒐𝒔 𝒅𝒆𝒍 𝒃𝒐𝒕.\n`;
+            textoMenu += `┃\n`;
 
-            textoMenu += `📡 *𝑷𝑬𝑹𝑮𝑨𝑴𝑰𝑵𝑶𝑺 𝑫𝑬 𝑼𝑻𝑰𝑳𝑰𝑫𝑨𝑫*\n`;
-            textoMenu += `> _𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊𝒐́𝒏 𝒚 𝒄𝒂𝒎𝒃𝒊𝒐𝒔_\n`;
-            textoMenu += `✧ \`† /𝒑𝒊𝒏𝒈\`\n   └ _𝑽𝒆𝒍𝒐𝒄𝒊𝒅𝒂𝒅 𝒅𝒆𝒍 𝒔𝒊𝒔𝒕𝒆𝒎𝒂_\n`;
-            textoMenu += `✧ \`† /𝒊𝒏𝒇𝒐𝒈𝒑\`\n   └ _𝑫𝒂𝒕𝒐𝒔 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ \`† /𝒍𝒊𝒏𝒌\`\n   └ _𝑬𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒄𝒉𝒂𝒕_\n`;
-            textoMenu += `✧ \`† /𝒔𝒆𝒕𝒏𝒂𝒎𝒆\`\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒏𝒐𝒎𝒃𝒓𝒆_\n`;
-            textoMenu += `✧ \`† /𝒔𝒆𝒕𝒊𝒏𝒇𝒐\`\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒅𝒆𝒔𝒄𝒓𝒊𝒑𝒄𝒊𝒐́𝒏_\n\n`;
+            // --- SECCIÓN: ENTRETENIMIENTO ---
+            textoMenu += `» ˚୨•(💀)• ⊹ *𝑬𝑵𝑻𝑹𝑬𝑻𝑬𝑵𝑰𝑴𝑰𝑬𝑵𝑻𝑶* ⊹\n`;
+            textoMenu += `┃\n`;
+            textoMenu += `✧ 🎭 \`† /𝒕𝒊𝒌𝒕𝒐𝒌\`\n`;
+            textoMenu += `┃ 𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝒗𝒊𝒅𝒆𝒐𝒔 𝒅𝒆 𝑻𝒊𝒌𝑻𝒐𝒌.\n`;
+            textoMenu += `✧ 🎭 \`† /𝒑𝒑𝒕\`\n`;
+            textoMenu += `┃ 𝑱𝒖𝒆𝒈𝒂 𝒑𝒊𝒆𝒅𝒓𝒂, 𝒑𝒂𝒑𝒆𝒍 𝒐 𝒕𝒊𝒋𝒆𝒓𝒂.\n`;
+            textoMenu += `✧ 🎭 \`† /𝒊𝒏𝒔𝒖𝒍𝒕𝒂𝒓\`\n`;
+            textoMenu += `┃ 𝑬𝒍 𝒃𝒐𝒕 𝒆𝒏𝒗𝒊́𝒂 𝒖𝒏 𝒊𝒏𝒔𝒖𝒍𝒕𝒐.\n`;
+            textoMenu += `✧ 🎭 \`† /𝒅𝒐𝒙𝒆𝒐\` | \`† /𝒃𝒖𝒈\`\n`;
+            textoMenu += `┃ 𝑪𝒐𝒎𝒂𝒏𝒅𝒐𝒔 𝒅𝒆 𝒃𝒓𝒐𝒎𝒂.\n`;
+            textoMenu += `┃\n`;
 
-            textoMenu += `🎭 *𝑱𝑼𝑻𝑺𝑼𝑺 𝑫𝑬 𝑫𝑰𝑽𝑬𝑹𝑺𝑰𝑶́𝑵*\n`;
-            textoMenu += `> _𝑬𝒏𝒕𝒓𝒆𝒕𝒆𝒏𝒊𝒎𝒊𝒆𝒏𝒕𝒐_\n`;
-            textoMenu += `✧ \`† /𝒕𝒊𝒌𝒕𝒐𝒌\`\n   └ _𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝒗𝒊𝒅𝒆𝒐𝒔_\n`;
-            textoMenu += `✧ \`† /𝒑𝒑𝒕\`\n   └ _𝑷𝒊𝒆𝒅𝒓𝒂, 𝒑𝒂𝒑𝒆𝒍 𝒐 𝒕𝒊𝒋𝒆𝒓𝒂_\n`;
-            textoMenu += `✧ \`† /𝒊𝒏𝒔𝒖𝒍𝒕𝒂𝒓\`\n   └ _𝑴𝒐𝒅𝒐 𝒕𝒐́𝒙𝒊𝒄𝒐 𝒂𝒄𝒕𝒊𝒗𝒐_\n`;
-            textoMenu += `✧ \`† /𝒅𝒐𝒙𝒆𝒐\`\n   └ _𝑩𝒓𝒐𝒎𝒂 𝒅𝒆 𝒓𝒆𝒔𝒕𝒓𝒆𝒐_\n`;
-            textoMenu += `✧ \`† /𝒕𝒓\`\n   └ _𝑻𝒓𝒂𝒅𝒖𝒄𝒕𝒐𝒓 𝒎𝒖𝒍𝒕𝒊-𝒊𝒅𝒊𝒐𝒎𝒂_\n\n`;
-
-            textoMenu += `👑 *𝑲𝑨𝑮𝑬 𝑷𝑹𝑰𝑽𝑨𝑻𝑬*\n`;
-            textoMenu += `> _𝑺𝒐𝒍𝒐 𝒑𝒂𝒓𝒂 𝒆𝒍 𝑶𝒘𝒏𝒆𝒓_\n`;
-            textoMenu += `✧ \`† /𝒃𝒄\`\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆 𝒈𝒍𝒐𝒃𝒂𝒍_\n`;
-            textoMenu += `✧ \`† /𝒋𝒐𝒊𝒏\`\n   └ _𝑼𝒏𝒊𝒓𝒔𝒆 𝒂 𝒖𝒏 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ \`† /𝒐𝒖𝒕\`\n   └ _𝑺𝒂𝒍𝒊𝒓 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ \`† /𝒂𝒖𝒕𝒐𝒅𝒎\`\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆𝒔 𝒅𝒊𝒓𝒆𝒄𝒕𝒐𝒔_\n\n`;
-
-            textoMenu += `───────────────────────\n`;
+            textoMenu += `─────────────────\n`;
             textoMenu += `🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 2026*`;
 
             // 3. Envío con externalAdReply y quoted
