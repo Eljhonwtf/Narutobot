@@ -2,64 +2,76 @@ const fs = require('fs');
 
 module.exports = {
     name: 'menu',
-    description: 'Menú de Auditoría Original con Créditos en Imagen',
+    description: 'Menú Estilo Ninja para Narutobot',
     run: async (sock, msg, body, args, isOwner) => {
         try {
             const from = msg.key.remoteJid;
             const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
-            // 1. Cargar base de datos
+            // 1. Cargar base de datos (opcional para el nombre)
             let db = {};
             if (fs.existsSync('./usuarios.json')) {
                 db = JSON.parse(fs.readFileSync('./usuarios.json'));
             }
-
             const userData = db[from];
-            let nombreUser = isOwner ? "𝑱𝒉𝒐𝒏🏴‍☠️" : (userData?.split('|')[0] || "𝑨𝒈𝒆𝒏𝒕𝒆");
+            let nombreUser = isOwner ? "𝑱𝒉𝒐𝒏 🏴‍☠️" : (userData?.split('|')[0] || "𝑨𝒈𝒆𝒏𝒕𝒆");
 
-            // --- LISTA DE COMANDOS ---
-            const comandos = [
-                "admins", "antilink", "autodm", "bc", "bug", "delete", "demote", 
-                "doxeo", "fecha", "fix", "grupo", "info", "infogp", "insultar", 
-                "join", "kick", "link", "listcm", "listgp", "menu", "out", 
-                "perfil", "ping", "ppt", "promote", "reg", "resetlink", 
-                "setinfo", "setname", "tagall", "tiktok", "tr", "unreg", "user"
-            ];
+            // 2. Construcción del Menú
+            let textoMenu = `𝐇𝐨𝐥𝐚! 𝐒𝐨𝐲 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕* 🍥\n`;
+            textoMenu += `_¡𝑩𝒊𝒆𝒏𝒗𝒆𝒏𝒊𝒅𝒐, ${nombreUser}!_ \n\n`;
+            
+            textoMenu += `╭━━〔 📜 *𝑰𝑵𝑭𝑶 𝑺𝑰𝑺𝑻𝑬𝑴𝑨* 〕━━🍥\n`;
+            textoMenu += `┃ ✐ *𝑷𝒂𝒊𝒔:* 𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 🇻🇪\n`;
+            textoMenu += `┃ ✐ *𝑷𝒓𝒆𝒇𝒊𝒋𝒐:* 𝑴𝒖𝒍𝒕𝒊\n`;
+            textoMenu += `┃ ✐ *𝑬𝒔𝒕𝒂𝒅𝒐:* 𝑨𝒄𝒕𝒊𝒗𝒐 ✅\n`;
+            textoMenu += `╰━━━━━━━━━━━━━━━━━━━\n\n`;
 
-            // 2. Construcción del Menú (Estilo Bold Italic)
-            let textoMenu = `🏌🏽‍♂️ *𝑳𝑰𝑺𝑻𝑨 𝑫𝑬 𝑴𝑬𝑵𝑼 𝑫𝑬𝑳 𝑩𝑶𝑻* 🚀\n`;
-            textoMenu += `📊 *𝑻𝒐𝒕𝒂𝒍 𝑰𝒏𝒔𝒕𝒂𝒍𝒂𝒅𝒐𝒔:* ${comandos.length}\n`;
-            textoMenu += `───────────────────────\n\n`;
+            textoMenu += `» ˚୨•(⚔️)• ⊹ 𝑳𝑰𝑺𝑻𝑨 𝑫𝑬 𝑴𝑬𝑵𝑼 ⊹\n\n`;
 
-            textoMenu += `👑 *𝑶𝑾𝑵𝑬𝑹 & 𝑵𝑰𝑽𝑬𝑳 𝑫𝑰𝑶𝑺*\n`;
-            textoMenu += `  † /bc\n  † /join\n  † /out\n  † /autodm\n\n`;
+            textoMenu += `🛡️ *𝑮𝑬𝑺𝑻𝑰𝑶́𝑵 𝑫𝑬 𝑲𝑶𝑵𝑶𝑯𝑨*\n`;
+            textoMenu += `> _𝑪𝒐𝒏𝒕𝒓𝒐𝒍 𝒅𝒆 𝒈𝒓𝒖𝒑𝒐𝒔_\n`;
+            textoMenu += `✧ † /𝒂𝒅𝒎𝒊𝒏𝒔\n   └ _𝑳𝒊𝒔𝒕𝒂 𝒅𝒆 𝒂𝒅𝒎𝒊𝒏𝒔_\n`;
+            textoMenu += `✧ † /𝒂𝒏𝒕𝒊𝒍𝒊𝒏𝒌\n   └ _𝑬𝒗𝒊𝒕𝒂 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒆𝒙𝒕𝒆𝒓𝒏𝒐𝒔_\n`;
+            textoMenu += `✧ † /𝒌𝒊𝒄𝒌\n   └ _𝑬𝒙𝒑𝒖𝒍𝒔𝒂𝒓 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐_\n`;
+            textoMenu += `✧ † /𝒑𝒓𝒐𝒎𝒐𝒕𝒆\n   └ _𝑫𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
+            textoMenu += `✧ † /𝒅𝒆𝒎𝒐𝒕𝒆\n   └ _𝑸𝒖𝒊𝒕𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
+            textoMenu += `✧ † /𝒕𝒂𝒈𝒂𝒍𝒍\n   └ _𝑰𝒏𝒗𝒐𝒄𝒂𝒓 𝒂 𝒕𝒐𝒅𝒐𝒔_\n`;
+            textoMenu += `✧ † /𝒈𝒓𝒖𝒑𝒐\n   └ _𝑨𝒃𝒓𝒊𝒓/𝑪𝒆𝒓𝒓𝒂𝒓 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ † /𝒅𝒆𝒍𝒆𝒕𝒆\n   └ _𝑩𝒐𝒓𝒓𝒂𝒓 𝒎𝒆𝒏𝒔𝒂𝒋𝒆𝒔_\n\n`;
 
-            textoMenu += `🛡️ *𝑮𝑬𝑺𝑻𝑰𝑶́𝑵 𝑫𝑬 𝑮𝑹𝑼𝑷𝑶𝑺*\n`;
-            textoMenu += `  † /antilink\n  † /kick\n  † /promote\n  † /demote\n`;
-            textoMenu += `  † /admins\n  † /tagall\n  † /grupo\n  † /resetlink\n  † /delete\n\n`;
+            textoMenu += `📡 *𝑷𝑬𝑹𝑮𝑨𝑴𝑰𝑵𝑶𝑺 𝑫𝑬 𝑼𝑻𝑰𝑳𝑰𝑫𝑨𝑫*\n`;
+            textoMenu += `> _𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊𝒐́𝒏 𝒚 𝒄𝒂𝒎𝒃𝒊𝒐𝒔_\n`;
+            textoMenu += `✧ † /𝒑𝒊𝒏𝒈\n   └ _𝑽𝒆𝒍𝒐𝒄𝒊𝒅𝒂𝒅 𝒅𝒆𝒍 𝒔𝒊𝒔𝒕𝒆𝒎𝒂_\n`;
+            textoMenu += `✧ † /𝒊𝒏𝒇𝒐𝒈𝒑\n   └ _𝑫𝒂𝒕𝒐𝒔 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ † /𝒍𝒊𝒏𝒌\n   └ _𝑬𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒄𝒉𝒂𝒕_\n`;
+            textoMenu += `✧ † /𝒔𝒆𝒕𝒏𝒂𝒎𝒆\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒏𝒐𝒎𝒃𝒓𝒆_\n`;
+            textoMenu += `✧ † /𝒔𝒆𝒕𝒊𝒏𝒇𝒐\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒅𝒆𝒔𝒄𝒓𝒊𝒑𝒄𝒊𝒐́𝒏_\n\n`;
 
-            textoMenu += `📝 *𝑰𝑵𝑭𝑶𝑹𝑴𝑨𝑪𝑰𝑶́𝑵 & 𝑬𝑫𝑰𝑪𝑰𝑶́𝑵*\n`;
-            textoMenu += `  † /infogp\n  † /listgp\n  † /link\n  † /setname\n  † /setinfo\n\n`;
+            textoMenu += `🎭 *𝑱𝑼𝑻𝑺𝑼𝑺 𝑫𝑬 𝑫𝑰𝑽𝑬𝑹𝑺𝑰𝑶́𝑵*\n`;
+            textoMenu += `> _𝑬𝒏𝒕𝒓𝒆𝒕𝒆𝒏𝒊𝒎𝒊𝒆𝒏𝒕𝒐_\n`;
+            textoMenu += `✧ † /𝒕𝒊𝒌𝒕𝒐𝒌\n   └ _𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝒗𝒊𝒅𝒆𝒐𝒔_\n`;
+            textoMenu += `✧ † /𝒑𝒑𝒕\n   └ _𝑷𝒊𝒆𝒅𝒓𝒂, 𝒑𝒂𝒑𝒆𝒍 𝒐 𝒕𝒊𝒋𝒆𝒓𝒂_\n`;
+            textoMenu += `✧ † /𝒊𝒏𝒔𝒖𝒍𝒕𝒂𝒓\n   └ _𝑴𝒐𝒅𝒐 𝒕𝒐́𝒙𝒊𝒄𝒐 𝒂𝒄𝒕𝒊𝒗𝒐_\n`;
+            textoMenu += `✧ † /𝒅𝒐𝒙𝒆𝒐\n   └ _𝑩𝒓𝒐𝒎𝒂 𝒅𝒆 𝒓𝒆𝒔𝒕𝒓𝒆𝒐_\n`;
+            textoMenu += `✧ † /𝒕𝒓\n   └ _𝑻𝒓𝒂𝒅𝒖𝒄𝒕𝒐𝒓 𝒎𝒖𝒍𝒕𝒊-𝒊𝒅𝒊𝒐𝒎𝒂_\n\n`;
 
-            textoMenu += `👤 *𝑼𝑺𝑼𝑨𝑹𝑰𝑶 & 𝑹𝑬𝑮𝑰𝑺𝑻𝑹𝑶*\n`;
-            textoMenu += `  † /reg | /unreg\n  † /perfil | /user\n\n`;
-
-            textoMenu += `⚙️ *𝑺𝑰𝑺𝑻𝑬𝑴𝑨 & 𝑺𝑶𝑷𝑶𝑹𝑻𝑬*\n`;
-            textoMenu += `  † /ping | /info | /fecha\n  † /listcm | /fix | /menu\n\n`;
-
-            textoMenu += `🎭 *𝑬𝑵𝑻𝑹𝑬𝑻𝑬𝑵𝑰𝑴𝑰𝑬𝑵𝑻𝑶* \n`;
-            textoMenu += `  † /ppt | /insultar | /tiktok\n  † /tr | /doxeo | /bug\n\n`;
+            textoMenu += `👑 *𝑲𝑨𝑮𝑬 𝑷𝑹𝑰𝑽𝑨𝑻𝑬*\n`;
+            textoMenu += `> _𝑺𝒐𝒍𝒐 𝒑𝒂𝒓𝒂 𝒆𝒍 𝑶𝒘𝒏𝒆𝒓_\n`;
+            textoMenu += `✧ † /𝒃𝒄\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆 𝒈𝒍𝒐𝒃𝒂𝒍_\n`;
+            textoMenu += `✧ † /𝒋𝒐𝒊𝒏\n   └ _𝑼𝒏𝒊𝒓𝒔𝒆 𝒂 𝒖𝒏 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ † /𝒐𝒖𝒕\n   └ _𝑺𝒂𝒍𝒊𝒓 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ † /𝒂𝒖𝒕𝒐𝒅𝒎\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆𝒔 𝒅𝒊𝒓𝒆𝒄𝒕𝒐𝒔_\n\n`;
 
             textoMenu += `───────────────────────\n`;
-            textoMenu += `_𝑺𝒊𝒏𝒄𝒓𝒐𝒏𝒊𝒛𝒂𝒅𝒐 𝒄𝒐𝒏 𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎_`;
+            textoMenu += `🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 2026*`;
 
-            // 3. Envío con créditos y quoted corregido
+            // 3. Envío con externalAdReply y quoted
             await sock.sendMessage(from, { 
                 text: textoMenu,
                 contextInfo: {
                     externalAdReply: {
                         title: "𝑨𝑫𝑴𝑰𝑵𝑰𝑺𝑻𝑹𝑨𝑪𝑰𝑶́𝑵 𝑪𝑬𝑵𝑻𝑹𝑨𝑳",
-                        body: "𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 ❤️", 
+                        body: "𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 🍥",
                         thumbnailUrl: thumbUrl,
                         mediaType: 1,
                         renderLargerThumbnail: true
@@ -67,7 +79,7 @@ module.exports = {
                 }
             }, { quoted: msg });
 
-            await sock.sendMessage(from, { react: { text: "📂", key: msg.key } });
+            await sock.sendMessage(from, { react: { text: "📜", key: msg.key } });
 
         } catch (e) {
             console.log("Error en el menú:", e);
