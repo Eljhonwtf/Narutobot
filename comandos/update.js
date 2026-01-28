@@ -8,14 +8,16 @@ module.exports = {
         // ✅ Solo el owner puede usar este comando
         if (!isOwner) {
             await sock.sendMessage(from, { 
-                text: "❌ Solo el owner puede usar este comando." 
+                text: "❌ Solo el owner puede usar este comando.",
+                quoted: msg
             });
             return;
         }
 
         try {
             await sock.sendMessage(from, { 
-                text: "⏳ Actualizando el bot... espera un momento..." 
+                text: "» ˚୨•(⚔️)• ⊹ ᴀᴄᴛᴜᴀʟɪᴢᴀɴᴅᴏ ᴇʟ ʙᴏᴛ...\n\n⏳ *ᴇsᴘᴇʀᴀ ᴜɴ ᴍᴏᴍᴇɴᴛᴏ* 🏴‍☠️",
+                quoted: msg
             });
 
             // Ejecutar git pull
@@ -24,14 +26,20 @@ module.exports = {
                 encoding: 'utf-8'
             });
 
+            const mensaje = `» ˚୨•(⚔️)• ⊹ ᴀᴄᴛᴜᴀʟɪᴢᴀᴄɪᴏ́ɴ ᴅᴇʟ ʙᴏᴛ\n\n✅ *ᴀᴄᴛᴜᴀʟɪᴢᴀᴅᴏ ᴄᴏɪ́ɪᴛᴏ* 🏴‍☠️\n\n𝐗𝐚𝐫𝐤𝐢𝐚𝐥 𝐢𝐬 𝐬𝐭𝐫𝐨𝐧𝐠𝐞𝐫 𝐧𝐨𝐰 💪\n\n${resultado || '✐ Los archivos están al día'}`;
+
             await sock.sendMessage(from, { 
-                text: `✅ *Bot actualizado con éxito*\n\n${resultado || 'Los archivos están al día'}` 
+                text: mensaje,
+                quoted: msg
             });
 
             console.log('✅ Bot actualizado por:', msg.pushName);
         } catch (err) {
+            const errorMsg = `» ˚୨•(💀)• ⊹ ᴇʀʀᴏʀ ᴇɴ ʟᴀ ᴀᴄᴛᴜᴀʟɪᴢᴀʀ ᴇʟ ʙᴏᴛ\n\n❌ *ᴀʟɢᴏ sᴀʟɪó ᴍᴀʟ* 🔥\n\n${err.message}`;
+
             await sock.sendMessage(from, { 
-                text: `❌ Error al actualizar:\n\n${err.message}` 
+                text: errorMsg,
+                quoted: msg
             });
             console.log('❌ Error en comando update:', err);
         }
