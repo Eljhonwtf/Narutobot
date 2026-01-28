@@ -27,7 +27,7 @@ module.exports = {
             ];
 
             // 2. Construcción del Menú (Estilo Original Vertical)
-            let textoMenu = `🚀 *LISTA DE MENU DEL BOT* 🚀\n`;
+            let textoMenu = `🏌🏽‍♂️ *LISTA DE MENU DEL BOT* 🚀\n`;
             textoMenu += `📊 *Total Instalados:* ${comandos.length}\n`;
             textoMenu += `───────────────────────\n\n`;
 
