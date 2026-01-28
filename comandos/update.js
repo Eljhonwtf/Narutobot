@@ -18,7 +18,7 @@ module.exports = {
             await sock.sendMessage(from, { react: { text: "⏳", key: msg.key } });
 
             await sock.sendMessage(from, { 
-                text: "» ˚୨•(⚔️)• ⊹ ᴀᴄᴛᴜᴀʟɪᴢᴀɴᴅᴏ ᴇʟ ʙᴏᴛ...\n\n⏳ *ᴇsᴘᴇʀᴀ ᴜɴ ᴍᴏᴍᴇɴᴛᴏ* 🏴‍☠️"
+                text: "» ˚୨•(⚔️)• ⊹ 𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒏𝒅𝒐 𝒆𝒍 𝒃𝒐𝒕...\n\n😮‍💨 *𝒆𝒔𝒑𝒆𝒓𝒂 𝒖𝒏 𝒎𝒐𝒎𝒆𝒏𝒕𝒐* 🏴‍☠️"
             }, { quoted: msg });
 
             // Ejecutar git pull para obtener las actualizaciones
