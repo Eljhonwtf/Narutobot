@@ -112,14 +112,20 @@ async function iniciarBot() {
                           msg.message.extendedTextMessage?.text || 
                           msg.message.imageMessage?.caption || "").toLowerCase();
 
-            // --- SISTEMA AUTOMÁTICO ANTI-LINK ---
+                        // --- SISTEMA AUTOMÁTICO ANTI-LINK (MEJORADO) ---
             if (from.endsWith('@g.us')) {
                 let chatData = {};
+                
+                // Si el archivo no existe, lo inicializamos como un objeto vacío en memoria
                 if (fs.existsSync(chatsPath)) {
-                    chatData = JSON.parse(fs.readFileSync(chatsPath));
+                    try {
+                        chatData = JSON.parse(fs.readFileSync(chatsPath));
+                    } catch (e) {
+                        chatData = {};
+                    }
                 }
 
-                // Si el antilink está activo en este grupo
+                // Solo ejecutamos la lógica si el grupo tiene el antilink en 'true'
                 if (chatData[from] && chatData[from].antilink) {
                     const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i;
                     
@@ -133,21 +139,14 @@ async function iniciarBot() {
 
                         if (!senderAdmin && !isOwner) {
                             if (botAdmin) {
-                                // 1. Borrar mensaje
                                 await sock.sendMessage(from, { delete: msg.key });
-                                
-                                // 2. Expulsar
                                 await sock.groupParticipantsUpdate(from, [sender], "remove");
-                                
-                                // 3. Notificar
                                 await sock.sendMessage(from, { 
                                     text: `*『 𝑱𝑼𝑻𝑺𝑼 𝑫𝑬 𝑫𝑬𝑺𝑻𝑰𝑬𝑹𝑶 』*\n\n┃ 👤 @${senderLimpio} 𝒇𝒖𝒆 𝒆𝒍𝒊𝒎𝒊𝒏𝒂𝒅𝒐.\n┃ ⚔️ *𝑹𝒂𝒛𝒐́𝒏:* 𝑬𝒏𝒗𝒊𝒂𝒓 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒑𝒓𝒐𝒉𝒊𝒃𝒊𝒅𝒐𝒔.\n┃\n🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎*`,
                                     mentions: [sender]
                                 });
-                            } else {
-                                console.log("⚠️ El bot no es admin para ejecutar antilink");
                             }
-                            return; // Detener procesamiento para este mensaje
+                            return; 
                         }
                     }
                 }
