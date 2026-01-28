@@ -2,13 +2,13 @@ const fs = require('fs');
 
 module.exports = {
     name: 'menu',
-    description: 'Menú Estilo Ninja para Narutobot',
+    description: 'Menú Estilo Ninja para Narutobot con comandos resaltados',
     run: async (sock, msg, body, args, isOwner) => {
         try {
             const from = msg.key.remoteJid;
             const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
-            // 1. Cargar base de datos (opcional para el nombre)
+            // 1. Cargar base de datos
             let db = {};
             if (fs.existsSync('./usuarios.json')) {
                 db = JSON.parse(fs.readFileSync('./usuarios.json'));
@@ -30,37 +30,37 @@ module.exports = {
 
             textoMenu += `🛡️ *𝑮𝑬𝑺𝑻𝑰𝑶́𝑵 𝑫𝑬 𝑲𝑶𝑵𝑶𝑯𝑨*\n`;
             textoMenu += `> _𝑪𝒐𝒏𝒕𝒓𝒐𝒍 𝒅𝒆 𝒈𝒓𝒖𝒑𝒐𝒔_\n`;
-            textoMenu += `✧ † /𝒂𝒅𝒎𝒊𝒏𝒔\n   └ _𝑳𝒊𝒔𝒕𝒂 𝒅𝒆 𝒂𝒅𝒎𝒊𝒏𝒔_\n`;
-            textoMenu += `✧ † /𝒂𝒏𝒕𝒊𝒍𝒊𝒏𝒌\n   └ _𝑬𝒗𝒊𝒕𝒂 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒆𝒙𝒕𝒆𝒓𝒏𝒐𝒔_\n`;
-            textoMenu += `✧ † /𝒌𝒊𝒄𝒌\n   └ _𝑬𝒙𝒑𝒖𝒍𝒔𝒂𝒓 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐_\n`;
-            textoMenu += `✧ † /𝒑𝒓𝒐𝒎𝒐𝒕𝒆\n   └ _𝑫𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
-            textoMenu += `✧ † /𝒅𝒆𝒎𝒐𝒕𝒆\n   └ _𝑸𝒖𝒊𝒕𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
-            textoMenu += `✧ † /𝒕𝒂𝒈𝒂𝒍𝒍\n   └ _𝑰𝒏𝒗𝒐𝒄𝒂𝒓 𝒂 𝒕𝒐𝒅𝒐𝒔_\n`;
-            textoMenu += `✧ † /𝒈𝒓𝒖𝒑𝒐\n   └ _𝑨𝒃𝒓𝒊𝒓/𝑪𝒆𝒓𝒓𝒂𝒓 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ † /𝒅𝒆𝒍𝒆𝒕𝒆\n   └ _𝑩𝒐𝒓𝒓𝒂𝒓 𝒎𝒆𝒏𝒔𝒂𝒋𝒆𝒔_\n\n`;
+            textoMenu += `✧ \`† /𝒂𝒅𝒎𝒊𝒏𝒔\`\n   └ _𝑳𝒊𝒔𝒕𝒂 𝒅𝒆 𝒂𝒅𝒎𝒊𝒏𝒔_\n`;
+            textoMenu += `✧ \`† /𝒂𝒏𝒕𝒊𝒍𝒊𝒏𝒌\`\n   └ _𝑬𝒗𝒊𝒕𝒂 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒆𝒙𝒕𝒆𝒓𝒏𝒐𝒔_\n`;
+            textoMenu += `✧ \`† /𝒌𝒊𝒄𝒌\`\n   └ _𝑬𝒙𝒑𝒖𝒍𝒔𝒂𝒓 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐_\n`;
+            textoMenu += `✧ \`† /𝒑𝒓𝒐𝒎𝒐𝒕𝒆\`\n   └ _𝑫𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
+            textoMenu += `✧ \`† /𝒅𝒆𝒎𝒐𝒕𝒆\`\n   └ _𝑸𝒖𝒊𝒕𝒂𝒓 𝒂𝒅𝒎𝒊𝒏_\n`;
+            textoMenu += `✧ \`† /𝒕𝒂𝒈𝒂𝒍𝒍\`\n   └ _𝑰𝒏𝒗𝒐𝒄𝒂𝒓 𝒂 𝒕𝒐𝒅𝒐𝒔_\n`;
+            textoMenu += `✧ \`† /𝒈𝒓𝒖𝒑𝒐\`\n   └ _𝑨𝒃𝒓𝒊𝒓/𝑪𝒆𝒓𝒓𝒂𝒓 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ \`† /𝒅𝒆𝒍𝒆𝒕𝒆\`\n   └ _𝑩𝒐𝒓𝒓𝒂𝒓 𝒎𝒆𝒏𝒔𝒂𝒋𝒆𝒔_\n\n`;
 
             textoMenu += `📡 *𝑷𝑬𝑹𝑮𝑨𝑴𝑰𝑵𝑶𝑺 𝑫𝑬 𝑼𝑻𝑰𝑳𝑰𝑫𝑨𝑫*\n`;
             textoMenu += `> _𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊𝒐́𝒏 𝒚 𝒄𝒂𝒎𝒃𝒊𝒐𝒔_\n`;
-            textoMenu += `✧ † /𝒑𝒊𝒏𝒈\n   └ _𝑽𝒆𝒍𝒐𝒄𝒊𝒅𝒂𝒅 𝒅𝒆𝒍 𝒔𝒊𝒔𝒕𝒆𝒎𝒂_\n`;
-            textoMenu += `✧ † /𝒊𝒏𝒇𝒐𝒈𝒑\n   └ _𝑫𝒂𝒕𝒐𝒔 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ † /𝒍𝒊𝒏𝒌\n   └ _𝑬𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒄𝒉𝒂𝒕_\n`;
-            textoMenu += `✧ † /𝒔𝒆𝒕𝒏𝒂𝒎𝒆\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒏𝒐𝒎𝒃𝒓𝒆_\n`;
-            textoMenu += `✧ † /𝒔𝒆𝒕𝒊𝒏𝒇𝒐\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒅𝒆𝒔𝒄𝒓𝒊𝒑𝒄𝒊𝒐́𝒏_\n\n`;
+            textoMenu += `✧ \`† /𝒑𝒊𝒏𝒈\`\n   └ _𝑽𝒆𝒍𝒐𝒄𝒊𝒅𝒂𝒅 𝒅𝒆𝒍 𝒔𝒊𝒔𝒕𝒆𝒎𝒂_\n`;
+            textoMenu += `✧ \`† /𝒊𝒏𝒇𝒐𝒈𝒑\`\n   └ _𝑫𝒂𝒕𝒐𝒔 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ \`† /𝒍𝒊𝒏𝒌\`\n   └ _𝑬𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒄𝒉𝒂𝒕_\n`;
+            textoMenu += `✧ \`† /𝒔𝒆𝒕𝒏𝒂𝒎𝒆\`\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒏𝒐𝒎𝒃𝒓𝒆_\n`;
+            textoMenu += `✧ \`† /𝒔𝒆𝒕𝒊𝒏𝒇𝒐\`\n   └ _𝑪𝒂𝒎𝒃𝒊𝒂𝒓 𝒅𝒆𝒔𝒄𝒓𝒊𝒑𝒄𝒊𝒐́𝒏_\n\n`;
 
             textoMenu += `🎭 *𝑱𝑼𝑻𝑺𝑼𝑺 𝑫𝑬 𝑫𝑰𝑽𝑬𝑹𝑺𝑰𝑶́𝑵*\n`;
             textoMenu += `> _𝑬𝒏𝒕𝒓𝒆𝒕𝒆𝒏𝒊𝒎𝒊𝒆𝒏𝒕𝒐_\n`;
-            textoMenu += `✧ † /𝒕𝒊𝒌𝒕𝒐𝒌\n   └ _𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝒗𝒊𝒅𝒆𝒐𝒔_\n`;
-            textoMenu += `✧ † /𝒑𝒑𝒕\n   └ _𝑷𝒊𝒆𝒅𝒓𝒂, 𝒑𝒂𝒑𝒆𝒍 𝒐 𝒕𝒊𝒋𝒆𝒓𝒂_\n`;
-            textoMenu += `✧ † /𝒊𝒏𝒔𝒖𝒍𝒕𝒂𝒓\n   └ _𝑴𝒐𝒅𝒐 𝒕𝒐́𝒙𝒊𝒄𝒐 𝒂𝒄𝒕𝒊𝒗𝒐_\n`;
-            textoMenu += `✧ † /𝒅𝒐𝒙𝒆𝒐\n   └ _𝑩𝒓𝒐𝒎𝒂 𝒅𝒆 𝒓𝒆𝒔𝒕𝒓𝒆𝒐_\n`;
-            textoMenu += `✧ † /𝒕𝒓\n   └ _𝑻𝒓𝒂𝒅𝒖𝒄𝒕𝒐𝒓 𝒎𝒖𝒍𝒕𝒊-𝒊𝒅𝒊𝒐𝒎𝒂_\n\n`;
+            textoMenu += `✧ \`† /𝒕𝒊𝒌𝒕𝒐𝒌\`\n   └ _𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝒗𝒊𝒅𝒆𝒐𝒔_\n`;
+            textoMenu += `✧ \`† /𝒑𝒑𝒕\`\n   └ _𝑷𝒊𝒆𝒅𝒓𝒂, 𝒑𝒂𝒑𝒆𝒍 𝒐 𝒕𝒊𝒋𝒆𝒓𝒂_\n`;
+            textoMenu += `✧ \`† /𝒊𝒏𝒔𝒖𝒍𝒕𝒂𝒓\`\n   └ _𝑴𝒐𝒅𝒐 𝒕𝒐́𝒙𝒊𝒄𝒐 𝒂𝒄𝒕𝒊𝒗𝒐_\n`;
+            textoMenu += `✧ \`† /𝒅𝒐𝒙𝒆𝒐\`\n   └ _𝑩𝒓𝒐𝒎𝒂 𝒅𝒆 𝒓𝒆𝒔𝒕𝒓𝒆𝒐_\n`;
+            textoMenu += `✧ \`† /𝒕𝒓\`\n   └ _𝑻𝒓𝒂𝒅𝒖𝒄𝒕𝒐𝒓 𝒎𝒖𝒍𝒕𝒊-𝒊𝒅𝒊𝒐𝒎𝒂_\n\n`;
 
             textoMenu += `👑 *𝑲𝑨𝑮𝑬 𝑷𝑹𝑰𝑽𝑨𝑻𝑬*\n`;
             textoMenu += `> _𝑺𝒐𝒍𝒐 𝒑𝒂𝒓𝒂 𝒆𝒍 𝑶𝒘𝒏𝒆𝒓_\n`;
-            textoMenu += `✧ † /𝒃𝒄\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆 𝒈𝒍𝒐𝒃𝒂𝒍_\n`;
-            textoMenu += `✧ † /𝒋𝒐𝒊𝒏\n   └ _𝑼𝒏𝒊𝒓𝒔𝒆 𝒂 𝒖𝒏 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ † /𝒐𝒖𝒕\n   └ _𝑺𝒂𝒍𝒊𝒓 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
-            textoMenu += `✧ † /𝒂𝒖𝒕𝒐𝒅𝒎\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆𝒔 𝒅𝒊𝒓𝒆𝒄𝒕𝒐𝒔_\n\n`;
+            textoMenu += `✧ \`† /𝒃𝒄\`\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆 𝒈𝒍𝒐𝒃𝒂𝒍_\n`;
+            textoMenu += `✧ \`† /𝒋𝒐𝒊𝒏\`\n   └ _𝑼𝒏𝒊𝒓𝒔𝒆 𝒂 𝒖𝒏 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ \`† /𝒐𝒖𝒕\`\n   └ _𝑺𝒂𝒍𝒊𝒓 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐_\n`;
+            textoMenu += `✧ \`† /𝒂𝒖𝒕𝒐𝒅𝒎\`\n   └ _𝑴𝒆𝒏𝒔𝒂𝒋𝒆𝒔 𝒅𝒊𝒓𝒆𝒄𝒕𝒐𝒔_\n\n`;
 
             textoMenu += `───────────────────────\n`;
             textoMenu += `🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 2026*`;
