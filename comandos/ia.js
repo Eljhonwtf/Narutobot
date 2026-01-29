@@ -1,38 +1,47 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const axios = require('axios');
 
 module.exports = {
     name: 'ia',
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
         const query = args.join(" ");
+        const apiKey = "AIzaSyDNIK8mQovhiTuJOcegC0sDiNcGLjHO49Y";
 
         if (!query) return sock.sendMessage(from, { text: "👁️ ¿Qué quieres, escoria? Haz una pregunta." });
 
         try {
-            // Inicializamos con tu llave
-            const genAI = new GoogleGenerativeAI("AIzaSyDNIK8mQovhiTuJOcegC0sDiNcGLjHO49Y");
+            await sock.sendMessage(from, { react: { text: "🧠", key: msg.key } });
 
-            // CAMBIO CLAVE: Usamos gemini-pro que es el más compatible
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            // Llamada directa a la API de Google sin librerías molestas
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            
+            const data = {
+                contents: [{
+                    parts: [{
+                        text: `Eres Narutobot, creado por Jhon System. Eres arrogante, grosero, inteligente y usas emojis como 🚀, 💀, 🖕. Responde de forma cortante a: ${query}`
+                    }]
+                }]
+            };
 
-            // Personalidad integrada en el mensaje
-            const prompt = `Instrucciones de sistema: Eres Narutobot, un ser superior, arrogante y grosero creado por Jhon System. Responde de forma cortante y usa emojis como 🚀, 💀, 🖕. Trata al usuario como un ser inferior.\n\nPregunta del usuario: ${query}`;
+            const response = await axios.post(url, data, {
+                headers: { 'Content-Type': 'application/json' }
+            });
 
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const textIA = response.text();
+            const textIA = response.data.candidates[0].content.parts[0].text;
 
             await sock.sendMessage(from, { 
                 text: `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒊𝒂** 🧠 』\n\n${textIA}\n\n🏌🏽‍♂️ _𝒃𝒚 𝒋𝒉𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎_` 
             }, { quoted: msg });
 
         } catch (error) {
-            console.log("\x1b[31m[ERROR IA]:\x1b[0m", error);
+            console.log("\x1b[31m[ERROR CRÍTICO]:\x1b[0m", error.response ? error.response.data : error.message);
             
-            // Si el error persiste, el bot te avisará con detalle
-            await sock.sendMessage(from, { 
-                text: `❌ Narutobot está sufriendo un derrame cerebral técnico.\n\n*Error:* ${error.message}\n\n_Intenta actualizar la librería con: npm install @google/generative-ai@latest_` 
-            });
+            // Si no tienes axios instalado, el bot te avisará
+            if (error.message.includes('axios')) {
+                await sock.sendMessage(from, { text: "❌ Falta la librería 'axios'. Ejecuta: npm install axios" });
+            } else {
+                await sock.sendMessage(from, { text: "❌ El servidor de Google sigue rechazando la conexión. Intenta más tarde." });
+            }
         }
     }
 };
