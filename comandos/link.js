@@ -1,14 +1,15 @@
 module.exports = {
     name: 'link',
-    description: 'generación de enlace de acceso',
+    description: '𝒈𝒆𝒏𝒆𝒓𝒂𝒄𝒊𝒐́𝒏 𝒅𝒆 𝒆𝒏𝒍𝒂𝒄𝒆 𝒅𝒆 𝒂𝒄𝒄𝒆𝒔𝒐',
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
+        // Usamos tu imagen confirmada
         const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
         try {
             if (!from.endsWith('@g.us')) return;
 
-            // 1. REACCIÓN DE PROCESANDO
+            // 1. REACCIÓN INICIAL
             await sock.sendMessage(from, { react: { text: "🛰️", key: msg.key } });
 
             // 2. VERIFICACIÓN DE RANGO
@@ -17,53 +18,40 @@ module.exports = {
             
             if (!isAdmin) {
                 return await sock.sendMessage(from, { 
-                    text: `『 🚫 **𝒂𝒄𝒄𝒆𝒔𝒐 𝒅𝒆𝒏𝒆𝒈𝒂𝒅𝒐** 』\n\nSolo los *administradores* pueden solicitar el enlace. 🚀` 
+                    text: `『 🚫 **𝒂𝒄𝒄𝒆𝒔𝒐 𝒅𝒆𝒏𝒆𝒈𝒂𝒅𝒐** 🏌🏽‍♂️ 』\n\nSolo los *administradores* pueden solicitar el enlace. 🚀` 
                 }, { quoted: msg });
             }
 
-            // 3. EXTRACCIÓN DEL CÓDIGO
+            // 3. OBTENER LINK
             const code = await sock.groupInviteCode(from);
             const link = `https://chat.whatsapp.com/${code}`;
 
-            // 4. DISEÑO HÍBRIDO TÁCTICO
-            let linkMsg = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒂𝒄𝒄𝒆𝒔𝒔 𝒍𝒊𝒏𝒌** 🏌🏽‍♂️ 』\n\n`;
-            linkMsg += `┌──『 🔗 **𝒆𝒏𝒍𝒂𝒄𝒆 𝒅𝒆 𝒂𝒄𝒄𝒆𝒔𝒐** 』\n`;
-            linkMsg += `│\n`;
-            linkMsg += `│ ${link}\n`;
-            linkMsg += `│\n`;
-            linkMsg += `└─────────────────────────\n\n`;
-            linkMsg += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Enlace extraído correctamente.\n`;
-            linkMsg += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
+            // 4. DISEÑO HÍBRIDO (CAPTION)
+            let caption = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒂𝒄𝒄𝒆𝒔𝒔 𝒍𝒊𝒏𝒌** 🏌🏽‍♂️ 』\n\n`;
+            caption += `┌──『 🔗 **𝒆𝒏𝒍𝒂𝒄𝒆 𝒅𝒆 𝒂𝒄𝒄𝒆𝒔𝒐** 』\n`;
+            caption += `│\n`;
+            caption += `│ ${link}\n`;
+            caption += `│\n`;
+            caption += `└─────────────────────────\n\n`;
+            caption += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Enlace oficial del sector.\n`;
+            caption += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
-            // 5. ENVÍO SEGURO (TEXTO PURO + QUOTED)
-            // Nota: Se envía sin externalAdReply para evitar el bloqueo de seguridad de WhatsApp sobre links.
+            // 5. ENVÍO COMO IMAGEN (ESTRATEGIA ANTI-SPAM)
+            // Enviamos la imagen real con el texto abajo. Esto NO lo bloquea WhatsApp.
             await sock.sendMessage(from, { 
-                text: linkMsg,
-                contextInfo: {
-                    externalAdReply: {
-                        title: "🛰️ NARUTOBOT NETWORK",
-                        body: "Acceso al sector autorizado",
-                        thumbnailUrl: thumbUrl,
-                        mediaType: 1,
-                        renderLargerThumbnail: true,
-                        showAdAttribution: true
-                    }
-                }
+                image: { url: thumbUrl },
+                caption: caption
             }, { quoted: msg });
 
+            // Reacción final
             await sock.sendMessage(from, { react: { text: "✅", key: msg.key } });
 
         } catch (e) {
             console.log(e);
-            // Si falla el envío con imagen, enviamos solo texto para no dejarte colgado
-            try {
-                const code = await sock.groupInviteCode(from);
-                await sock.sendMessage(from, { text: `🚀 *Enlace:* https://chat.whatsapp.com/${code}` }, { quoted: msg });
-            } catch (err) {
-                await sock.sendMessage(from, { 
-                    text: `『 ❌ **𝒆𝒓𝒓𝒐𝒓 𝒅𝒆 𝒔𝒊𝒔𝒕𝒆𝒎𝒂** 』\n\nNo pude generar el enlace. Verifica que el bot sea *Administrador*.` 
-                }, { quoted: msg });
-            }
+            // Plan C: Si falla la imagen, texto plano puro y duro
+            await sock.sendMessage(from, { 
+                text: `🚀 *Link:* https://chat.whatsapp.com/${(await sock.groupInviteCode(from))}` 
+            }, { quoted: msg });
         }
     }
 };
