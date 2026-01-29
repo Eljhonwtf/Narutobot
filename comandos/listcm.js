@@ -2,53 +2,61 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
+    name: 'listcmd',
+    description: '𝒂𝒄𝒄𝒆𝒔𝒐 𝒂𝒍 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒅𝒆𝒍 𝒔𝒊𝒔𝒕𝒆𝒎𝒂',
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
 
-        // 1. BLOQUEO CHISTOSO PARA LOS "SAPEADORES"
+        // 1. PROTOCOLO DE EXCLUSIÓN (MODO BESTIA)
         if (!isOwner) {
-            await sock.sendMessage(from, { react: { text: "🤡", key: msg.key } });
+            await sock.sendMessage(from, { react: { text: "💀", key: msg.key } });
             
             const frases = [
-                "¿Pero tú eres tonto o muerdes el agua? Mis secretos solo los ve Jhon. 🤡",
-                "¡Cuidado! 🚨 Intentaste entrar a la base de datos de comandos. ¡A dormir!",
-                "Error 404: Permisos de Jhon no encontrados. ¡No seas curioso! 🧠❌",
-                "¿Quieres ver mis tripas? Solo el Jefe tiene el bisturí. 😂",
-                "¡Alerta! Un civil intentando hackear la aldea. 🥷🚫"
+                "『 🚫 **𝒂𝒄𝒄𝒆𝒔𝒐 𝒅𝒆𝒏𝒆𝒈𝒂𝒅𝒐** 』\n\n𝒊𝒏𝒕𝒆𝒏𝒕𝒐 𝒅𝒆 𝒊𝒏𝒕𝒓𝒖𝒔𝒊𝒐́𝒏 𝒅𝒆𝒕𝒆𝒄𝒕𝒂𝒅𝒐. 𝒍𝒐𝒔 𝒔𝒆𝒄𝒓𝒆𝒕𝒐𝒔 𝒅𝒆𝒍 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒔𝒐𝒍𝒐 𝒔𝒐𝒏 𝒑𝒂𝒓𝒂 𝒋𝒉𝒐𝒏. 🚀",
+                "『 ⚠️ **𝒂𝒍𝒆𝒓𝒕𝒂 𝒅𝒆 𝒔𝒆𝒈𝒖𝒓𝒊𝒅𝒂𝒅** 』\n\n¿𝒒𝒖𝒊𝒆𝒓𝒆𝒔 𝒗𝒆𝒓 𝒎𝒊𝒔 𝒕𝒓𝒊𝒑𝒂𝒔? 𝒔𝒐𝒍𝒐 𝒆𝒍 𝒋𝒆𝒇𝒆 𝒕𝒊𝒆𝒏𝒆 𝒆𝒍 𝒃𝒊𝒔𝒕𝒖𝒓𝒊́. 𝒂 𝒅𝒐𝒓𝒎𝒊𝒓. 🏌🏽‍♂️",
+                "『 🧠 **𝒆𝒓𝒓𝒐𝒓 𝒅𝒆 𝒏𝒊𝒗𝒆𝒍** 』\n\n𝒏𝒐 𝒕𝒊𝒆𝒏𝒆𝒔 𝒍𝒂𝒔 𝒏𝒆𝒖𝒓𝒐𝒏𝒂𝒔 𝒏𝒆𝒄𝒆𝒔𝒂𝒓𝒊𝒂𝒔 𝒑𝒂𝒓𝒂 𝒆𝒏𝒕𝒆𝒏𝒅𝒆𝒓 𝒆𝒔𝒕𝒆 𝒄𝒐́𝒅𝒊𝒈𝒐. 𝒙",
+                "『 🥷 **𝒔𝒚𝒔𝒕𝒆𝒎 𝒃𝒍𝒐𝒄𝒌** 』\n\n𝒖𝒏 𝒄𝒊𝒗𝒊𝒍 𝒊𝒏𝒕𝒆𝒏𝒕𝒂𝒏𝒅𝒐 𝒉𝒂𝒄𝒌𝒆𝒂𝒓 𝒍𝒂 𝒂𝒍𝒅𝒆𝒂. 𝒑𝒓𝒐𝒄𝒆𝒔𝒐 𝒂𝒃𝒐𝒓𝒕𝒂𝒅𝒐. 💀"
             ];
             const randomFrase = frases[Math.floor(Math.random() * frases.length)];
             
             return await sock.sendMessage(from, { text: randomFrase }, { quoted: msg });
         }
 
-        // 2. LÓGICA PARA EL DUEÑO
+        // 2. DESPLIEGUE DEL NÚCLEO (SOLO PARA EL JEFE)
         try {
-            const dirPath = path.join(__dirname); // Carpeta de comandos
+            const dirPath = path.join(__dirname); 
             const archivos = fs.readdirSync(dirPath).filter(file => file.endsWith('.js'));
             
-            await sock.sendMessage(from, { react: { text: "📂", key: msg.key } });
+            await sock.sendMessage(from, { react: { text: "⚡", key: msg.key } });
 
-            let lista = `📂 *LISTA COMPLETA DE COMANDOS*\n\n`;
-            lista += `🚀 *Total Instalados:* ${archivos.length}\n`;
-            lista += `───────────────────────\n`;
+            // --- DISEÑO: INTERFAZ DE COMANDOS MODO BESTIA ---
+            let lista = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒄𝒆𝒏𝒕𝒆𝒓** 🏌🏽‍♂️ 』\n\n`;
+            
+            lista += `┌──『 📊 **𝒔𝒚𝒔𝒕𝒆𝒎 𝒔𝒕𝒂𝒕𝒔** 』\n`;
+            lista += `│ 📂 **𝒕𝒐𝒕𝒂𝒍 𝒄𝒎𝒅𝒔:** ${archivos.length}\n`;
+            lista += `│ ⚡ **𝒆𝒔𝒕𝒂𝒅𝒐:** 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒐𝒑𝒆𝒓𝒂𝒕𝒊𝒗𝒐\n`;
+            lista += `└─────────────────────────\n\n`;
 
+            lista += `┌──『 🛠️ **𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐 𝒅𝒆 𝒂𝒓𝒎𝒂𝒔** 』\n`;
+            
             archivos.forEach((file, index) => {
-                // Quitamos el .js para que se vea más limpio
                 const nombreCmd = file.replace('.js', '');
-                lista += `  ${index + 1}. † /${nombreCmd}\n`;
+                // Formato de lista técnica
+                lista += `│ [${index + 1}] ──> /${nombreCmd}\n`;
             });
 
-            lista += `───────────────────────\n`;
-            lista += `_Sincronizado con Jhon-Bot System_`;
+            lista += `└─────────────────────────\n\n`;
+            lista += `🚀 **𝒔𝒕𝒂𝒕𝒖𝒔:** 𝒕𝒐𝒅𝒐𝒔 𝒍𝒐𝒔 𝒔𝒚𝒔𝒕𝒆𝒎𝒂𝒔 𝒐𝒏𝒍𝒊𝒏𝒆.\n`;
+            lista += `🏌🏽‍♂️ _𝒔𝒚𝒔𝒕𝒆𝒎 𝒃𝒚 𝒋𝒉𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
             await sock.sendMessage(from, { 
                 text: lista,
                 contextInfo: {
                     externalAdReply: {
-                        title: "SISTEMA DE ARCHIVOS",
-                        body: `Archivos: ${archivos.length} detectados`,
-                        thumbnailUrl: "https://i.postimg.cc/Bbd8Zhn0/1c2380631fcd4e45a2488437d9dc7520.jpg",
+                        title: "📂 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒅𝒆 𝒂𝒓𝒄𝒉𝒊𝒗𝒐𝒔 𝒂𝒄𝒕𝒊𝒗𝒐",
+                        body: `${archivos.length} 𝒎𝒐́𝒅𝒖𝒍𝒐𝒔 𝒅𝒆𝒕𝒆𝒄𝒕𝒂𝒅𝒐𝒔 🚀`,
                         mediaType: 1,
+                        showAdAttribution: true,
                         renderLargerThumbnail: false
                     }
                 }
@@ -56,7 +64,9 @@ module.exports = {
 
         } catch (err) {
             console.log("Error en listcmd:", err);
-            await sock.sendMessage(from, { text: "❌ Error al leer la carpeta de comandos." });
+            await sock.sendMessage(from, { 
+                text: "『 ❌ **𝒄𝒓𝒊𝒕𝒊𝒄𝒂𝒍 𝒆𝒓𝒓𝒐𝒓** 』\n\n𝒇𝒂𝒍𝒍𝒐 𝒂𝒍 𝒍𝒆𝒆𝒓 𝒆𝒍 𝒅𝒊𝒓𝒆𝒄𝒕𝒐𝒓𝒊𝒐 𝒅𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐𝒔. 🚀" 
+            });
         }
     }
 };
