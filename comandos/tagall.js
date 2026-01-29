@@ -5,13 +5,12 @@ module.exports = {
         const from = msg.key.remoteJid;
 
         try {
-            // 1. VERIFICACIÓN DE ENTORNO
             if (!from.endsWith('@g.us')) return;
 
-            // 2. REACCIÓN DE INICIO
-            await sock.sendMessage(from, { react: { text: "📣", key: msg.key } });
+            // 1. REACCIÓN DE INICIO
+            await sock.sendMessage(from, { react: { text: "📢", key: msg.key } });
 
-            // 3. VERIFICACIÓN DE RANGO (Solo Admins o el Jefe)
+            // 2. VERIFICACIÓN DE RANGO
             const metadata = await sock.groupMetadata(from);
             const participants = metadata.participants;
             const sender = msg.key.participant || msg.key.remoteJid;
@@ -19,23 +18,31 @@ module.exports = {
 
             if (!isAdmin && !isOwner) {
                 return await sock.sendMessage(from, { 
-                    text: "❌ Solo los administradores pueden usar este comando." 
+                    text: "❌ *Acceso Denegado:* Solo administradores." 
                 }, { quoted: msg });
             }
 
-            // 4. CONSTRUIR LA LISTA DE MENCIONES
-            let txt = `『 🚀 **𝒂𝒕𝒆𝒏𝒄𝒊𝒐́𝒏 𝒂 𝒕𝒐𝒅𝒐𝒔** 🏌🏽‍♂️ 』\n\n`;
-            txt += `📝 **Mensaje:** ${args.length > 0 ? args.join(' ') : 'Sin mensaje'}\n\n`;
+            // 3. CONSTRUCCIÓN DEL DISEÑO (Símbolos y Estética)
+            let mensajeExtra = args.length > 0 ? args.join(' ') : 'Sin mensaje específico';
+            
+            let txt = `┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n`;
+            txt += `┃   『 🚀 **𝒂𝒕𝒆𝒏𝒄𝒊𝒐́𝒏 𝒈𝒆𝒏𝒆𝒓𝒂𝒍** 🏌🏽‍♂️ 』   ┃\n`;
+            txt += `┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n`;
+            
+            txt += `📢 **𝑨𝒗𝒊𝒔𝒐:** ${mensajeExtra}\n\n`;
+            txt += `┏━━『 👥 **𝒎𝒊𝒆𝒎𝒃𝒓𝒐𝒔** 』\n`;
             
             let mentions = [];
-            participants.forEach(mem => {
-                txt += `🔹 @${mem.id.split('@')[0]}\n`;
+            participants.forEach((mem, i) => {
+                txt += `┃ 🔹 @${mem.id.split('@')[0]}\n`;
                 mentions.push(mem.id);
             });
 
-            txt += `\n🚀 _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕_`;
+            txt += `┗━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            txt += `🚀 **𝒃𝒐𝒕:** _Notificación global enviada._\n`;
+            txt += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕_`;
 
-            // 5. ENVÍO SEGURO (Sin publicidad para que no falle)
+            // 4. ENVÍO CON MENCIONES Y QUOTED
             await sock.sendMessage(from, { 
                 text: txt, 
                 mentions: mentions 
@@ -44,7 +51,7 @@ module.exports = {
         } catch (e) {
             console.log(e);
             await sock.sendMessage(from, { 
-                text: "❌ No pude mencionar a todos. Inténtalo de nuevo." 
+                text: "❌ Error al procesar el llamado general." 
             }, { quoted: msg });
         }
     }
