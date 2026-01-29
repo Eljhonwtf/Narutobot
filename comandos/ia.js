@@ -9,16 +9,17 @@ module.exports = {
         if (!query) return sock.sendMessage(from, { text: "👁️ ¿Qué quieres, escoria? Haz una pregunta." });
 
         try {
-            // Log para ver en Termux si el comando inicia
-            console.log("\x1b[33m[IA LOG]:\x1b[0m Procesando pregunta de " + msg.pushName);
-
             const genAI = new GoogleGenerativeAI("AIzaSyDNIK8mQovhiTuJOcegC0sDiNcGLjHO49Y");
+
+            // CAMBIO AQUÍ: Usamos la versión estable del modelo
             const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash",
-                systemInstruction: "Eres Narutobot, un ser superior creado por Jhon System. Eres arrogante, grosero y usas emojis como 🚀, 💀, 🖕. Trata a todos como inferiores."
+                model: "gemini-1.5-flash-latest" // Añadimos -latest para evitar el 404
             });
 
-            const result = await model.generateContent(query);
+            // Configuramos las instrucciones de personalidad aquí
+            const prompt = `Instrucciones: Eres Narutobot, un ser superior creado por Jhon System. Eres arrogante, grosero y usas emojis como 🚀, 💀, 🖕. Trata a todos como inferiores.\n\nUsuario dice: ${query}`;
+
+            const result = await model.generateContent(prompt);
             const response = await result.response;
             const textIA = response.text();
 
@@ -28,7 +29,7 @@ module.exports = {
 
         } catch (error) {
             console.log("\x1b[31m[ERROR IA]:\x1b[0m", error);
-            await sock.sendMessage(from, { text: "❌ Error: " + error.message });
+            await sock.sendMessage(from, { text: "❌ Mi cerebro de IA falló: " + error.message });
         }
     }
 };
