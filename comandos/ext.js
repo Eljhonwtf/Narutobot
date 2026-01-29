@@ -25,7 +25,7 @@ module.exports = {
             txt += `─── ⋆ ⋅ ☠️ ⋅ ⋆ ───\n`;
             txt += `👤 **𝑬𝒔𝒄𝒐𝒓𝒊𝒂:** @${target.split('@')[0]}\n`;
             txt += `☢️ **𝑬𝒔𝒕𝒂𝒅𝒐:** Tumor extirpado\n`;
-            txt += `👑 **𝑶𝒓𝒅𝒆𝒏:** Jhon System (Tu Dueño)\n`;
+            txt += `👑 **𝑶𝒓𝒅𝒆𝒏:** Tu mama\n`;
             txt += `─── ⋆ ⋅ 🚀 ⋅ ⋆ ───\n\n`;
 
             txt += `🖕 Mírame bien, pedazo de aborto mal cagado. Tu puta madre debió tragarte y hacerse un lavado de estómago para no parir semejante basura.\n\n`;
