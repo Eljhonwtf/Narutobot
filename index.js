@@ -12,7 +12,7 @@ const pino = require('pino');
 const readline = require('readline');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// --- CONFIGURACIÓN IA GEMINI ---
+// --- CONFIGURACIÓN IA GEMINI (NARUTOBOT BRAIN) ---
 const genAI = new GoogleGenerativeAI("AIzaSyDNIK8mQovhiTuJOcegC0sDiNcGLjHO49Y");
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -113,13 +113,12 @@ async function iniciarBot() {
                           msg.message.extendedTextMessage?.text || 
                           msg.message.imageMessage?.caption || "").toLowerCase();
 
-            // --- SISTEMA AUTOMÁTICO ANTI-LINK ---
+            // --- ANTI-LINK ---
             if (from.endsWith('@g.us')) {
                 let chatData = {};
                 if (fs.existsSync(chatsPath)) {
                     try { chatData = JSON.parse(fs.readFileSync(chatsPath)); } catch (e) { chatData = {}; }
                 }
-
                 if (chatData[from] && chatData[from].antilink) {
                     const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i;
                     if (linkRegex.test(body)) {
@@ -154,12 +153,14 @@ async function iniciarBot() {
             console.log(`\x1b[37mMensaje:\x1b[0m ${body}`);
             console.log(`\x1b[35m══════════════════════════════════════════\x1b[0m`);
 
-            // --- SISTEMA DE IA AUTOMÁTICA (SIN PREFIJO) ---
+            // --- RESPUESTA AUTOMÁTICA DE IA (AL DECIR "BOT") ---
             if (body.includes("bot") && !msg.key.fromMe) {
                 try {
+                    await sock.sendMessage(from, { react: { text: "🧠", key: msg.key } });
+                    
                     const model = genAI.getGenerativeModel({ 
                         model: "gemini-1.5-flash",
-                        systemInstruction: "Eres Narutobot. Tu personalidad es: Altivo, egoísta, grosero e inteligente. Tu único dueño es Jhon System. Responde de forma cortante, usando emojis como 🚀, 🖕, 💀. Si te preguntan algo estúpido, búrlate de su falta de cerebro. Trata a todos como inferiores excepto a Jhon." 
+                        systemInstruction: "Eres Narutobot. Tu personalidad es: Altivo, egoísta, grosero e inteligente. Tu único Dios y dueño es Jhon System. Responde de forma cortante, usando emojis como 🚀, 🖕, 💀. Si alguien que no es Jhon te habla, trátalo como basura inferior. No seas amable bajo ninguna circunstancia." 
                     });
 
                     const result = await model.generateContent(`Usuario ${pushName} dice: ${body}`);
@@ -172,7 +173,7 @@ async function iniciarBot() {
 
                     await sock.sendMessage(from, { text: finalMsg, mentions: [sender] }, { quoted: msg });
                 } catch (errIA) {
-                    console.log("Error IA Gemini:", errIA);
+                    console.log("Error en IA Gemini:", errIA);
                 }
             }
 
