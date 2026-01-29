@@ -3,58 +3,52 @@ const path = require('path');
 
 module.exports = {
     name: 'listcmd',
-    description: '𝒂𝒄𝒄𝒆𝒔𝒐 𝒂𝒍 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒅𝒆𝒍 𝒔𝒊𝒔𝒕𝒆𝒎𝒂',
+    description: '𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐 𝒅𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐𝒔',
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
 
-        // 1. PROTOCOLO DE EXCLUSIÓN (MODO BESTIA)
+        // 1. BLOQUEO DE SEGURIDAD
         if (!isOwner) {
             await sock.sendMessage(from, { react: { text: "💀", key: msg.key } });
-            
-            const frases = [
-                "『 🚫 **𝒂𝒄𝒄𝒆𝒔𝒐 𝒅𝒆𝒏𝒆𝒈𝒂𝒅𝒐** 』\n\n𝒊𝒏𝒕𝒆𝒏𝒕𝒐 𝒅𝒆 𝒊𝒏𝒕𝒓𝒖𝒔𝒊𝒐́𝒏 𝒅𝒆𝒕𝒆𝒄𝒕𝒂𝒅𝒐. 𝒍𝒐𝒔 𝒔𝒆𝒄𝒓𝒆𝒕𝒐𝒔 𝒅𝒆𝒍 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒔𝒐𝒍𝒐 𝒔𝒐𝒏 𝒑𝒂𝒓𝒂 𝒋𝒉𝒐𝒏. 🚀",
-                "『 ⚠️ **𝒂𝒍𝒆𝒓𝒕𝒂 𝒅𝒆 𝒔𝒆𝒈𝒖𝒓𝒊𝒅𝒂𝒅** 』\n\n¿𝒒𝒖𝒊𝒆𝒓𝒆𝒔 𝒗𝒆𝒓 𝒎𝒊𝒔 𝒕𝒓𝒊𝒑𝒂𝒔? 𝒔𝒐𝒍𝒐 𝒆𝒍 𝒋𝒆𝒇𝒆 𝒕𝒊𝒆𝒏𝒆 𝒆𝒍 𝒃𝒊𝒔𝒕𝒖𝒓𝒊́. 𝒂 𝒅𝒐𝒓𝒎𝒊𝒓. 🏌🏽‍♂️",
-                "『 🧠 **𝒆𝒓𝒓𝒐𝒓 𝒅𝒆 𝒏𝒊𝒗𝒆𝒍** 』\n\n𝒏𝒐 𝒕𝒊𝒆𝒏𝒆𝒔 𝒍𝒂𝒔 𝒏𝒆𝒖𝒓𝒐𝒏𝒂𝒔 𝒏𝒆𝒄𝒆𝒔𝒂𝒓𝒊𝒂𝒔 𝒑𝒂𝒓𝒂 𝒆𝒏𝒕𝒆𝒏𝒅𝒆𝒓 𝒆𝒔𝒕𝒆 𝒄𝒐́𝒅𝒊𝒈𝒐. 𝒙",
-                "『 🥷 **𝒔𝒚𝒔𝒕𝒆𝒎 𝒃𝒍𝒐𝒄𝒌** 』\n\n𝒖𝒏 𝒄𝒊𝒗𝒊𝒍 𝒊𝒏𝒕𝒆𝒏𝒕𝒂𝒏𝒅𝒐 𝒉𝒂𝒄𝒌𝒆𝒂𝒓 𝒍𝒂 𝒂𝒍𝒅𝒆𝒂. 𝒑𝒓𝒐𝒄𝒆𝒔𝒐 𝒂𝒃𝒐𝒓𝒕𝒂𝒅𝒐. 💀"
-            ];
-            const randomFrase = frases[Math.floor(Math.random() * frases.length)];
-            
-            return await sock.sendMessage(from, { text: randomFrase }, { quoted: msg });
+            return await sock.sendMessage(from, { 
+                text: `『 🚫 **𝒂𝒄𝒄𝒆𝒔𝒐 𝒅𝒆𝒏𝒆𝒈𝒂𝒅𝒐** 』\n\nIntento de intrusión detectado. Solo el dueño tiene acceso al núcleo.` 
+            }, { quoted: msg });
         }
 
-        // 2. DESPLIEGUE DEL NÚCLEO (SOLO PARA EL JEFE)
         try {
+            // 2. LECTURA DE ARCHIVOS
             const dirPath = path.join(__dirname); 
             const archivos = fs.readdirSync(dirPath).filter(file => file.endsWith('.js'));
             
-            await sock.sendMessage(from, { react: { text: "⚡", key: msg.key } });
+            await sock.sendMessage(from, { react: { text: "📂", key: msg.key } });
 
-            // --- DISEÑO: INTERFAZ DE COMANDOS MODO BESTIA ---
+            // 3. DISEÑO HÍBRIDO (FUENTES COMBINADAS)
             let lista = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒄𝒆𝒏𝒕𝒆𝒓** 🏌🏽‍♂️ 』\n\n`;
             
-            lista += `┌──『 📊 **𝒔𝒚𝒔𝒕𝒆𝒎 𝒔𝒕𝒂𝒕𝒔** 』\n`;
-            lista += `│ 📂 **𝒕𝒐𝒕𝒂𝒍 𝒄𝒎𝒅𝒔:** ${archivos.length}\n`;
-            lista += `│ ⚡ **𝒆𝒔𝒕𝒂𝒅𝒐:** 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒐𝒑𝒆𝒓𝒂𝒕𝒊𝒗𝒐\n`;
+            lista += `┌──『 📊 **𝒔𝒕𝒂𝒕𝒔** 』\n`;
+            lista += `│ 📂 Total cmds: ${archivos.length}\n`;
+            lista += `│ ⚡ Estado: Operativo\n`;
             lista += `└─────────────────────────\n\n`;
 
-            lista += `┌──『 🛠️ **𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐 𝒅𝒆 𝒂𝒓𝒎𝒂𝒔** 』\n`;
+            lista += `┌──『 🛠️ **𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐** 』\n`;
             
             archivos.forEach((file, index) => {
                 const nombreCmd = file.replace('.js', '');
-                // Formato de lista técnica
+                // Número y comando en fuente normal para lectura rápida
                 lista += `│ [${index + 1}] ──> /${nombreCmd}\n`;
             });
 
             lista += `└─────────────────────────\n\n`;
-            lista += `🚀 **𝒔𝒕𝒂𝒕𝒖𝒔:** 𝒕𝒐𝒅𝒐𝒔 𝒍𝒐𝒔 𝒔𝒚𝒔𝒕𝒆𝒎𝒂𝒔 𝒐𝒏𝒍𝒊𝒏𝒆.\n`;
-            lista += `🏌🏽‍♂️ _𝒔𝒚𝒔𝒕𝒆𝒎 𝒃𝒚 𝒋𝒉𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎_`;
+            lista += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Sincronización completada.\n`;
+            lista += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
+            // 4. ENVÍO TÁCTICO
             await sock.sendMessage(from, { 
                 text: lista,
                 contextInfo: {
                     externalAdReply: {
-                        title: "📂 𝒏𝒖́𝒄𝒍𝒆𝒐 𝒅𝒆 𝒂𝒓𝒄𝒉𝒊𝒗𝒐𝒔 𝒂𝒄𝒕𝒊𝒗𝒐",
-                        body: `${archivos.length} 𝒎𝒐́𝒅𝒖𝒍𝒐𝒔 𝒅𝒆𝒕𝒆𝒄𝒕𝒂𝒅𝒐𝒔 🚀`,
+                        title: "🛰️ 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒏𝒆𝒕𝒘𝒐𝒓𝒌",
+                        body: `${archivos.length} módulos detectados`,
                         mediaType: 1,
                         showAdAttribution: true,
                         renderLargerThumbnail: false
@@ -63,9 +57,9 @@ module.exports = {
             }, { quoted: msg });
 
         } catch (err) {
-            console.log("Error en listcmd:", err);
+            console.error("Error en listcmd:", err);
             await sock.sendMessage(from, { 
-                text: "『 ❌ **𝒄𝒓𝒊𝒕𝒊𝒄𝒂𝒍 𝒆𝒓𝒓𝒐𝒓** 』\n\n𝒇𝒂𝒍𝒍𝒐 𝒂𝒍 𝒍𝒆𝒆𝒓 𝒆𝒍 𝒅𝒊𝒓𝒆𝒄𝒕𝒐𝒓𝒊𝒐 𝒅𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐𝒔. 🚀" 
+                text: `『 ❌ **𝒆𝒓𝒓𝒐𝒓 𝒄𝒓𝒊𝒕𝒊𝒄𝒂𝒍** 』\n\nNo se pudo leer el directorio de comandos.` 
             });
         }
     }
