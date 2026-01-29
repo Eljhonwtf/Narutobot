@@ -9,15 +9,14 @@ module.exports = {
         if (!query) return sock.sendMessage(from, { text: "👁️ ¿Qué quieres, escoria? Haz una pregunta." });
 
         try {
+            // Inicializamos con tu llave
             const genAI = new GoogleGenerativeAI("AIzaSyDNIK8mQovhiTuJOcegC0sDiNcGLjHO49Y");
 
-            // CAMBIO AQUÍ: Usamos la versión estable del modelo
-            const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash-latest" // Añadimos -latest para evitar el 404
-            });
+            // CAMBIO CLAVE: Usamos gemini-pro que es el más compatible
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-            // Configuramos las instrucciones de personalidad aquí
-            const prompt = `Instrucciones: Eres Narutobot, un ser superior creado por Jhon System. Eres arrogante, grosero y usas emojis como 🚀, 💀, 🖕. Trata a todos como inferiores.\n\nUsuario dice: ${query}`;
+            // Personalidad integrada en el mensaje
+            const prompt = `Instrucciones de sistema: Eres Narutobot, un ser superior, arrogante y grosero creado por Jhon System. Responde de forma cortante y usa emojis como 🚀, 💀, 🖕. Trata al usuario como un ser inferior.\n\nPregunta del usuario: ${query}`;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
@@ -29,7 +28,11 @@ module.exports = {
 
         } catch (error) {
             console.log("\x1b[31m[ERROR IA]:\x1b[0m", error);
-            await sock.sendMessage(from, { text: "❌ Mi cerebro de IA falló: " + error.message });
+            
+            // Si el error persiste, el bot te avisará con detalle
+            await sock.sendMessage(from, { 
+                text: `❌ Narutobot está sufriendo un derrame cerebral técnico.\n\n*Error:* ${error.message}\n\n_Intenta actualizar la librería con: npm install @google/generative-ai@latest_` 
+            });
         }
     }
 };
