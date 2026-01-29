@@ -1,37 +1,46 @@
 module.exports = {
     name: 'join',
-    description: 'Une al bot a un grupo mediante un enlace',
+    description: '𝒅𝒆𝒔𝒑𝒍𝒊𝒆𝒈𝒖𝒆 𝒕𝒂́𝒄𝒕𝒊𝒄𝒐 𝒆𝒏 𝒏𝒖𝒆𝒗𝒐𝒔 𝒔𝒆𝒄𝒕𝒐𝒓𝒆𝒔',
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
         const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
         try {
-            // 1. Validación de Seguridad: Solo el dueño (584142577312) puede usarlo
+            // 1. PROTOCOLO DE AUTORIZACIÓN
             if (!isOwner) {
                 return await sock.sendMessage(from, { 
-                    text: "❌ *ACCESO DENEGADO*\n\nSolo el dueño del sistema tiene autorización para desplegar el bot en nuevos sectores." 
+                    text: `『 🚀 **𝒂𝒄𝒄𝒆𝒔𝒐 𝒓𝒆𝒔𝒕𝒓𝒊𝒏𝒈𝒊𝒅𝒐** 🏌🏽‍♂️ 』\n\n𝒔𝒐𝒍𝒐 𝒆𝒍 𝒋𝒆𝒇𝒆 𝒕𝒊𝒆𝒏𝒆 𝒂𝒖𝒕𝒐𝒓𝒊𝒛𝒂𝒄𝒊𝒐́𝒏 𝒑𝒂𝒓𝒂 𝒅𝒆𝒔𝒑𝒍𝒆𝒈𝒂𝒓 𝒖𝒏𝒊𝒅𝒂𝒅𝒆𝒔 𝒆𝒏 𝒏𝒖𝒆𝒗𝒐𝒔 𝒔𝒆𝒄𝒕𝒐𝒓𝒆𝒔. 🔒` 
                 }, { quoted: msg });
             }
 
-            // 2. Verificar si se proporcionó un enlace
+            // 2. VERIFICACIÓN DE ENLACE
             const link = args[0];
             if (!link || !link.includes('chat.whatsapp.com/')) {
                 return await sock.sendMessage(from, { 
-                    text: "⚠️ *ERROR DE PARÁMETROS*\n\nDebes proporcionar un enlace de invitación válido.\n\nEjemplo: */join https://chat.whatsapp.com/XXXXX*" 
+                    text: `『 ⚠️ **𝒆𝒓𝒓𝒐𝒓 𝒅𝒆 𝒑𝒂𝒓𝒂́𝒎𝒆𝒕𝒓𝒐𝒔** 🚀 』\n\n𝒅𝒆𝒃𝒆𝒔 𝒑𝒓𝒐𝒑𝒐𝒓𝒄𝒊𝒐𝒏𝒂𝒓 𝒖𝒏 𝒆𝒏𝒍𝒂𝒄𝒆 𝒗𝒂́𝒍𝒊𝒅𝒐 𝒑𝒂𝒓𝒂 𝒍𝒂 𝒊𝒏𝒇𝒊𝒍𝒕𝒓𝒂𝒄𝒊𝒐́𝒏.\n\n🏌🏽‍♂️ **𝒆𝒋𝒆𝒎𝒑𝒍𝒐:**\n*/𝒋𝒐𝒊𝒏 𝒉𝒕𝒕𝒑𝒔://𝒄𝒉𝒂𝒕.𝒘𝒉𝒂𝒕𝒔𝒂𝒑𝒑.𝒄𝒐𝒎/𝒙𝒙𝒙𝒙𝒙*` 
                 }, { quoted: msg });
             }
 
-            // 3. Extraer el código del enlace y unirse
+            // 3. EJECUCIÓN DE INFILTRACIÓN
             const code = link.split('https://chat.whatsapp.com/')[1];
             const response = await sock.groupAcceptInvite(code);
 
-            // 4. Confirmación visual
+            // 4. DISEÑO DE CONFIRMACIÓN TÁCTICA
+            let joinMsg = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒊𝒏𝒇𝒊𝒍𝒕𝒓𝒂𝒕𝒊𝒐𝒏** 🏌🏽‍♂️ 』\n\n`;
+            joinMsg += `╔════════════════════════╗\n`;
+            joinMsg += `  ✅ **𝒆𝒔𝒕𝒂𝒅𝒐:** 𝒅𝒆𝒔𝒑𝒍𝒊𝒆𝒈𝒖𝒆 𝒆𝒙𝒊𝒕𝒐𝒔𝒐\n`;
+            joinMsg += `  🛰️ **𝒔𝒆𝒄𝒕𝒐𝒓:** 𝒏𝒖𝒆𝒗𝒐 𝒈𝒓𝒖𝒑𝒐 𝒂𝒄𝒕𝒊𝒗𝒐\n`;
+            joinMsg += `  🔑 **𝒊𝒅:** ${response}\n`;
+            joinMsg += `╚════════════════════════╝\n\n`;
+            joinMsg += `🚀 **𝒔𝒊𝒔𝒕𝒆𝒎𝒂:** 𝒖𝒏𝒊𝒅𝒂𝒅 𝒍𝒊𝒔𝒕𝒂 𝒑𝒂𝒓𝒂 𝒐𝒑𝒆𝒓𝒂𝒓.\n`;
+            joinMsg += `🏌🏽‍♂️ _𝒔𝒊𝒏𝒄𝒓𝒐𝒏𝒊𝒛𝒂𝒅𝒐 𝒄𝒐𝒏 𝒋𝒉𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎_`;
+
             await sock.sendMessage(from, { 
-                text: `✅ *INFILTRACIÓN EXITOSA*\n\nEl bot se ha unido al grupo solicitado.\n\n*ID:* ${response}\n\n_Sincronizado con Jhon-Bot System_`,
+                text: joinMsg,
                 contextInfo: {
                     externalAdReply: {
-                        title: "ADMINISTRACIÓN CENTRAL",
-                        body: "Despliegue de unidad completado 🚀",
+                        title: "🛰️ 𝒂𝒅𝒎𝒊𝒏𝒊𝒔𝒕𝒓𝒂𝒄𝒊𝒐́𝒏 𝒄𝒆𝒏𝒕𝒓𝒂𝒍 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕",
+                        body: "𝒅𝒆𝒔𝒑𝒍𝒊𝒆𝒈𝒖𝒆 𝒅𝒆 𝒖𝒏𝒊𝒅𝒂𝒅 𝒄𝒐𝒎𝒑𝒍𝒆𝒕𝒂𝒅𝒐 🚀",
                         thumbnailUrl: thumbUrl,
                         mediaType: 1,
                         renderLargerThumbnail: true
@@ -39,12 +48,12 @@ module.exports = {
                 }
             }, { quoted: msg });
 
-            await sock.sendMessage(from, { react: { text: "✅", key: msg.key } });
+            await sock.sendMessage(from, { react: { text: "🏌🏽‍♂️", key: msg.key } });
 
         } catch (e) {
             console.error(e);
             await sock.sendMessage(from, { 
-                text: "❌ *FALLO EN LA OPERACIÓN*\n\nNo pude unirme al grupo. El enlace puede estar vencido o el bot fue expulsado previamente." 
+                text: `『 ❌ **𝒇𝒂𝒍𝒍𝒐 𝒆𝒏 𝒍𝒂 𝒐𝒑𝒆𝒓𝒂𝒄𝒊𝒐́𝒏** 🚀 』\n\n𝒏𝒐 𝒑𝒖𝒅𝒆 𝒖𝒏𝒊𝒓𝒎𝒆 𝒂𝒍 𝒔𝒆𝒄𝒕𝒐𝒓. 𝒆𝒍 𝒆𝒏𝒍𝒂𝒄𝒆 𝒑𝒖𝒆𝒅𝒆 𝒆𝒔𝒕𝒂𝒓 𝒗𝒆𝒏𝒄𝒊𝒅𝒐 𝒐 𝒍𝒂 𝒖𝒏𝒊𝒅𝒂𝒅 𝒇𝒖𝒆 𝒃𝒆𝒕𝒂𝒅𝒂. 🏌🏽‍♂️` 
             }, { quoted: msg });
         }
     }
