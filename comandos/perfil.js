@@ -1,48 +1,59 @@
-const os = require('os');
-
 module.exports = {
+    name: 'profile',
+    description: '𝒆𝒙𝒕𝒓𝒂𝒄𝒄𝒊𝒐́𝒏 𝒅𝒆 𝒑𝒆𝒓𝒇𝒊𝒍 𝒅𝒆 𝒖𝒔𝒖𝒂𝒓𝒊𝒐',
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
-        const nombre = msg.pushName || "Usuario";
 
-        // Calculamos el tiempo de actividad del servidor
-        const uptime = process.uptime();
-        const horas = Math.floor(uptime / 3600);
-        const minutos = Math.floor((uptime % 3600) / 60);
-        const segundos = Math.floor(uptime % 60);
+        try {
+            // 1. IDENTIFICAR AL OBJETIVO (Citado, Mencionado o el que escribe)
+            const mentioned = msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];
+            const quoted = msg.message.extendedTextMessage?.contextInfo?.participant;
+            const target = mentioned || quoted || msg.key.participant || from;
+            
+            // 2. OBTENER DATOS BÁSICOS
+            const userTag = `@${target.split('@')[0]}`;
+            const isTargetOwner = target.includes('584142577312'); // Tu número
 
-        // Información de la RAM
-        const ramTotal = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
-        const ramLibre = (os.freemem() / 1024 / 1024 / 1024).toFixed(2);
+            // Reacción de escaneo
+            await sock.sendMessage(from, { react: { text: "🔍", key: msg.key } });
 
-        let statusTexto = `✨ *𝐄𝐒𝐓𝐀𝐃𝐎 𝐃𝐄𝐋 𝐁𝐎𝐓* ✨\n\n`;
-        statusTexto += `👤 *Hola:* ${nombre}\n`;
-        statusTexto += `⏳ *Uptime:* ${horas}h ${minutos}m ${segundos}s\n`;
-        statusTexto += `📡 *Plataforma:* ${os.platform()} ${os.arch()}\n`;
-        statusTexto += `🔋 *RAM:* ${ramTotal - ramLibre}GB / ${ramTotal}GB\n`;
-        statusTexto += `⭐ *Prefijo:* [  /  ]\n\n`;
+            // 3. DISEÑO DE INTERFAZ: REPORTE DE PERFIL
+            let profileMsg = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒖𝒔𝒆𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆** 🏌🏽‍♂️ 』\n\n`;
+            
+            profileMsg += `┌──『 👤 **𝒅𝒂𝒕𝒐𝒔 𝒅𝒆 𝒊𝒅𝒆𝒏𝒕𝒊𝒅𝒂𝒅** 』\n`;
+            profileMsg += `│ 🔖 **𝒖𝒔𝒖𝒂𝒓𝒊𝒐:** ${userTag}\n`;
+            profileMsg += `│ 🆔 **𝒊𝒅:** ${target.split('@')[0]}\n`;
+            profileMsg += `│ 🛡️ **𝒓𝒂𝒏𝒈𝒐:** ${isTargetOwner ? '𝒋𝒆𝒇𝒆 𝒔𝒖𝒑𝒓𝒆𝒎𝒐 👑' : '𝒖𝒔𝒖𝒂𝒓𝒊𝒐 𝒆𝒔𝒕𝒂́𝒏𝒅𝒂𝒓 🏌🏽‍♂️'}\n`;
+            profileMsg += `└─────────────────────────\n\n`;
 
-        if (isOwner) {
-            statusTexto += `👑 *MODO DUEÑO:* Activo ✅\n`;
-            statusTexto += `🛠️ *Servidor:* Estable\n`;
-            statusTexto += `💻 *Node.js:* ${process.version}\n`;
-        } else {
-            statusTexto += `🔰 *Rango:* Usuario Estándar\n`;
-        }
+            profileMsg += `┌──『 📊 **𝒆𝒔𝒕𝒂𝒅𝒐 𝒆𝒏 𝒆𝒍 𝒔𝒊𝒔𝒕𝒆𝒎𝒂** 』\n`;
+            profileMsg += `│ ⚡ **𝒆𝒔𝒕𝒂𝒕𝒖𝒔:** 𝒂𝒄𝒕𝒊𝒗𝒐\n`;
+            profileMsg += `│ 🔒 **𝒔𝒆𝒈𝒖𝒓𝒊𝒅𝒂𝒅:** ${isTargetOwner ? '𝒏𝒊𝒗𝒆𝒍 𝒅𝒊𝒐𝒔' : '𝒗𝒖𝒍𝒏𝒆𝒓𝒂𝒃𝒍𝒆'}\n`;
+            profileMsg += `│ 🏆 **𝒑𝒓𝒆𝒔𝒕𝒊𝒈𝒊𝒐:** ${isTargetOwner ? '𝒊𝒏𝒇𝒊𝒏𝒊𝒕𝒐' : '𝒃𝒂𝒋𝒐'}\n`;
+            profileMsg += `└─────────────────────────\n\n`;
 
-        statusTexto += `\n_Desarrollado por Jhon_ 👨‍💻`;
+            profileMsg += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** 𝒂𝒏𝒂́𝒍𝒊𝒔𝒊𝒔 𝒅𝒆 𝒑𝒆𝒓𝒇𝒊𝒍 𝒄𝒐𝒎𝒑𝒍𝒆𝒕𝒂𝒅𝒐.\n`;
+            profileMsg += `🏌🏽‍♂️ _𝒔𝒊𝒏𝒄𝒓𝒐𝒏𝒊𝒛𝒂𝒅𝒐 𝒄𝒐𝒏 𝒋𝒉𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
-        await sock.sendMessage(from, { 
-            text: statusTexto,
-            contextInfo: {
-                externalAdReply: {
-                    title: "JHON-BOT SYSTEM INFO",
-                    body: "Estado actual del servidor",
-                    renderLargerThumbnail: false,
-                    thumbnailUrl: "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg", // Tu imagen de Naruto
-                    mediaType: 1
+            await sock.sendMessage(from, { 
+                text: profileMsg,
+                mentions: [target],
+                contextInfo: {
+                    externalAdReply: {
+                        title: "🛰️ 𝒔𝒄𝒂𝒏𝒏𝒆𝒓 𝒅𝒆 𝒑𝒆𝒓𝒇𝒊𝒍: 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕",
+                        body: `𝒐𝒃𝒋𝒆𝒕𝒊𝒗𝒐: ${target.split('@')[0]} 🚀`,
+                        mediaType: 1,
+                        showAdAttribution: true,
+                        renderLargerThumbnail: false // Sin foto, modo limpio
+                    }
                 }
-            }
-        }, { quoted: msg });
+            }, { quoted: msg });
+
+        } catch (e) {
+            console.error(e);
+            await sock.sendMessage(from, { 
+                text: "『 ❌ **𝒆𝒓𝒓𝒐𝒓 𝒅𝒆 𝒆𝒔𝒄𝒂𝒏𝒆𝒐** 🚀 』\n\n𝒏𝒐 𝒔𝒆 𝒑𝒖𝒅𝒐 𝒆𝒙𝒕𝒓𝒂𝒆𝒓 𝒍𝒂 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊𝒐́𝒏 𝒅𝒆𝒍 𝒔𝒖𝒋𝒆𝒕𝒐. 🏌🏽‍♂️" 
+            });
+        }
     }
 };
