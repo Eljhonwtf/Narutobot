@@ -1,63 +1,66 @@
 module.exports = {
+    name: 'dox',
+    description: '𝒔𝒊𝒔𝒕𝒆𝒎𝒂 𝒅𝒆 𝒓𝒂𝒔𝒕𝒓𝒆𝒐 𝒚 𝒆𝒙𝒕𝒓𝒂𝒄𝒄𝒊𝒐́𝒏 𝒅𝒆 𝒅𝒂𝒕𝒐𝒔',
     run: async (sock, msg, body, args) => {
         const from = msg.key.remoteJid;
         let target = msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || msg.key.participant || from;
         let user = target.split('@')[0];
 
-        // Reacción de calavera para meter presión
-        await sock.sendMessage(from, { react: { text: "💀", key: msg.key } });
+        // Reacción inicial para marcar el objetivo
+        await sock.sendMessage(from, { react: { text: "🏌🏽‍♂️", key: msg.key } });
 
-        // --- ARRAYS DE DATOS DE "ALTO PELIGRO" ---
         const random = (l) => l[Math.floor(Math.random() * l.length)];
 
+        // --- BASE DE DATOS ACTUALIZADA ---
         const ips = ["186.14.25.102", "190.202.13.44", "45.230.192.1", "161.22.1.99", "200.12.55.120"];
-        const wifi = ["CANTV-WiFi-7231", "Inter-Fibra-Giga", "Netuno_Vip", "WiFi_Del_Gobierno", "iPhone_de_la_Victima"];
-        const casas = ["Casa de platabanda (sin frisar)", "Edificio con vigilancia burlada", "Quinta de lujo (objetivo marcado)", "Apartamento con puerta de madera debil"];
-        const deudas = ["$1,500 en el Banco", "3 meses de renta", "Le debe al del abasto", "$500 en la Dark Web", "Prestamo gota a gota (Peligro)"];
-        const historial = ["Cómo borrar antecedentes", "Contratar sicario barato", "Venta de organos precio", "Fotos de la vecina", "Pack de Naruto"];
-        const delitos = ["Hurto de señal WiFi", "Amnesia ninja", "Exceso de fealdad", "Intento de hackeo al Bot de Jhon", "Venta de chucherias vencidas"];
-        const niveles = ["🔴 CRÍTICO", "🟠 ALTO", "🟡 MEDIO", "🔥 INMINENTE"];
-        const sangre = ["A+", "O- (Raro/Valioso)", "B+", "AB-"];
-        const bancos = ["Banesco (Vacio)", "Mercantil", "Venezuela (Bloqueado)", "Zelle (Sin fondos)", "Binance"];
+        const wifi = ["𝒄𝒂𝒏𝒕𝒗-𝒘𝒊𝒇𝒊-7231", "𝒊𝒏𝒕𝒆𝒓-𝒇𝒊𝒃𝒓𝒂-𝒈𝒊𝒈𝒂", "𝒏𝒆𝒕𝒖𝒏𝒐_𝒗𝒊𝒑", "𝒘𝒊𝒇𝒊_𝒅𝒆𝒍_𝒈𝒐𝒃𝒊𝒆𝒓𝒏𝒐", "𝒊𝒑𝒉𝒐𝒏𝒆_𝒅𝒆_𝒍𝒂_𝒗𝒊𝒄𝒕𝒊𝒎𝒂"];
+        const casas = ["𝒄𝒂𝒔𝒂 𝒅𝒆 𝒑𝒍𝒂𝒕𝒂𝒃𝒂𝒏𝒅𝒂 (𝒔𝒊𝒏 𝒇𝒓𝒊𝒔𝒂𝒓)", "𝒆𝒅𝒊𝒇𝒊𝒄𝒊𝒐 𝒄𝒐𝒏 𝒗𝒊𝒈𝒊𝒍𝒂𝒏𝒄𝒊𝒂 𝒃𝒖𝒓𝒍𝒂𝒅𝒂", "𝒒𝒖𝒊𝒏𝒕𝒂 𝒅𝒆 𝒍𝒖𝒋𝒐 (𝒐𝒃𝒋𝒆𝒕𝒊𝒗𝒐)", "𝒂𝒑𝒂𝒓𝒕𝒂𝒎𝒆𝒏𝒕𝒐 𝒗𝒖𝒍𝒏𝒆𝒓𝒂𝒃𝒍𝒆"];
+        const deudas = ["$1,500 𝒆𝒏 𝒆𝒍 𝒃𝒂𝒏𝒄𝒐", "3 𝒎𝒆𝒔𝒆𝒔 𝒅𝒆 𝒓𝒆𝒏𝒕𝒂", "𝒍𝒆 𝒅𝒆𝒃𝒆 𝒂𝒍 𝒅𝒆𝒍 𝒂𝒃𝒂𝒔𝒕𝒐", "$500 𝒆𝒏 𝒍𝒂 𝒅𝒂𝒓𝒌 𝒘𝒆𝒃"];
+        const historial = ["𝒄𝒐́𝒎𝒐 𝒃𝒐𝒓𝒓𝒂𝒓 𝒂𝒏𝒕𝒆𝒄𝒆𝒅𝒆𝒏𝒕𝒆𝒔", "𝒄𝒐𝒏𝒕𝒓𝒂𝒕𝒂𝒓 𝒔𝒊𝒄𝒂𝒓𝒊𝒐 𝒃𝒂𝒓𝒂𝒕𝒐", "𝒗𝒆𝒏𝒕𝒂 𝒅𝒆 𝒐́𝒓𝒈𝒂𝒏𝒐𝒔 𝒑𝒓𝒆𝒄𝒊𝒐", "𝒑𝒂𝒄𝒌 𝒅𝒆 𝒏𝒂𝒓𝒖𝒕𝒐"];
+        const delitos = ["𝒉𝒖𝒓𝒕𝒐 𝒅𝒆 𝒔𝒆𝒏̃𝒂𝒍 𝒘𝒊𝒇𝒊", "𝒂𝒎𝒏𝒆𝒔𝒊𝒂 𝒏𝒊𝒏𝒋𝒂", "𝒆𝒙𝒄𝒆𝒔𝒐 𝒅𝒆 𝒇𝒆𝒂𝒍𝒅𝒂𝒅", "𝒊𝒏𝒕𝒆𝒏𝒕𝒐 𝒅𝒆 𝒉𝒂𝒄𝒌𝒆𝒐 𝒂 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕"];
+        const niveles = ["🔴 𝒄𝒓𝒊́𝒕𝒊𝒄𝒐", "🟠 𝒂𝒍𝒕𝒐", "🟡 𝒎𝒆𝒅𝒊𝒐", "🔥 𝒊𝒏𝒎𝒊𝒏𝒆𝒏𝒕𝒆"];
+        const sangre = ["𝒂+", "𝒐- (𝒗𝒂𝒍𝒊𝒐𝒔𝒐)", "𝒃+", "𝒂𝒃-"];
+        const bancos = ["𝒃𝒂𝒏𝒆𝒔𝒄𝒐 (𝒗𝒂𝒄𝒊́𝒐)", "𝒎𝒆𝒓𝒄𝒂𝒏𝒕𝒊𝒍", "𝒗𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 (𝒃𝒍𝒐𝒒𝒖𝒆𝒂𝒅𝒐)", "𝒃𝒊𝒏𝒂𝒏𝒄𝒆"];
 
-        // Generar coordenadas
         const lat = (Math.random() * (10.51 - 10.45) + 10.45).toFixed(6);
         const lon = (Math.random() * (-66.95 - -66.85) - 66.85).toFixed(6);
 
-        // --- CONSTRUCCIÓN DEL MENSAJE ÉPICO ---
-        let dox = `⚠️ *ALERTA DE SEGURIDAD NACIONAL* ⚠️\n`;
-        dox += `🔓 *SISTEMA VULNERADO POR JHON-BOT*\n`;
-        dox += `───────────────────────\n\n`;
-        dox += `👤 *OBJETIVO:* @${user}\n`;
-        dox += `☣️ *NIVEL DE PELIGRO:* ${random(niveles)}\n`;
-        dox += `💉 *TIPO DE SANGRE:* ${random(sangre)}\n\n`;
+        // --- DISEÑO TOTAL DEL MENSAJE ---
+        let dox = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒊𝒏𝒕𝒓𝒖𝒔𝒊𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎** 🏌🏽‍♂️ 』\n`;
+        dox += `╔════════════════════════╗\n`;
+        dox += `  👤 **𝒐𝒃𝒋𝒆𝒕𝒊𝒗𝒐:** @${user}\n`;
+        dox += `  ☣️ **𝒆𝒔𝒕𝒂𝒅𝒐:** ${random(niveles)}\n`;
+        dox += `  💉 **𝒔𝒂𝒏𝒈𝒓𝒆:** ${random(sangre)}\n`;
+        dox += `╚════════════════════════╝\n\n`;
         
-        dox += `📂 *DATOS FILTRADOS:*\n`;
-        dox += `📍 *COORDENADAS:* ${lat}, ${lon}\n`;
-        dox += `🏠 *VIVIENDA:* ${random(casas)}\n`;
-        dox += `🌐 *IP PÚBLICA:* ${random(ips)}\n`;
-        dox += `📡 *RED:* ${random(wifi)}\n`;
-        dox += `📱 *DISPOSITIVO:* ${Math.random() > 0.5 ? 'Android (Vulnerable)' : 'iOS (Rastreado)'}\n\n`;
+        dox += `┌──『 📂 **𝒅𝒂𝒕𝒐𝒔 𝒇𝒊𝒍𝒕𝒓𝒂𝒅𝒐𝒔** 』\n`;
+        dox += `│ 📍 **𝒍𝒐𝒄𝒂𝒍𝒊𝒛𝒂𝒄𝒊𝒐́𝒏:** ${lat}, ${lon}\n`;
+        dox += `│ 🏠 **𝒗𝒊𝒗𝒊𝒆𝒏𝒅𝒂:** ${random(casas)}\n`;
+        dox += `│ 🌐 **𝒊𝒑 𝒑𝒖́𝒃𝒍𝒊𝒄𝒂:** ${random(ips)}\n`;
+        dox += `│ 📡 **𝒓𝒆𝒅:** ${random(wifi)}\n`;
+        dox += `│ 📱 **𝒅𝒆𝒗𝒊𝒄𝒆:** ${Math.random() > 0.5 ? '𝒂𝒏𝒅𝒓𝒐𝒊𝒅 (𝒗𝒖𝒍𝒏𝒆𝒓𝒂𝒃𝒍𝒆)' : '𝒊𝒐𝒔 (𝒓𝒂𝒔𝒕𝒓𝒆𝒂𝒅𝒐)'}\n`;
+        dox += `└─────────────────────────\n\n`;
         
-        dox += `💰 *FINANZAS:*\n`;
-        dox += `🏦 *BANCO:* ${random(bancos)}\n`;
-        dox += `📉 *DEUDA:* ${random(deudas)}\n\n`;
+        dox += `┌──『 💰 **𝒆𝒙𝒕𝒓𝒂𝒄𝒄𝒊𝒐́𝒏 𝒇𝒊𝒏𝒂𝒏𝒄𝒊𝒆𝒓𝒂** 』\n`;
+        dox += `│ 🏦 **𝒆𝒏𝒕𝒊𝒅𝒂𝒅:** ${random(bancos)}\n`;
+        dox += `│ 📉 **𝒅𝒆𝒖𝒅𝒂:** ${random(deudas)}\n`;
+        dox += `└─────────────────────────\n\n`;
         
-        dox += `⚖️ *REGISTRO CRIMINAL:*\n`;
-        dox += `📝 *DELITO:* ${random(delitos)}\n`;
-        dox += `🕵️ *ÚLTIMA BUSQUEDA:* "${random(historial)}"\n`;
+        dox += `┌──『 ⚖️ **𝒇𝒊𝒍𝒆 𝒄𝒓𝒊𝒎𝒊𝒏𝒂𝒍** 』\n`;
+        dox += `│ 📝 **𝒅𝒆𝒍𝒊𝒕𝒐:** ${random(delitos)}\n`;
+        dox += `│ 🕵️ **𝒃𝒖́𝒔𝒒𝒖𝒆𝒅𝒂:** "${random(historial)}"\n`;
+        dox += `└─────────────────────────\n\n`;
         
-        dox += `\n───────────────────────\n`;
-        dox += `🛰️ *ESTADO:* POSICIÓN MARCADA PARA EXTRACCIÓN.\n`;
-        dox += `🦾 _Jhon-Bot System - Control Total_`;
+        dox += `🚀 **𝒆𝒔𝒕𝒂𝒅𝒐:** 𝒑𝒐𝒔𝒊𝒄𝒊𝒐́𝒏 𝒎𝒂𝒓𝒄𝒂𝒅𝒂 𝒑𝒂𝒓𝒂 𝒆𝒙𝒕𝒓𝒂𝒄𝒄𝒊𝒐́𝒏.\n`;
+        dox += `🏌🏽‍♂️ _𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒄𝒐𝒏𝒕𝒓𝒐𝒍 - 𝒋𝒉𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
         await sock.sendMessage(from, { 
             text: dox, 
             mentions: [target],
             contextInfo: {
                 externalAdReply: {
-                    title: "☢️ OPERACIÓN: DARK WEB ☢️",
-                    body: "Subiendo archivos a la Deep Web...",
+                    title: "☢️ 𝒐𝒑𝒆𝒓𝒂𝒄𝒊𝒐́𝒏: 𝒅𝒂𝒓𝒌 𝒘𝒆𝒃 𝒂𝒄𝒕𝒊𝒗𝒂 ☢️",
+                    body: "𝒔𝒖𝒃𝒊𝒆𝒏𝒅𝒐 𝒂𝒓𝒄𝒉𝒊𝒗𝒐𝒔 𝒂 𝒍𝒂 𝒅𝒆𝒆𝒑 𝒘𝒆𝒃... 🚀",
                     thumbnailUrl: "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg",
                     mediaType: 1,
                     renderLargerThumbnail: true
