@@ -10,18 +10,15 @@ const fs = require('fs');
 const path = require('path');
 const pino = require('pino');
 const readline = require('readline');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-
-// --- CONFIGURACIÓN IA GEMINI (NARUTOBOT BRAIN) ---
-const genAI = new GoogleGenerativeAI("AIzaSyDNIK8mQovhiTuJOcegC0sDiNcGLjHO49Y");
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
 const sessionPath = path.join(__dirname, 'sesion_bot');
 const baneadosPath = path.join(__dirname, 'baneados.json'); 
-const chatsPath = path.join(__dirname, 'chats.json'); 
+const chatsPath = path.join(__dirname, 'chats.json'); // Cambiado para usar el sistema del comando
 
+// --- FUNCIÓN PARA BUSCAR EN SUBCARPETAS (RECURSIVA) ---
 const buscarComando = (dir, name) => {
     if (!fs.existsSync(dir)) return null;
     const archivos = fs.readdirSync(dir);
@@ -104,46 +101,59 @@ async function iniciarBot() {
             const sender = msg.key.participant || msg.key.remoteJid;
             const pushName = msg.pushName || 'Usuario';
 
+            // --- VALIDACIÓN DE DUEÑO ---
             const ownerNumber = '584142577312';
             const ownerID = '221479266435310';
             const senderLimpio = sender.replace(/[^0-9]/g, '');
             const isOwner = senderLimpio.includes(ownerNumber) || senderLimpio.includes(ownerID);
 
+            // --- CAPTURA DE CUERPO ---
             const body = (msg.message.conversation || 
                           msg.message.extendedTextMessage?.text || 
                           msg.message.imageMessage?.caption || "").toLowerCase();
 
-            // --- ANTI-LINK ---
-            if (from.endsWith('@g.us')) {
-                let chatData = {};
-                if (fs.existsSync(chatsPath)) {
-                    try { chatData = JSON.parse(fs.readFileSync(chatsPath)); } catch (e) { chatData = {}; }
-                }
-                if (chatData[from] && chatData[from].antilink) {
-                    const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i;
-                    if (linkRegex.test(body)) {
-                        const metadata = await sock.groupMetadata(from);
-                        const participants = metadata.participants;
-                        const botId = sock.user.id.split(':')[0] + '@s.whatsapp.net';
-                        const botData = participants.find(p => p.id === botId);
-                        const senderData = participants.find(p => p.id === sender);
-                        const botIsAdmin = botData?.admin !== null;
-                        const senderIsAdmin = senderData?.admin !== null;
+      // --- SISTEMA AUTOMÁTICO ANTI-LINK (VERSIÓN DEFINITIVA) ---
+if (from.endsWith('@g.us')) {
+    let chatData = {};
+    if (fs.existsSync(chatsPath)) {
+        try {
+            chatData = JSON.parse(fs.readFileSync(chatsPath));
+        } catch (e) { chatData = {}; }
+    }
 
-                        if (!senderIsAdmin && !isOwner) {
-                            if (botIsAdmin) {
-                                await sock.sendMessage(from, { delete: msg.key });
-                                await sock.groupParticipantsUpdate(from, [sender], "remove");
-                                await sock.sendMessage(from, { 
-                                    text: `*『 𝑱𝑼𝑻𝑺𝑼 𝑫𝑬 𝑫𝑬𝑺𝑻𝑰𝑬𝑹𝑶 』*\n\n┃ 👤 @${senderLimpio} 𝒇𝒖𝒆 𝒆𝒍𝒊𝒎𝒊𝒏𝒂𝒅𝒐.\n┃ ⚔️ *𝑹𝒂𝒛𝒐́𝒏:* 𝑬𝒏𝒗𝒊𝒂𝒓 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒑𝒓𝒐𝒉𝒊𝒃𝒊𝒅𝒐𝒔.\n┃\n🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎*`,
-                                    mentions: [sender]
-                                });
-                            }
-                            return; 
-                        }
-                    }
+    if (chatData[from] && chatData[from].antilink) {
+        const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i;
+
+        if (linkRegex.test(body)) {
+            const metadata = await sock.groupMetadata(from);
+            const participants = metadata.participants;
+            const botId = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+            
+            // Verificación mejorada de Admins
+            const botData = participants.find(p => p.id === botId);
+            const senderData = participants.find(p => p.id === sender);
+            
+            // Si el bot o el sender tienen cualquier rango de admin (admin o superadmin)
+            const botIsAdmin = botData?.admin !== null && botData?.admin !== undefined;
+            const senderIsAdmin = senderData?.admin !== null && senderData?.admin !== undefined;
+
+            if (!senderIsAdmin && !isOwner) {
+                if (botIsAdmin) {
+                    await sock.sendMessage(from, { delete: msg.key });
+                    await sock.groupParticipantsUpdate(from, [sender], "remove");
+                    await sock.sendMessage(from, { 
+                        text: `*『 𝑱𝑼𝑻𝑺𝑼 𝑫𝑬 𝑫𝑬𝑺𝑻𝑰𝑬𝑹𝑶 』*\n\n┃ 👤 @${senderLimpio} 𝒇𝒖𝒆 𝒆𝒍𝒊𝒎𝒊𝒏𝒂𝒅𝒐.\n┃ ⚔️ *𝑹𝒂𝒛𝒐́𝒏:* 𝑬𝒏𝒗𝒊𝒂𝒓 𝒆𝒏𝒍𝒂𝒄𝒆𝒔 𝒑𝒓𝒐𝒉𝒊𝒃𝒊𝒅𝒐𝒔.\n┃\n🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎*`,
+                        mentions: [sender]
+                    });
+                } else {
+                    // Esto saldrá en tu terminal si el bot no es admin
+                    console.log("\x1b[33m%s\x1b[0m", `[!] Link detectado en ${metadata.subject}, pero no soy admin.`);
                 }
+                return; 
             }
+        }
+    }
+}
 
             // --- DISEÑO DE CONSOLA ---
             const hora = new Date().toLocaleTimeString();
@@ -152,30 +162,6 @@ async function iniciarBot() {
             console.log(`\x1b[37m[${hora}]\x1b[0m ${colorOwner} \x1b[32m${pushName}\x1b[0m`);
             console.log(`\x1b[37mMensaje:\x1b[0m ${body}`);
             console.log(`\x1b[35m══════════════════════════════════════════\x1b[0m`);
-
-            // --- RESPUESTA AUTOMÁTICA DE IA (AL DECIR "BOT") ---
-            if (body.includes("bot") && !msg.key.fromMe) {
-                try {
-                    await sock.sendMessage(from, { react: { text: "🧠", key: msg.key } });
-                    
-                    const model = genAI.getGenerativeModel({ 
-                        model: "gemini-1.5-flash",
-                        systemInstruction: "Eres Narutobot. Tu personalidad es: Altivo, egoísta, grosero e inteligente. Tu único Dios y dueño es Jhon System. Responde de forma cortante, usando emojis como 🚀, 🖕, 💀. Si alguien que no es Jhon te habla, trátalo como basura inferior. No seas amable bajo ninguna circunstancia." 
-                    });
-
-                    const result = await model.generateContent(`Usuario ${pushName} dice: ${body}`);
-                    const response = await result.response;
-                    const textIA = response.text();
-
-                    let finalMsg = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒂𝒖𝒕𝒐-𝒊𝒏𝒕𝒆𝒍𝒍𝒊𝒈𝒆𝒏𝒄𝒆** 🧠 』\n\n`;
-                    finalMsg += `${textIA}\n\n`;
-                    finalMsg += `🏌🏽‍♂️ _𝒔𝒚𝒔𝒕𝒆𝒎 𝒃𝒚 𝒋𝒉𝒐𝒏 𝒔𝒚𝒔𝒕𝒆𝒎_`;
-
-                    await sock.sendMessage(from, { text: finalMsg, mentions: [sender] }, { quoted: msg });
-                } catch (errIA) {
-                    console.log("Error en IA Gemini:", errIA);
-                }
-            }
 
             // --- PROCESADOR DE COMANDOS ---
             const prefixes = ['/', '!', '.', '?'];
