@@ -3,68 +3,54 @@ const path = require('path');
 
 module.exports = {
     name: 'listcmd',
-    description: '𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐 𝒅𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐𝒔',
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
 
-        // Reacción inmediata para confirmar recepción
+        // 1. REACCIÓN INICIAL (Si no hace esto, el bot no cargó el comando)
         await sock.sendMessage(from, { react: { text: "📂", key: msg.key } });
 
-        if (!isOwner) {
-            return await sock.sendMessage(from, { 
-                text: `『 🚫 **𝒂𝒄𝒄𝒆𝒔𝒐 𝒅𝒆𝒏𝒆𝒈𝒂𝒅𝒐** 』\n\nEste archivo está encriptado. Solo el dueño tiene acceso.` 
-            }, { quoted: msg });
-        }
+        if (!isOwner) return;
 
         try {
-            // Localizamos la carpeta 'comandos' de forma dinámica
-            const carpetaComandos = path.join(process.cwd(), 'comandos');
+            // Buscamos la carpeta 'comandos' desde la raíz del proyecto
+            const folderPath = path.join(process.cwd(), 'comandos');
             
-            if (!fs.existsSync(carpetaComandos)) {
-                return await sock.sendMessage(from, { 
-                    text: `『 ❌ **𝒆𝒓𝒓𝒐𝒓 𝒅𝒆 𝒓𝒖𝒕𝒂** 』\n\nNo encontré la carpeta "comandos". Verifica el nombre.` 
-                }, { quoted: msg });
-            }
+            // Si no existe, probamos con la ruta relativa clásica
+            const finalPath = fs.existsSync(folderPath) ? folderPath : path.join(__dirname);
+            
+            const files = fs.readdirSync(finalPath).filter(f => f.endsWith('.js'));
 
-            const archivos = fs.readdirSync(carpetaComandos).filter(file => file.endsWith('.js'));
+            // --- DISEÑO HÍBRIDO (Títulos pro / Texto normal) ---
+            let txt = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒄𝒆𝒏𝒕𝒆𝒓** 🏌🏽‍♂️ 』\n\n`;
             
-            // --- DISEÑO HÍBRIDO ---
-            let lista = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒄𝒆𝒏𝒕𝒆𝒓** 🏌🏽‍♂️ 』\n\n`;
-            
-            lista += `┌──『 📊 **𝒔𝒕𝒂𝒕𝒔** 』\n`;
-            lista += `│ 📂 Total: ${archivos.length} archivos\n`;
-            lista += `│ ⚡ Estado: Online\n`;
-            lista += `└─────────────────────────\n\n`;
+            txt += `┌──『 📊 **𝒔𝒕𝒂𝒕𝒔** 』\n`;
+            txt += `│ 📂 Total: ${files.length} comandos\n`;
+            txt += `│ ⚡ Estado: Online\n`;
+            txt += `└─────────────────────────\n\n`;
 
-            lista += `┌──『 🛠️ **𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐** 』\n`;
-            
-            archivos.forEach((file, index) => {
-                const nombreCmd = file.replace('.js', '');
-                lista += `│ ${index + 1}. /${nombreCmd}\n`;
+            txt += `┌──『 🛠️ **𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐** 』\n`;
+            files.forEach((file, i) => {
+                txt += `│ ${i + 1}. /${file.replace('.js', '')}\n`;
             });
-
-            lista += `└─────────────────────────\n\n`;
-            lista += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Escaneo de sector completado.\n`;
-            lista += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
+            txt += `└─────────────────────────\n\n`;
+            
+            txt += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Escaneo completado.\n`;
+            txt += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
             await sock.sendMessage(from, { 
-                text: lista,
+                text: txt,
                 contextInfo: {
                     externalAdReply: {
                         title: "🛰️ 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒅𝒂𝒕𝒂𝒃𝒂𝒔𝒆",
-                        body: "Módulos de comandos cargados",
+                        body: "Módulos cargados correctamente",
                         mediaType: 1,
-                        showAdAttribution: true,
                         renderLargerThumbnail: false
                     }
                 }
             }, { quoted: msg });
 
-        } catch (err) {
-            console.error(err);
-            await sock.sendMessage(from, { 
-                text: `『 ❌ **𝒆𝒓𝒓𝒐𝒓 𝒄𝒓𝒊𝒕𝒊𝒄𝒂𝒍** 』\n\nHubo un fallo al leer la carpeta "comandos".` 
-            }, { quoted: msg });
+        } catch (e) {
+            await sock.sendMessage(from, { text: "❌ Error al leer comandos: " + e.message });
         }
     }
 };
