@@ -24,57 +24,42 @@ module.exports = {
 
         const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
 
-        let menuTxt = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎** 🏌🏽‍♂️ 』\n\n`;
-        
+        // Tu imagen original
+        const imagenMenu = "https://qu.ax/ZTUPr.jpg"; 
+
+        // --- Construcción del Mensaje ---
+        let menuTxt = `¡Hola! **@${pushName}**, Soy **Narutobot** 🍥\n`;
+        menuTxt += `¡Bienvenido, **Jhon** 🏴‍☠️!\n\n`;
+
+        menuTxt += `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎 𝒄𝒐𝒓𝒆** 🏌🏽‍♂️ 』\n\n`;
+
+        menuTxt += `┌──『 📊 **𝒔𝒕𝒂𝒕𝒔** 』\n`;
         menuTxt += `│ 📂 **Total:** ${totalComandos} archivos\n`;
-        menuTxt += `│ ⚡ **Estado:** Online\n\n`;
+        menuTxt += `│ ⚡ **Estado:** Online\n`;
+        menuTxt += `└─────────────────────────\n\n`;
 
-        // --- SECCIÓN: ADMINISTRACIÓN ---
-        menuTxt += `│ ✎ **𝑨𝑫𝑴𝑰𝑵𝑰𝑺𝑻𝑹𝑨𝑪𝑰𝑶𝑵 𝑫𝑬 𝑮𝑹𝑼𝑷𝑶𝑺**\n`;
-        menuTxt += `│\n`;
-        menuTxt += `✧ ⚔️ ✝ /admins | ✝ /tagall\n`;
-        menuTxt += `│ _Menciona a los miembros/admins._\n`;
-        menuTxt += `✧ ⚔️ ✝ /kick | ✝ /join | ✝ /out\n`;
-        menuTxt += `│ _Gestionar entrada/salida de usuarios._\n`;
-        menuTxt += `✧ ⚔️ ✝ /promote | ✝ /demote\n`;
-        menuTxt += `│ _Cambiar rangos de usuario._\n`;
-        menuTxt += `✧ ⚔️ ✝ /antilink | ✝ /resetlink\n`;
-        menuTxt += `│ _Seguridad y enlaces del grupo._\n`;
-        menuTxt += `✧ ⚔️ ✝ /setname | ✝ /setdesc\n`;
-        menuTxt += `│ _Configurar info del grupo._\n`;
-        menuTxt += `✧ ⚔️ ✝ /delete | ✝ /hidetag\n`;
-        menuTxt += `│ _Limpieza y menciones ocultas._\n`;
-        menuTxt += `│\n`;
+        menuTxt += `┌──『 🛠️ **𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐** 』\n`;
+        menuTxt += `│ 1. /admins\n│ 2. /antilink\n│ 3. /autodm\n│ 4. /bc\n│ 5. /bug\n`;
+        menuTxt += `│ 6. /delete\n│ 7. /demote\n│ 8. /doxeo\n│ 9. /ext\n│ 10. /fix\n`;
+        menuTxt += `│ 11. /ia\n│ 12. /info\n│ 13. /infogp\n│ 14. /join\n│ 15. /kick\n`;
+        menuTxt += `│ 16. /link\n│ 17. /listcm\n│ 18. /listgp\n│ 19. /menu\n│ 20. /out\n`;
+        menuTxt += `│ 21. /perfil\n│ 22. /ping\n│ 23. /ppt\n│ 24. /promote\n│ 25. /resetlink\n`;
+        menuTxt += `│ 26. /setdesc\n│ 27. /setname\n│ 28. /tagall\n│ 29. /tiktok\n│ 30. /tr\n`;
+        menuTxt += `│ 31. /unreg\n│ 32. /update\n`;
+        menuTxt += `└─────────────────────────\n\n`;
 
-        // --- SECCIÓN: UTILIDADES & IA ---
-        menuTxt += `» °9•(🛰️)• ÷ **𝑼𝑻𝑰𝑳𝑰𝑫𝑨𝑫𝑬𝑺 & 𝑰𝑨** ÷\n`;
-        menuTxt += `│\n`;
-        menuTxt += `✧ 🛰️ ✝ /ia | ✝ /tr\n`;
-        menuTxt += `│ _Inteligencia artificial y traductor._\n`;
-        menuTxt += `✧ 🛰️ ✝ /ping | ✝ /update | ✝ /fix\n`;
-        menuTxt += `│ _Estado del bot y mantenimiento._\n`;
-        menuTxt += `✧ 🛰️ ✝ /info | ✝ /infogp | ✝ /perfil\n`;
-        menuTxt += `│ _Información detallada._\n`;
-        menuTxt += `✧ 🛰️ ✝ /link | ✝ /listgp | ✝ /listcm\n`;
-        menuTxt += `│ _Listados y enlaces rápidos._\n`;
-        menuTxt += `│\n`;
-
-        // --- SECCIÓN: ENTRETENIMIENTO ---
-        menuTxt += `» °9•(🎮)• ÷ **𝑫𝑰𝑽𝑬𝑹𝑺𝑰𝑶𝑵** ÷\n`;
-        menuTxt += `│\n`;
-        menuTxt += `✧ 🎮 ✝ /ppt | ✝ /doxeo\n`;
-        menuTxt += `│ _Juegos y comandos de broma._\n`;
-        menuTxt += `✧ 🎮 ✝ /tiktok | ✝ /bug\n`;
-        menuTxt += `│ _Descargas y reportes._\n`;
-        menuTxt += `✧ 🎮 ✝ /unreg | ✝ /autodm | ✝ /bc\n`;
-        menuTxt += `│ _Otros servicios del sistema._\n`;
-        menuTxt += `│\n`;
+        menuTxt += `┌──『 💳 **𝒄𝒓𝒆𝒅𝒊𝒕𝒐𝒔** 』\n`;
+        menuTxt += `│ 👑 **Creador:** Jhon Guerra\n`;
+        menuTxt += `│ 🏗️ **Build:** Jhon System\n`;
+        menuTxt += `└─────────────────────────\n\n`;
 
         menuTxt += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Escaneo completado.\n`;
         menuTxt += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
+        // Envío con imagen, saludo y mención
         await sock.sendMessage(from, { 
-            text: menuTxt,
+            image: { url: imagenMenu }, 
+            caption: menuTxt,
             mentions: [msg.key.participant || from]
         }, { quoted: msg });
     }
