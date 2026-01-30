@@ -44,12 +44,12 @@ module.exports = {
             const menuTxt = `
 *${script("RINNEGAN")}*
 
-Venezuela 🇻🇪
-Multi Prefix
-Online
+Pais: 𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 🇻🇪
+Prefijo: 𝑴𝒖𝒍𝒕𝒊 𝒑𝒓𝒆𝒇𝒊𝒋𝒐
+Status: 𝑶𝒏𝒍𝒊𝒏𝒆
 ${totalComandos} Comandos
 
-Hola, *${userName}* 🍥
+𝑯𝒐𝒍𝒂, *${userName}* 
 Bienvenido al sistema
 
 *${script("POWER")}*
