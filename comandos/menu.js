@@ -7,7 +7,7 @@ module.exports = {
         const from = msg.key.remoteJid;
         const pushName = msg.pushName || 'Usuario';
         
-        // --- Contador dinámico de archivos ---
+        // --- Escaneo automático de archivos para Stats ---
         const contarComandos = (dir) => {
             let total = 0;
             const archivos = fs.readdirSync(dir);
@@ -24,10 +24,10 @@ module.exports = {
 
         const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
 
-        // Tu imagen original
-        const imagenMenu = "https://qu.ax/ZTUPr.jpg"; 
+        // TU ENLACE DE IMAGEN ACTUALIZADO
+        const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg"; 
 
-        // --- Construcción del Mensaje ---
+        // --- Estructura del Menú ---
         let menuTxt = `¡Hola! **@${pushName}**, Soy **Narutobot** 🍥\n`;
         menuTxt += `¡Bienvenido, **Jhon** 🏴‍☠️!\n\n`;
 
@@ -56,9 +56,9 @@ module.exports = {
         menuTxt += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Escaneo completado.\n`;
         menuTxt += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
 
-        // Envío con imagen, saludo y mención
+        // Envío con la imagen de Postimg
         await sock.sendMessage(from, { 
-            image: { url: imagenMenu }, 
+            image: { url: thumbUrl }, 
             caption: menuTxt,
             mentions: [msg.key.participant || from]
         }, { quoted: msg });
