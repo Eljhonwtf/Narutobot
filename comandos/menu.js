@@ -32,12 +32,12 @@ module.exports = {
         menuTxt += `¡Bienvenido, *Jhon* 🏴‍☠️!\n\n`;
 
         // --- NUEVO DISEÑO COMPACTO DE INFO SYSTEM ---
-        menuTxt += `┏━━━〔 ✦ *𝐒𝐘𝐒𝐓𝐄𝐌 𝐃𝐀𝐓𝐀* ✦ 〕━━━┓\n`;
-        menuTxt += `⁐ ✑ *𝐏𝐚𝐢𝐬:* Ven 🇻🇪  |  *𝐏𝐫𝐞𝐟𝐢𝐣𝐨:* Multi\n`;
-        menuTxt += `⁐ ✑ *𝐄𝐬𝐭𝐚𝐝𝐨:* Online ✅ |  *𝐂𝐦𝐝𝐬:* ${totalComandos}\n`;
-        menuTxt += `┗━━━━━━━━━━━━━━━━━━━━┛\n\n`;
-
-        menuTxt += `~│~ ✦ *𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐂𝐈𝐎𝐍 𝐃𝐄 𝐆𝐑𝐔𝐏𝐎𝐒*\n`;
+        menuTxt += `*${script("RINNEGAN")}*\n\n`;
+menuTxt += `Venezuela 🇻🇪\n`;
+menuTxt += `Multi Prefix\n`;
+menuTxt += `Online\n`;
+menuTxt += `${totalComandos} Cmds\n\n`;
+menuTxt += `*${script("POWER")}*\n`;
         menuTxt += `† */admins*\n† */antilink*\n† */kick*\n† */add*\n† */promote*\n† */demote*\n† */tagall*\n† */hidetag*\n† */delete*\n† */resetlink*\n† */link*\n† */setname*\n† */setdesc*\n† */infogp*\n† */join*\n† */out*\n`;
         menuTxt += `~│~\n`;
 
