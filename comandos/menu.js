@@ -1,99 +1,81 @@
 const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     name: 'menu',
-    description: 'Menú con diseño de líneas verticales idéntico a la imagen',
     run: async (sock, msg, body, args, isOwner) => {
-        try {
-            const from = msg.key.remoteJid;
-            const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
-
-            // 1. Cargar base de datos
-            let db = {};
-            if (fs.existsSync('./usuarios.json')) {
-                db = JSON.parse(fs.readFileSync('./usuarios.json'));
-            }
-            const userData = db[from];
-            let nombreUser = isOwner ? "𝑱𝒉𝒐𝒏 🏴‍☠️" : (userData?.split('|')[0] || "𝑨𝒈𝒆𝒏𝒕𝒆");
-
-            // 2. Construcción del Menú (Estilo de la imagen)
-            let textoMenu = `𝐇𝐨𝐥𝐚! 𝐒𝐨𝐲 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕* 🍥\n`;
-            textoMenu += `_¡𝑩𝒊𝒆𝒏𝒗𝒆𝒏𝒊𝒅𝒐, ${nombreUser}!_ \n\n`;
-            
-            textoMenu += `╭━━〔 📜 *𝑰𝑵𝑭𝑶 𝑺𝑰𝑺𝑻𝑬𝑴𝑨* 〕━━🍥\n`;
-            textoMenu += `┃ ✐ *𝑷𝒂𝒊𝒔:* 𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 🇻🇪\n`;
-            textoMenu += `┃ ✐ *𝑷𝒓𝒆𝒇𝒊𝒋𝒐:* 𝑴𝒖𝒍𝒕𝒊\n`;
-            textoMenu += `┃ ✐ *𝑬𝒔𝒕𝒂𝒅𝒐:* 𝑨𝒄𝒕𝒊𝒗𝒐 ✅\n`;
-            textoMenu += `╰━━━━━━━━━━━━━━━━━━━\n\n`;
-
-            // --- SECCIÓN: ADMINISTRACIÓN ---
-            textoMenu += `┃ ✐ *𝑨𝑫𝑴𝑰𝑵𝑰𝑺𝑻𝑹𝑨𝑪𝑰𝑶𝑵 𝑫𝑬 𝑮𝑹𝑼𝑷𝑶𝑺*\n`;
-            textoMenu += `┃\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒂𝒅𝒎𝒊𝒏𝒔\`\n`;
-            textoMenu += `┃ 𝑴𝒆𝒏𝒄𝒊𝒐𝒏𝒂 𝒂 𝒍𝒐𝒔 𝒂𝒅𝒎𝒊𝒏𝒊𝒔𝒕𝒓𝒂𝒅𝒐𝒓𝒆𝒔.\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒂𝒏𝒕𝒊𝒍𝒊𝒏𝒌\`\n`;
-            textoMenu += `┃ 𝑨𝒄𝒕𝒊𝒗𝒂/𝑫𝒆𝒔𝒂𝒄𝒕𝒊𝒗𝒂 𝒆𝒍 𝒂𝒏𝒕𝒊-𝒆𝒏𝒍𝒂𝒄𝒆𝒔.\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒌𝒊𝒄𝒌\`\n`;
-            textoMenu += `┃ 𝑬𝒙𝒑𝒖𝒍𝒔𝒂 𝒂 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐.\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒑𝒓𝒐𝒎𝒐𝒕𝒆\` | \`† /𝒅𝒆𝒎𝒐𝒕𝒆\`\n`;
-            textoMenu += `┃ 𝑺𝒖𝒃𝒆 𝒐 𝒃𝒂𝒋𝒂 𝒆𝒍 𝒓𝒂𝒏𝒈𝒐 𝒅𝒆 𝒖𝒏 𝒖𝒔𝒖𝒂𝒓𝒊𝒐.\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒕𝒂𝒈𝒂𝒍𝒍\` | \`† /𝒉𝒊𝒅𝒆𝒕𝒂𝒈\`\n`;
-            textoMenu += `┃ 𝑴𝒆𝒏𝒄𝒊𝒐𝒏𝒂 𝒂 𝒕𝒐𝒅𝒐𝒔 𝒍𝒐𝒔 𝒎𝒊𝒆𝒎𝒃𝒓𝒐𝒔.\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒅𝒆𝒍𝒆𝒕𝒆\`\n`;
-            textoMenu += `┃ 𝑬𝒍𝒊𝒎𝒊𝒏𝒂 𝒆𝒍 𝒎𝒆𝒏𝒔𝒂𝒋𝒆 𝒄𝒊𝒕𝒂𝒅𝒐.\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒓𝒆𝒔𝒆𝒕𝒍𝒊𝒏𝒌\`\n`;
-            textoMenu += `┃ 𝑪𝒂𝒎𝒃𝒊𝒂 𝒆𝒍 𝒆𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐.\n`;
-            textoMenu += `✧ ⚔️ \`† /𝒋𝒐𝒊𝒏\` | \`† /𝒐𝒖𝒕\`\n`;
-            textoMenu += `┃ 𝑬𝒏𝒕𝒓𝒂𝒓 𝒐 𝒔𝒂𝒍𝒊𝒓 𝒅𝒆 𝒖𝒏 𝒈𝒓𝒖𝒑𝒐.\n`;
-            textoMenu += `┃\n`;
-
-            // --- SECCIÓN: UTILIDADES ---
-            textoMenu += `» ˚୨•(📡)• ⊹ *𝑼𝑻𝑰𝑳𝑰𝑫𝑨𝑫𝑬𝑺* ⊹\n`;
-            textoMenu += `┃\n`;
-            textoMenu += `✧ 📡 \`† /𝒑𝒊𝒏𝒈\`\n`;
-            textoMenu += `┃ 𝑴𝒖𝒆𝒔𝒕𝒓𝒂 𝒍𝒂 𝒗𝒆𝒍𝒐𝒄𝒊𝒅𝒂𝒅 𝒅𝒆𝒍 𝒃𝒐𝒕.\n`;
-            textoMenu += `✧ 📡 \`† /𝒊𝒏𝒇𝒐\` | \`† /𝒊𝒏𝒇𝒐𝒈𝒑\`\n`;
-            textoMenu += `┃ 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊𝒐́𝒏 𝒅𝒆𝒍 𝒃𝒐𝒕 𝒐 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐.\n`;
-            textoMenu += `✧ 📡 \`† /𝒍𝒊𝒏𝒌\`\n`;
-            textoMenu += `┃ 𝑶𝒃𝒕𝒆́𝒏 𝒆𝒏𝒍𝒂𝒄𝒆 𝒅𝒆𝒍 𝒈𝒓𝒖𝒑𝒐 𝒂𝒄𝒕𝒖𝒂𝒍.\n`;
-            textoMenu += `✧ 📡 \`† /𝒔𝒆𝒕𝒏𝒂𝒎𝒆\` | \`† /𝒔𝒆𝒕𝒊𝒏𝒇𝒐\`\n`;
-            textoMenu += `┃ 𝑪𝒂𝒎𝒃𝒊𝒂 𝒅𝒂𝒕𝒐𝒔 𝒅𝒆𝒍 𝒃𝒐𝒕.\n`;
-            textoMenu += `┃\n`;
-
-            // --- SECCIÓN: ENTRETENIMIENTO ---
-            textoMenu += `» ˚୨•(💀)• ⊹ *𝑬𝑵𝑻𝑹𝑬𝑻𝑬𝑵𝑰𝑴𝑰𝑬𝑵𝑻𝑶* ⊹\n`;
-            textoMenu += `┃\n`;
-            textoMenu += `✧ 🎭 \`† /𝒕𝒊𝒌𝒕𝒐𝒌\`\n`;
-            textoMenu += `┃ 𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝒗𝒊𝒅𝒆𝒐𝒔 𝒅𝒆 𝑻𝒊𝒌𝑻𝒐𝒌.\n`;
-            textoMenu += `✧ 🎭 \`† /𝒑𝒑𝒕\`\n`;
-            textoMenu += `┃ 𝑱𝒖𝒆𝒈𝒂 𝒑𝒊𝒆𝒅𝒓𝒂, 𝒑𝒂𝒑𝒆𝒍 𝒐 𝒕𝒊𝒋𝒆𝒓𝒂.\n`;
-            textoMenu += `✧ 🎭 \`† /𝒊𝒏𝒔𝒖𝒍𝒕𝒂𝒓\`\n`;
-            textoMenu += `┃ 𝑬𝒍 𝒃𝒐𝒕 𝒆𝒏𝒗𝒊́𝒂 𝒖𝒏 𝒊𝒏𝒔𝒖𝒍𝒕𝒐.\n`;
-            textoMenu += `✧ 🎭 \`† /𝒅𝒐𝒙𝒆𝒐\` | \`† /𝒃𝒖𝒈\`\n`;
-            textoMenu += `┃ 𝑪𝒐𝒎𝒂𝒏𝒅𝒐𝒔 𝒅𝒆 𝒃𝒓𝒐𝒎𝒂.\n`;
-            textoMenu += `┃\n`;
-
-            textoMenu += `─────────────────\n`;
-            textoMenu += `🚩 *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 2026*`;
-
-            // 3. Envío con externalAdReply y quoted
-            await sock.sendMessage(from, { 
-                text: textoMenu,
-                contextInfo: {
-                    externalAdReply: {
-                        title: "𝑨𝑫𝑴𝑰𝑵𝑰𝑺𝑻𝑹𝑨𝑪𝑰𝑶́𝑵 𝑪𝑬𝑵𝑻𝑹𝑨𝑳",
-                        body: "𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 🍥",
-                        thumbnailUrl: thumbUrl,
-                        mediaType: 1,
-                        renderLargerThumbnail: true
-                    }
+        const from = msg.key.remoteJid;
+        const pushName = msg.pushName || 'Usuario';
+        
+        // --- Contador dinámico de archivos ---
+        const contarComandos = (dir) => {
+            let total = 0;
+            const archivos = fs.readdirSync(dir);
+            for (const archivo of archivos) {
+                const ruta = path.join(dir, archivo);
+                if (fs.statSync(ruta).isDirectory()) {
+                    total += contarComandos(ruta);
+                } else if (archivo.endsWith('.js')) {
+                    total++;
                 }
-            }, { quoted: msg });
+            }
+            return total;
+        };
 
-            await sock.sendMessage(from, { react: { text: "📜", key: msg.key } });
+        const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
 
-        } catch (e) {
-            console.log("Error en el menú:", e);
-        }
+        let menuTxt = `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎** 🏌🏽‍♂️ 』\n\n`;
+        
+        menuTxt += `│ 📂 **Total:** ${totalComandos} archivos\n`;
+        menuTxt += `│ ⚡ **Estado:** Online\n\n`;
+
+        // --- SECCIÓN: ADMINISTRACIÓN ---
+        menuTxt += `│ ✎ **𝑨𝑫𝑴𝑰𝑵𝑰𝑺𝑻𝑹𝑨𝑪𝑰𝑶𝑵 𝑫𝑬 𝑮𝑹𝑼𝑷𝑶𝑺**\n`;
+        menuTxt += `│\n`;
+        menuTxt += `✧ ⚔️ ✝ /admins | ✝ /tagall\n`;
+        menuTxt += `│ _Menciona a los miembros/admins._\n`;
+        menuTxt += `✧ ⚔️ ✝ /kick | ✝ /join | ✝ /out\n`;
+        menuTxt += `│ _Gestionar entrada/salida de usuarios._\n`;
+        menuTxt += `✧ ⚔️ ✝ /promote | ✝ /demote\n`;
+        menuTxt += `│ _Cambiar rangos de usuario._\n`;
+        menuTxt += `✧ ⚔️ ✝ /antilink | ✝ /resetlink\n`;
+        menuTxt += `│ _Seguridad y enlaces del grupo._\n`;
+        menuTxt += `✧ ⚔️ ✝ /setname | ✝ /setdesc\n`;
+        menuTxt += `│ _Configurar info del grupo._\n`;
+        menuTxt += `✧ ⚔️ ✝ /delete | ✝ /hidetag\n`;
+        menuTxt += `│ _Limpieza y menciones ocultas._\n`;
+        menuTxt += `│\n`;
+
+        // --- SECCIÓN: UTILIDADES & IA ---
+        menuTxt += `» °9•(🛰️)• ÷ **𝑼𝑻𝑰𝑳𝑰𝑫𝑨𝑫𝑬𝑺 & 𝑰𝑨** ÷\n`;
+        menuTxt += `│\n`;
+        menuTxt += `✧ 🛰️ ✝ /ia | ✝ /tr\n`;
+        menuTxt += `│ _Inteligencia artificial y traductor._\n`;
+        menuTxt += `✧ 🛰️ ✝ /ping | ✝ /update | ✝ /fix\n`;
+        menuTxt += `│ _Estado del bot y mantenimiento._\n`;
+        menuTxt += `✧ 🛰️ ✝ /info | ✝ /infogp | ✝ /perfil\n`;
+        menuTxt += `│ _Información detallada._\n`;
+        menuTxt += `✧ 🛰️ ✝ /link | ✝ /listgp | ✝ /listcm\n`;
+        menuTxt += `│ _Listados y enlaces rápidos._\n`;
+        menuTxt += `│\n`;
+
+        // --- SECCIÓN: ENTRETENIMIENTO ---
+        menuTxt += `» °9•(🎮)• ÷ **𝑫𝑰𝑽𝑬𝑹𝑺𝑰𝑶𝑵** ÷\n`;
+        menuTxt += `│\n`;
+        menuTxt += `✧ 🎮 ✝ /ppt | ✝ /doxeo\n`;
+        menuTxt += `│ _Juegos y comandos de broma._\n`;
+        menuTxt += `✧ 🎮 ✝ /tiktok | ✝ /bug\n`;
+        menuTxt += `│ _Descargas y reportes._\n`;
+        menuTxt += `✧ 🎮 ✝ /unreg | ✝ /autodm | ✝ /bc\n`;
+        menuTxt += `│ _Otros servicios del sistema._\n`;
+        menuTxt += `│\n`;
+
+        menuTxt += `🚀 **𝒔𝒚𝒔𝒕𝒆𝒎:** Escaneo completado.\n`;
+        menuTxt += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
+
+        await sock.sendMessage(from, { 
+            text: menuTxt,
+            mentions: [msg.key.participant || from]
+        }, { quoted: msg });
     }
 };
