@@ -1,53 +1,35 @@
-const { execSync } = require('child_process');
-const path = require('path');
+const { exec } = require('child_process');
 
 module.exports = {
+    name: 'update',
+    alias: ['actualizar', 'fixbot'],
+    category: 'owner',
     run: async (sock, msg, body, args, isOwner) => {
+        // Solo el dueño puede usar este comando
+        if (!isOwner) return sock.sendMessage(msg.key.remoteJid, { text: '❌ Este comando es solo para mi jefe *Jhon*.' });
+
         const from = msg.key.remoteJid;
 
-        // ✅ 𝑺𝒐𝒍𝒐 𝒆𝒍 𝒐𝒘𝒏𝒆𝒓 𝒑𝒖𝒆𝒅𝒆 𝒖𝒔𝒂𝒓 𝒆𝒔𝒕𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐
-        if (!isOwner) {
-            await sock.sendMessage(from, { 
-                text: "❌ *𝑺𝒐𝒍𝒐 𝒆𝒍 𝒐𝒘𝒏𝒆𝒓 𝒑𝒖𝒆𝒅𝒆 𝒖𝒔𝒂𝒓 𝒆𝒔𝒕𝒆 𝒄𝒐𝒎𝒂𝒏𝒅𝒐.*"
-            }, { quoted: msg });
-            return;
-        }
+        // Mensaje de espera con estilo
+        await sock.sendMessage(from, { 
+            text: `⚡ *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎*\n\n> ⏳ Iniciando actualización de archivos...` 
+        }, { quoted: msg });
 
-        try {
-            // Reacción inicial de proceso
-            await sock.sendMessage(from, { react: { text: "⏳", key: msg.key } });
+        // Ejecuta el comando de Git para traer cambios
+        exec('git pull', (err, stdout, stderr) => {
+            if (err) {
+                return sock.sendMessage(from, { 
+                    text: `❌ *𝐄𝐑𝐑𝐎𝐑 𝐃𝐄 𝐒𝐈𝐒𝐓𝐄𝐌𝐀*\n\n~│~ No se pudo actualizar:\n~│~ _${err.message}_` 
+                });
+            }
 
-            await sock.sendMessage(from, { 
-                text: "» ˚୨•(⚔️)• ⊹ 𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒏𝒅𝒐 𝒆𝒍 𝒃𝒐𝒕...\n\n⏳ *𝒆𝒔𝒑𝒆𝒓𝒂 𝒖𝒏 𝒎𝒐𝒎𝒆𝒏𝒕𝒐* 🏴‍☠️"
-            }, { quoted: msg });
-
-            // Ejecutar git pull para obtener las actualizaciones
-            const resultado = execSync('git pull', { 
-                cwd: path.join(__dirname, '..'),
-                encoding: 'utf-8'
-            });
-
-            // Mensaje de éxito con Narutobot y tipografía solicitada
-            const mensaje = `» ˚୨•(⚔️)• ⊹ 𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒄𝒊𝒐́𝒏 𝒅𝒆𝒍 𝒃𝒐𝒕\n\n✅ *𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒅𝒐 𝒄𝒐𝒓𝒓𝒆𝒄𝒕𝒂𝒎𝒆𝒏𝒕𝒆* 🏴‍☠️\n\n𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒆𝒔 𝒎𝒂́𝒔 \`𝒇𝒖𝒆𝒓𝒕𝒆\` 𝒂𝒉𝒐𝒓𝒂 💪\n\n${resultado || '𝒑𝒓𝒐𝒚𝒆𝒄𝒕𝒐 𝒔𝒊𝒏 𝒄𝒂𝒎𝒃𝒊𝒐𝒔 𝒑𝒆𝒏𝒅𝒊𝒆𝒏𝒕𝒆𝒔'}`;
-
-            await sock.sendMessage(from, { 
-                text: mensaje
-            }, { quoted: msg });
-
-            // Reacción final de éxito
-            await sock.sendMessage(from, { react: { text: "✅", key: msg.key } });
-
-            console.log('✅ Bot actualizado por:', msg.pushName);
-        } catch (err) {
-            const errorMsg = `» ˚୨•(💀)• ⊹ 𝒆𝒓𝒓𝒐𝒓 𝒂𝒍 𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒓 𝒆𝒍 𝒃𝒐𝒕\n\n❌ *𝒂𝒍𝒈𝒐 𝒔𝒂𝒍𝒊𝒐́ 𝒎𝒂𝒍* 🔥\n\n${err.message}`;
-
-            await sock.sendMessage(from, { 
-                text: errorMsg
-            }, { quoted: msg });
+            let resultado = stdout;
             
-            // Reacción de error
-            await sock.sendMessage(from, { react: { text: "❌", key: msg.key } });
-            console.log('❌ Error en comando update:', err);
-        }
+            // Creamos el mensaje final con el diseño que querías
+            // Nota: Usé comillas simples '' para envolver 'fuerte' y evitar el SyntaxError
+            const mensajeFinal = `» ˚୨•(⚔️)• ⊹ *𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒄𝒊𝒐́𝒏 𝒅𝒆𝒍 𝒃𝒐𝒕*\n\n ✅ *𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒅𝒐 𝒄𝒐𝒓𝒓𝒆𝒄𝒕𝒂𝒎𝒆𝒏𝒕𝒆* 🏴‍☠️\n\n𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒆𝒔 𝒎𝒂́𝒔 '𝒇𝒖𝒆𝒓𝒕𝒆' 𝒂𝒉𝒐𝒓𝒂 💪\n\n${resultado.includes('Already up to date') ? '𝒑𝒓𝒐𝒚𝒆𝒄𝒕𝒐 𝒔𝒊𝒏 𝒄𝒂𝒎𝒃𝒊𝒐𝒔 𝒑𝒆𝒏𝒅𝒊𝒆𝒏𝒕𝒆𝒔' : resultado}`;
+
+            return sock.sendMessage(from, { text: mensajeFinal }, { quoted: msg });
+        });
     }
 };
