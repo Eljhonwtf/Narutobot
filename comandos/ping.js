@@ -10,7 +10,7 @@ module.exports = {
 
         // 2. ENVIAR MENSAJE DE CARGA
         const { key } = await sock.sendMessage(from, { 
-            text: `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎** 』\n\n> 📥 **𝒆𝒏𝒗𝒊𝒂𝒏𝒅𝒐 𝒑𝒂𝒒𝒖𝒆𝒕𝒆𝒔 𝒅𝒆 𝒅𝒂𝒕𝒐𝒔...**  🏌🏽‍♂️` 
+            text: `『 🚀 **𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎** 』\n\n> 📥 **𝒆𝒏𝒗𝒊𝒂𝒏𝒅𝒐 𝒑𝒂𝒒𝒖𝒆𝒕𝒆𝒔 𝒅𝒆 𝒅𝒂𝒕𝒐𝒔...** g 🏌🏽‍♂️` 
         }, { quoted: msg });
 
         // 3. ANIMACIÓN DE ESPERA (2 SEGUNDOS)
