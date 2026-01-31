@@ -34,7 +34,7 @@ module.exports = {
 
         // --- DISEÑO COMPACTO ---
         menuTxt += `┏━━━〔 ✦ *𝐒𝐘𝐒𝐓𝐄𝐌 𝐃𝐀𝐓𝐀* ✦ 〕━━━┓\n`;
-        menuTxt += `⁐ ✑ *𝐏𝐚𝐢𝐬:* Ven 🇻🇪  |  *𝐏𝐫𝐞𝐟𝐢𝐣𝐨:* Multi\n`;
+        menuTxt += `⁐ ✑ *𝐏𝐚𝐢𝐬:* Vzla 🇻🇪  |  *𝐏𝐫𝐞𝐟𝐢𝐣𝐨:* Multi\n`;
         menuTxt += `⁐ ✑ *𝐄𝐬𝐭𝐚𝐝𝐨:* Online ✅ |  *𝐂𝐦𝐝𝐬:* ${totalComandos}\n`;
         menuTxt += `┗━━━━━━━━━━━━━━━━━━━━┛\n\n`;
 
