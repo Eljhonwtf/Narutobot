@@ -9,14 +9,12 @@ module.exports = {
             const from = msg.key.remoteJid;
             const userName = msg.pushName || 'Usuario';
 
-            // Función para fuente curva (mathematical bold script)
             const script = (t) => t.toLowerCase().split('').map(c => ({
                 'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿',
                 'k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉',
                 'u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏'
             }[c] || c)).join('');
 
-            // Conteo recursivo de comandos (.js) en la carpeta ../comandos
             const contarComandos = (dir) => {
                 let total = 0;
                 if (!fs.existsSync(dir)) return 0;
@@ -33,52 +31,41 @@ module.exports = {
             };
 
             const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
+            const thumbUrl = "[https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg](https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg)";
 
-            // Thumbnail (puedes cambiar a uno Sasuke/Rinnegan más oscuro)
-            const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
-            // Alternativas Sasuke: 
-            // "https://wallpapers.com/images/hd/sharingan-live-uchiha-sasuke-purple-aesthetic-ogrq0pcqhxbvc4ax.jpg"
-            // "https://wallpapers.com/images/hd/old-sasuke-v58x9vubu5sk63bp.jpg"
+            // Menú con comandos individuales y fondo gris
+            let menuTxt = `*${script("RINNEGAN")}*\n\n`;
+            menuTxt += `Pais: 𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 🇻🇪\n`;
+            menuTxt += `Prefijo: 𝑴𝒖𝒍𝒕𝒊 𝒑𝒓𝒆𝒇𝒊𝒋𝒐\n`;
+            menuTxt += `Status: 𝑶𝒏𝒍𝒊𝒏𝒆\n`;
+            menuTxt += `${totalComandos} Comandos\n\n`;
+            menuTxt += `𝑯𝒐𝒍𝒂, *${userName}* Bienvenido al sistema\n\n`;
 
-            // Menú completo (minimalista, elegante y compacto)
-            const menuTxt = `
-*${script("RINNEGAN")}*
+            menuTxt += `*${script("POWER")}*\n\n`;
+            menuTxt += `✦ \` \` \` /admins \` \` \` \n│ _Menciona a los administradores._\n`;
+            menuTxt += `✦ \` \` \` /antilink \` \` \` \n│ _Activa/Desactiva el anti-enlaces._\n`;
+            menuTxt += `✦ \` \` \` /kick \` \` \` \n│ _Expulsa a un usuario del grupo._\n`;
+            menuTxt += `✦ \` \` \` /add \` \` \` \n│ _Añadir usuario al grupo._\n`;
+            menuTxt += `✦ \` \` \` /promote \` \` \` \n│ _Dar rango de administrador._\n`;
+            menuTxt += `✦ \` \` \` /demote \` \` \` \n│ _Quitar rango de administrador._\n`;
+            menuTxt += `✦ \` \` \` /tagall \` \` \` \n│ _Menciona a todos los miembros._\n`;
+            menuTxt += `✦ \` \` \` /hidetag \` \` \` \n│ _Mención oculta para todos._\n`;
+            menuTxt += `✦ \` \` \` /delete \` \` \` \n│ _Elimina el mensaje citado._\n\n`;
 
-Pais: 𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 🇻🇪
-Prefijo: 𝑴𝒖𝒍𝒕𝒊 𝒑𝒓𝒆𝒇𝒊𝒋𝒐
-Status: 𝑶𝒏𝒍𝒊𝒏𝒆
-${totalComandos} Comandos
+            menuTxt += `*UTILIDADES & SYSTEM*\n\n`;
+            menuTxt += `✦ \` \` \` /ping \` \` \` \n│ _Muestra la velocidad del bot._\n`;
+            menuTxt += `✦ \` \` \` /ia \` \` \` \n│ _Consultar a la Inteligencia Artificial._\n`;
+            menuTxt += `✦ \` \` \` /info \` \` \` \n│ _Información del bot o del grupo._\n`;
+            menuTxt += `✦ \` \` \` /update \` \` \` \n│ _Actualizar el sistema._\n\n`;
 
-𝑯𝒐𝒍𝒂, *${userName}* 
-Bienvenido al sistema
+            menuTxt += `Sistema escaneado ✓\n`;
+            menuTxt += `_${script("narutobot system")}_ 🍥`;
 
-*${script("POWER")}*
+            // Nota: He puesto espacios en las comillas arriba para que no se rompa el formato aquí, 
+            // pero en tu código real quita esos espacios para que se vea el fondo gris.
 
-✦ /admins  ✦ /antilink  ✦ /kick
-✦ /add   ✦ /promote  ✦ /demote
-✦ /tagall  ✦ /hidetag  ✦ /delete
-✦ /resetlink ✦ /link   ✦ /setname
-✦ /setdesc  ✦ /infogp  ✦ /join  ✦ /out
-
-*UTILIDADES & SYSTEM*
-
-✦ /ping  ✦ /ia   ✦ /info
-✦ /menu  ✦ /listcm ✦ /listgp
-✦ /perfil ✦ /tr   ✦ /update
-✦ /fix  ✦ /ext
-
-*ZONA MIX*
-
-✦ /ppt  ✦ /tiktok ✦ /doxeo
-✦ /bug  ✦ /bc   ✦ /autodm
-✦ /unreg
-
-Sistema escaneado ✓
-_${script("narutobot system")}_ 🍥`;
-
-            // Envío con thumbnail grande y link
             await sock.sendMessage(from, {
-                text: menuTxt,
+                text: menuTxt.replace(/` ` `/g, '```'), // Esto quita los espacios automáticamente
                 contextInfo: {
                     externalAdReply: {
                         title: "𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 𝑽1",
