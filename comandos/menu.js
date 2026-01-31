@@ -9,12 +9,14 @@ module.exports = {
             const from = msg.key.remoteJid;
             const userName = msg.pushName || 'Usuario';
 
+            // Fuente elegante curva
             const script = (t) => t.toLowerCase().split('').map(c => ({
                 'a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿',
                 'k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉',
                 'u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏'
             }[c] || c)).join('');
 
+            // Conteo de comandos
             const contarComandos = (dir) => {
                 let total = 0;
                 if (!fs.existsSync(dir)) return 0;
@@ -31,9 +33,9 @@ module.exports = {
             };
 
             const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
-            const thumbUrl = "[https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg](https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg)";
+            const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
-            // Menú con comandos individuales y fondo gris
+            // CONSTRUCCIÓN DEL MENÚ
             let menuTxt = `*${script("RINNEGAN")}*\n\n`;
             menuTxt += `Pais: 𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 🇻🇪\n`;
             menuTxt += `Prefijo: 𝑴𝒖𝒍𝒕𝒊 𝒑𝒓𝒆𝒇𝒊𝒋𝒐\n`;
@@ -41,31 +43,43 @@ module.exports = {
             menuTxt += `${totalComandos} Comandos\n\n`;
             menuTxt += `𝑯𝒐𝒍𝒂, *${userName}* Bienvenido al sistema\n\n`;
 
-            menuTxt += `*${script("POWER")}*\n\n`;
-            menuTxt += `✦ \` \` \` /admins \` \` \` \n│ _Menciona a los administradores._\n`;
-            menuTxt += `✦ \` \` \` /antilink \` \` \` \n│ _Activa/Desactiva el anti-enlaces._\n`;
-            menuTxt += `✦ \` \` \` /kick \` \` \` \n│ _Expulsa a un usuario del grupo._\n`;
-            menuTxt += `✦ \` \` \` /add \` \` \` \n│ _Añadir usuario al grupo._\n`;
-            menuTxt += `✦ \` \` \` /promote \` \` \` \n│ _Dar rango de administrador._\n`;
-            menuTxt += `✦ \` \` \` /demote \` \` \` \n│ _Quitar rango de administrador._\n`;
-            menuTxt += `✦ \` \` \` /tagall \` \` \` \n│ _Menciona a todos los miembros._\n`;
-            menuTxt += `✦ \` \` \` /hidetag \` \` \` \n│ _Mención oculta para todos._\n`;
-            menuTxt += `✦ \` \` \` /delete \` \` \` \n│ _Elimina el mensaje citado._\n\n`;
+            // SECCIÓN: ADMINISTRACIÓN
+            menuTxt += `*${script("ADMINISTRACION")}*\n\n`;
+            
+            menuTxt += `✧ ⚔︎ † \` \` \` /admins \` \` \` \n`;
+            menuTxt += `│ _Menciona a los administradores._\n\n`;
 
-            menuTxt += `*UTILIDADES & SYSTEM*\n\n`;
-            menuTxt += `✦ \` \` \` /ping \` \` \` \n│ _Muestra la velocidad del bot._\n`;
-            menuTxt += `✦ \` \` \` /ia \` \` \` \n│ _Consultar a la Inteligencia Artificial._\n`;
-            menuTxt += `✦ \` \` \` /info \` \` \` \n│ _Información del bot o del grupo._\n`;
-            menuTxt += `✦ \` \` \` /update \` \` \` \n│ _Actualizar el sistema._\n\n`;
+            menuTxt += `✧ ⚔︎ † \` \` \` /antilink \` \` \` \n`;
+            menuTxt += `│ _Activa/Desactiva el anti-enlaces._\n\n`;
+
+            menuTxt += `✧ ⚔︎ † \` \` \` /kick \` \` \` \n`;
+            menuTxt += `│ _Expulsa a un usuario del grupo._\n\n`;
+
+            menuTxt += `✧ ⚔︎ † \` \` \` /promote \` \` \` \n`;
+            menuTxt += `│ _Sube el rango de un usuario._\n\n`;
+
+            menuTxt += `✧ ⚔︎ † \` \` \` /demote \` \` \` \n`;
+            menuTxt += `│ _Baja el rango de un usuario._\n\n`;
+
+            menuTxt += `✧ ⚔︎ † \` \` \` /tagall \` \` \` \n`;
+            menuTxt += `│ _Menciona a todos los miembros._\n\n`;
+
+            // SECCIÓN: UTILIDADES
+            menuTxt += `*${script("UTILIDADES")}*\n\n`;
+
+            menuTxt += `✧ 🛰︎ † \` \` \` /ping \` \` \` \n`;
+            menuTxt += `│ _Muestra la velocidad del bot._\n\n`;
+
+            menuTxt += `✧ 🛰︎ † \` \` \` /ia \` \` \` \n`;
+            menuTxt += `│ _Consultar con la IA Gemini._\n\n`;
 
             menuTxt += `Sistema escaneado ✓\n`;
             menuTxt += `_${script("narutobot system")}_ 🍥`;
 
-            // Nota: He puesto espacios en las comillas arriba para que no se rompa el formato aquí, 
-            // pero en tu código real quita esos espacios para que se vea el fondo gris.
-
+            // Envío del mensaje
             await sock.sendMessage(from, {
-                text: menuTxt.replace(/` ` `/g, '```'), // Esto quita los espacios automáticamente
+                // El .replace elimina los espacios que usamos para que el código no se rompa aquí
+                text: menuTxt.replace(/` ` `/g, '```'), 
                 contextInfo: {
                     externalAdReply: {
                         title: "𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 𝑽1",
@@ -73,7 +87,7 @@ module.exports = {
                         thumbnailUrl: thumbUrl,
                         mediaType: 1,
                         renderLargerThumbnail: true,
-                        sourceUrl: "https://github.com/jhonsystem"
+                        sourceUrl: "[https://github.com/jhonsystem](https://github.com/jhonsystem)"
                     },
                     mentionedJid: [msg.key.participant || from]
                 }
