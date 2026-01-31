@@ -50,7 +50,7 @@ ${totalComandos} Comandos cargados
 ✦ \`† /admins\`
 Menciona a los administradores
 
-✦ `† /antilink\`
+✦ \`† /antilink\`
 Activa/desactiva anti-enlaces
 
 ✦ \`† /kick\`
@@ -105,7 +105,7 @@ Bot entra o sale de grupo
 ✦ \`† /bug\`  Comandos de ataque
 ✦ \`† /bc\`  Broadcast global
 ✦ \`† /autodm\` Mensajes automáticos
-✦ \`† /unreg\` Eliminar registro
+✦ \`† /unreg\` Eliminar registros
 
 _${script("narutobot system")} • Power by Jhon_ 🏴‍☠️`;
 
