@@ -1,34 +1,76 @@
-const { exec } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
-    name: 'update',
-    alias: ['actualizar', 'fixbot'],
-    category: 'owner',
+    name: 'menu',
     run: async (sock, msg, body, args, isOwner) => {
-        // Validación de dueño
-        if (!isOwner) return sock.sendMessage(msg.key.remoteJid, { text: '❌ Este comando es solo para mi jefe *Jhon*.' });
-
         const from = msg.key.remoteJid;
-
-        // Mensaje de espera inicial
-        await sock.sendMessage(from, { 
-            text: `⚡ *𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎*\n\n> ⏳ Iniciando actualización de archivos...` 
-        }, { quoted: msg });
-
-        // Ejecución del comando de Git
-        exec('git pull', (err, stdout, stderr) => {
-            if (err) {
-                return sock.sendMessage(from, { 
-                    text: `❌ *𝐄𝐑𝐑𝐎𝐑 𝐃𝐄 𝐒𝐈𝐒𝐓𝐄𝐌𝐀*\n\n~│~ No se pudo actualizar:\n~│~ _${err.message}_` 
-                });
+        
+        // --- Contador de Comandos Reales ---
+        const contarComandos = (dir) => {
+            let total = 0;
+            if (!fs.existsSync(dir)) return 0;
+            const archivos = fs.readdirSync(dir);
+            for (const archivo of archivos) {
+                const ruta = path.join(dir, archivo);
+                if (fs.statSync(ruta).isDirectory()) {
+                    total += contarComandos(ruta);
+                } else if (archivo.endsWith('.js')) {
+                    total++;
+                }
             }
+            return total;
+        };
 
-            const resultado = stdout.trim();
-            
-            // MENSAJE FINAL (Sin comillas invertidas internas para evitar errores)
-            const mensaje = `» ˚୨•(⚔️)• ⊹ *𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒄𝒊𝒐́𝒏 𝒅𝒆𝒍 𝒃𝒐𝒕*\n\n✅ *𝒂𝒄𝒕𝒖𝒂𝒍𝒊𝒛𝒂𝒅𝒐 𝒄𝒐𝒓𝒓𝒆𝒄𝒕𝒂𝒎𝒆𝒏𝒕𝒆* 🏴‍☠️\n\n𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒆𝒔 𝒎𝒂́𝒔 *𝒇𝒖𝒆𝒓𝒕𝒆* 𝒂𝒉𝒐𝒓𝒂 💪\n\n${resultado.includes('Already up to date') ? '𝒑𝒓𝒐𝒚𝒆𝒄𝒕𝒐 𝒔𝒊𝒏 𝒄𝒂𝒎𝒃𝒊𝒐𝒔 𝒑𝒆𝒏𝒅𝒊𝒆𝒏𝒕𝒆𝒔' : resultado}`;
+        const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
+        const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg"; 
 
-            return sock.sendMessage(from, { text: mensaje }, { quoted: msg });
-        });
+        // --- CUERPO DEL MENÚ (AESTHETIC & COMPACTO) ---
+        let menuTxt = `*𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐂𝐈𝐎𝐍 𝐂𝐄𝐍𝐓𝐑𝐀𝐋*\n`;
+        menuTxt += `_𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎_ 🍥\n\n`;
+        
+        menuTxt += `Hola! Soy *Narutobot* 🍥\n`;
+        menuTxt += `¡Bienvenido, *Jhon* 🏴‍☠️!\n\n`;
+
+        // --- DISEÑO COMPACTO ---
+        menuTxt += `┏━━━〔 ✦ *𝐒𝐘𝐒𝐓𝐄𝐌 𝐃𝐀𝐓𝐀* ✦ 〕━━━┓\n`;
+        menuTxt += `⁐ ✑ *𝐏𝐚𝐢𝐬:* Ven 🇻🇪  |  *𝐏𝐫𝐞𝐟𝐢𝐣𝐨:* Multi\n`;
+        menuTxt += `⁐ ✑ *𝐄𝐬𝐭𝐚𝐝𝐨:* Online ✅ |  *𝐂𝐦𝐝𝐬:* ${totalComandos}\n`;
+        menuTxt += `┗━━━━━━━━━━━━━━━━━━━━┛\n\n`;
+
+        // SECCIÓN ADMIN
+        menuTxt += `~│~ ✦ *𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐂𝐈𝐎𝐍 𝐃𝐄 𝐆𝐑𝐔𝐏𝐎𝐒*\n`;
+        menuTxt += `† */admins*\n† */antilink*\n† */kick*\n† */add*\n† */promote*\n† */demote*\n† */tagall*\n† */hidetag*\n† */delete*\n† */resetlink*\n† */link*\n† */setname*\n† */setdesc*\n† */infogp*\n† */join*\n† */out*\n`;
+        menuTxt += `~│~\n`;
+
+        // SECCIÓN UTILIDADES
+        menuTxt += `» ~°•(⚡)• ÷~ *𝐔𝐓𝐈𝐋𝐈𝐃𝐀𝐃𝐄𝐒 & 𝐒𝐘𝐒𝐓𝐄𝐌* ~÷~\n`;
+        menuTxt += `⚡ */ping*\n⚡ */ia*\n⚡ */info*\n⚡ */menu*\n⚡ */listcm*\n⚡ */listgp*\n⚡ */perfil*\n⚡ */tr*\n⚡ */update*\n⚡ */fix*\n⚡ */ext*\n`;
+        menuTxt += `~│~\n`;
+
+        // SECCIÓN DIVERSIÓN/MIX
+        menuTxt += `» ~°•(★)• ÷~ *𝐙𝐎𝐍𝐀 𝐌𝐈𝐗* ~÷~\n`;
+        menuTxt += `★ */ppt*\n★ */tiktok*\n★ */doxeo*\n★ */bug*\n★ */bc*\n★ */autodm*\n★ */unreg*\n`;
+        menuTxt += `~│~\n\n`;
+
+        menuTxt += `🚀 *𝒔𝒚𝒔𝒕𝒆𝒎:* Escaneo completado.\n`;
+        menuTxt += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
+
+        // --- ENVÍO ÚNICO CON SOURCEURL INTEGRADO ---
+        await sock.sendMessage(from, { 
+            text: menuTxt, 
+            contextInfo: {
+                externalAdReply: {
+                    title: "𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎 𝑽1",
+                    body: "𝑱𝒉𝒐𝒏 𝑮𝒖𝒆𝒓𝒓𝒂 🏴‍☠️",
+                    mediaType: 1,
+                    previewType: 0,
+                    renderLargerThumbnail: true,
+                    thumbnailUrl: thumbUrl,
+                    sourceUrl: "https://github.com/jhonsystem" 
+                },
+                mentionedJid: [msg.key.participant || from]
+            }
+        }, { quoted: msg });
     }
 };
