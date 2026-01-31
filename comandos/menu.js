@@ -28,16 +28,15 @@ module.exports = {
 
         // --- ENCABEZADO ---
         let menuTxt = `*𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐂𝐈𝐎𝐍 𝐂𝐄𝐍𝐓𝐑𝐀𝐋*\n`;
-        menuTxt += `_𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝑺𝒚𝒔𝒕𝒆𝒎_ 🍥\n\n`;
-
-        // --- INFO PERSONALIZADA ---
-        menuTxt += `𝑷𝒂𝒊𝒔 : *𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂* 🇻🇪\n`;
-        menuTxt += `𝑷𝒓𝒆𝒇𝒊𝒋𝒐 : *𝑴𝒖𝒍𝒕𝒊 𝒑𝒓𝒆𝒇𝒊𝒋𝒐* 😈\n`;
-        menuTxt += `𝑺𝒕𝒂𝒕𝒖𝒔 : *𝑩𝒖𝒔𝒄𝒂𝒏𝒅𝒐 𝒖𝒏𝒂 𝒎𝒊𝒏𝒂* 😳\n`;
-        menuTxt += `𝑻𝒐𝒕𝒂𝒍 𝒄𝒐𝒎𝒂𝒏𝒅𝒐𝒔 : *${totalComandos}* 😵‍💫\n\n`;
-
-        menuTxt += `¡𝐇𝐨𝐥𝐚 👋! 𝐌𝐮𝐜𝐡𝐨 𝐠𝐮𝐬𝐭𝐨 *${pushName}*\n`;
-        menuTxt += `!𝐒𝐨𝐲 𝐍𝐚𝐫𝐮𝐭𝐨𝐁𝐨𝐭! 𝐀𝐜𝐚 𝐭𝐞 𝐝𝐞𝐣𝐨 𝐥𝐚 𝐥𝐢𝐬𝐭𝐚 𝐝𝐞 𝐜𝐨𝐦𝐚𝐝𝐨𝐬. 🏌️‍♂️\n\n`;
+        menuTxt += ┌───〔 𝑵𝑨𝑹𝑼𝑻𝑶𝑩𝑶𝑻 𝑴𝑬𝑵𝑼 〕───┐\n;
+menuTxt += │ 𝑷𝒂𝒊𝒔 : 𝑽𝒆𝒏𝒆𝒛𝒖𝒆𝒍𝒂 🇻🇪\n;
+menuTxt += │ 𝑷𝒓𝒆𝒇𝒊𝒋𝒐 : 𝑴𝒖𝒍𝒕𝒊 𝒑𝒓𝒆𝒇𝒊𝒋𝒐 😈\n;
+menuTxt += │ 𝑺𝒕𝒂𝒕𝒖𝒔 : 𝑩𝒖𝒔𝒄𝒂𝒏𝒅𝒐 𝒖𝒏𝒂 𝒎𝒊𝒏𝒂 😳\n;
+menuTxt += │ 𝑻𝒐𝒕𝒂𝒍 : ${totalComandos} 😵‍💫\n;
+menuTxt += ├──────────────────────────────┤\n;
+menuTxt += │ ¡𝐇𝐨𝐥𝐚 👋! ${pushName}\n;
+menuTxt += │ 𝐒𝐨𝐲 𝐍𝐚𝐫𝐮𝐭𝐨𝐁𝐨𝐭, aquí tienes los comandos.\n;
+menuTxt += └──────────────────────────────┘\n\n;
 
         // --- SECCIÓN: ADMINISTRACIÓN ---
         menuTxt += `~│~ ✦ *𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐂𝐈𝐎𝐍 𝐃𝐄 𝐆𝐑𝐔𝐏𝐎𝐒*\n`;
