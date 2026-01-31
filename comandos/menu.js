@@ -35,7 +35,7 @@ module.exports = {
             const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
 
             // Thumbnail Kyubi mode brutal (ojos rojos, aura naranja intensa)
-            const thumbUrl = "https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg";
+            const thumbUrl = "https://i.postimg.cc/L80zmXVt/13171525-3713-4cd2-b376-44cfdae256a7-(1).jpg";
 
             const menuTxt = `
 🦊 *${script("naruto bot")}* 🦊
