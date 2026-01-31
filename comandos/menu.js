@@ -50,7 +50,7 @@ ${totalComandos} Comandos cargados
 ✦ \`† /admins\`
 Menciona a los administradores
 
-✦ \`† /antilink\`
+✦ `† /antilink\`
 Activa/desactiva anti-enlaces
 
 ✦ \`† /kick\`
