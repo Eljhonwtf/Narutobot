@@ -35,8 +35,8 @@ module.exports = {
             const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
 
             // Thumbnail aesthetic Naruto adulto (sabio y poderoso)
-            const thumbUrl = "https://wallpapercave.com/wp/wp6410779.jpg"; 
-            // Alternativa Kyubi: "https://wallpapercave.com/wp/wp1844042.jpg"
+            const thumbUrl = "https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg"; 
+            // Alternativa Kyubi: "https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg"
 
             const menuTxt = `
 🦊 *${script("naruto bot")}* 🦊
