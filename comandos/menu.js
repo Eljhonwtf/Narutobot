@@ -41,7 +41,8 @@ module.exports = {
 
         // --- SECCIÓN: ADMINISTRACIÓN (Uno debajo del otro) ---
         menuTxt += `~│~ ✦ *𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐂𝐈𝐎𝐍 𝐃𝐄 𝐆𝐑𝐔𝐏𝐎𝐒*\n`;
-        menuTxt += `† */admins*\n`;
+        menuTxt += `† */𝑎𝑑𝑚𝑖𝑛𝑠*\n`;
+╰┈➤ 𝑴𝒆𝒏𝒄𝒊𝒐𝒏𝒂𝒓 𝒂 𝒍𝒐𝒔 𝒂𝒅𝒎𝒊𝒏𝒊𝒔𝒕𝒓𝒂𝒅𝒐𝒓𝒆𝒔
         menuTxt += `† */antilink*\n`;
         menuTxt += `† */kick*\n`;
         menuTxt += `† */add*\n`;
