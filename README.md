@@ -26,13 +26,7 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 Comandos para instalar automáticamente
 
 ```bash
+​<!-- end list -->
 termux-setup-storage
-
-apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
-
-git clone https://github.com/Eljhonwtf/Narutobot
-yarn install && npm install
-
-npm start
 
 Si aparece (Y/I/N/O/D/Z) [default=N] ? use la letra "y" + "ENTER" para continuar con la instalación
