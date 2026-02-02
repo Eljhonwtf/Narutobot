@@ -14,18 +14,24 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 ### Animación de Ejecución
 ![Bot Animation](https://media.tenor.com/0oH4V4Z2fO0AAAAC/code-programming.gif)
 
----
-
 ## Instalación en Termux (Android)
 
 > [!IMPORTANT]
 > **Este bot está optimizado para Termux en Android. Si experimentas problemas, verifica tu versión de Node.js y reporta en issues. Para un rendimiento óptimo, usa la instalación automática.**
 
-### Instalación Automática en Termux
-1. Abre Termux en tu Android y ejecuta:
+### (OPCIÓN 1) INSTALACIÓN AUTOMÁTICA EN TERMUX
+<details>
+<summary>▼ Toca para ver más.</summary>
 
+Comandos para instalar automáticamente
+
+```bash
 termux-setup-storage
-apt update && apt upgrade -y
-pkg install git nodejs ffmpeg libwebp -y
+
+apt update && apt upgrade && pkg install -y git nodejs ffmpeg libwebp
+
 wget -O install.sh https://raw.githubusercontent.com/jhonsystem/NarutoBot-MD/main/install.sh
+
 bash install.sh
+
+Si aparece (Y/I/N/O/D/Z) [default=N] ? use la letra "y" + "ENTER" para continuar con la instalación
