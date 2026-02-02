@@ -26,3 +26,4 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 ### 1. Permisos de almacenamiento
 ```bash
 termux-setup-storage
+
