@@ -28,10 +28,11 @@ Comandos para instalar automáticamente
 ```bash
 termux-setup-storage
 
-apt update && apt upgrade && pkg install -y git nodejs ffmpeg libwebp
+apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
 
-wget -O install.sh https://raw.githubusercontent.com/jhonsystem/NarutoBot-MD/main/install.sh
+git clone https://github.com/Eljhonwtf/Narutobot
+yarn install && npm install
 
-bash install.sh
+npm start
 
 Si aparece (Y/I/N/O/D/Z) [default=N] ? use la letra "y" + "ENTER" para continuar con la instalación
