@@ -1,18 +1,102 @@
-# Narutobot
+<p align="center">
+  <img src="https://i.imgur.com/mODrR8a.gif" alt="Narutobot logo" width="350"/>
+  <br>
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=23&duration=3500&color=FFA300&center=true&vCenter=true&width=450&lines=Narutobot+-+El+bot+definitivo+de+Naruto;Increíble+potencial+shinobi+en+WhatsApp;¡Diseñado+por+Obito!;En+desarrollo..." alt="Narutobot Typing SVG"/>
+</p>
 
-Narutobot es un bot desarrollado para chatear sobre Naruto.
+---
 
-## Características
+<p align="center">
+  <img src="https://img.shields.io/badge/Naruto-Bot-orange?style=for-the-badge&logo=firefox&logoColor=white">
+  <img src="https://img.shields.io/badge/Obito%20%7C%20Dueño-red?style=for-the-badge&logo=github" />
+  <img src="https://img.shields.io/badge/Estado-En_Desarrollo-yellow?style=for-the-badge&logo=tools&logoColor=white">
+  <img src="https://img.shields.io/badge/WhatsApp-Contacto-green?style=for-the-badge&logo=whatsapp&logoColor=white" />
+</p>
+<p align="center">
+  <b>Contacto: +58 4142577312</b>
+</p>
 
-- Interacciones divertidas.
-- Respuestas rápidas.
+---
 
-Para más información sobre Narutobot, revisa la documentación en nuestro repositorio.
+## 🌀 Información del bot
 
-## Contribuciones
+**Narutobot** es el bot definitivo inspirado en el universo Naruto.
+Desarrollado por **Obito**, el bot está en constante evolución y promete ofrecer experiencias únicas, comandos exclusivos y una integración poderosa en grupos de WhatsApp.
 
-¡Las contribuciones son bienvenidas! Puedes contribuir enviando un pull request.
+> ⚡ **Actual:** Bot en desarrollo. ¡Pronto será el compañero shinobi que todos querrán en sus chats!
 
-## Licencia
+---
 
-Este proyecto está bajo la Licencia MIT.
+## 🚀 Guía para instalar Narutobot en Termux
+
+### 1. Instala dependencias y prepara Termux
+
+```bash
+termux-setup-storage
+apt update -y && apt upgrade -y
+pkg install git nodejs ffmpeg imagemagick yarn -y
+```
+
+### 2. Clona el repositorio de Narutobot
+
+```bash
+git clone https://github.com/Eljhonwtf/Narutobot.git
+cd Narutobot
+```
+
+### 3. Instala los paquetes necesarios
+
+```bash
+yarn install
+npm install
+```
+
+### 4. Inicia Narutobot
+
+```bash
+npm start
+```
+
+> **Recomendación:** Si ves una pregunta **(Y/I/N/O/D/Z) [default=N] ?**, presiona la letra **y** y ENTER para continuar.
+
+---
+
+## 🎨 Características
+
+- Comandos temáticos del universo Naruto
+- Respuestas rápidas y animadas
+- Personalización y actualizaciones constantes
+- Próximamente: juegos, trivias y mucho más
+
+---
+
+## 👑 Dueño Principal
+
+**Obito**
+
+---
+
+## 📦 Colaboraciones y Desarrollo
+
+¿Quieres contribuir? ¡Tus ideas y ayuda son siempre bienvenidos!
+Haz un fork del proyecto, crea tus mejoras y envía un Pull Request.
+
+---
+
+## 🥋 Aviso
+
+**Narutobot** está en desarrollo.
+Pronto tendrás al bot ninja más increíble en tu grupo de WhatsApp.
+¡Mantente atento a nuevas actualizaciones y características!
+
+---
+
+<p align="center">
+  <img src="https://media.tenor.com/naruto-running.gif" alt="Naruto Running" width="300"/>
+</p>
+
+---
+
+## 📝 Licencia
+
+Este proyecto está bajo Licencia MIT.
