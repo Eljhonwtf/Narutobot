@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/mODrR8a.gif" alt="Narutobot logo" width="350"/>
+  <img src="https://wallpapers.com/images/hd/cute-naruto-smile-lt0y5gfwket33d3c.jpg" alt="Narutobot logo" width="350"/>
   <br>
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=18&duration=3300&color=11FF11&center=true&vCenter=true&width=520&lines=Bienvenidos+a+Narutobot;Espero+lo+disfrutes..+❤️" alt="Bienvenida Narutobot"/>
 </p>
