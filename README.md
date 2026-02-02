@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/mODrR8a.gif" alt="Narutobot logo" width="350"/>
+  <img src="https://wallpapers.com/images/hd/cute-naruto-smile-lt0y5gfwket33d3c.jpg" alt="Narutobot logo" width="350"/>
   <br>
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=23&duration=3500&color=FFA300&center=true&vCenter=true&width=450&lines=Narutobot+-+El+bot+definitivo+de+Naruto;Increíble+potencial+shinobi+en+WhatsApp;¡Diseñado+por+Obito!;En+desarrollo..." alt="Narutobot Typing SVG"/>
 </p>
