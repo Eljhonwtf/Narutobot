@@ -1,19 +1,19 @@
 <p align="center">
-  <img src="https://i.imgur.com/mODrR8a.gif" alt="Narutobot logo" width="350"/>
+  <img src="https://wallpapers.com/images/hd/cute-naruto-smile-lt0y5gfwket33d3c.jpg" alt="Narutobot logo" width="350"/>
   <br>
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=18&duration=3300&color=11FF11&center=true&vCenter=true&width=520&lines=Bienvenidos+a+Narutobot;Espero+lo+disfrutes..+❤️" alt="Bienvenida Narutobot"/>
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=23&duration=3500&color=FFA300&center=true&vCenter=true&width=450&lines=Narutobot+-+El+bot+definitivo+de+Naruto;Increíble+potencial+shinobi+en+WhatsApp;¡Diseñado+por+Obito!;En+desarrollo..." alt="Narutobot Typing SVG"/>
 </p>
 
 ---
 
 <p align="center">
   <img src="https://img.shields.io/badge/Naruto-Bot-orange?style=for-the-badge&logo=firefox&logoColor=white">
-  <img src="https://img.shields.io/badge/Obito%20%7C%20Due%C3%B1o-red?style=for-the-badge&logo=github" />
+  <img src="https://img.shields.io/badge/Obito%20%7C%20Dueño-red?style=for-the-badge&logo=github" />
   <img src="https://img.shields.io/badge/Estado-En_Desarrollo-yellow?style=for-the-badge&logo=tools&logoColor=white">
-  <img src="https://img.shields.io/badge/Contacto-green?style=for-the-badge&logo=whatsapp&logoColor=white" />
+  <img src="https://img.shields.io/badge/WhatsApp-Contacto-green?style=for-the-badge&logo=whatsapp&logoColor=white" />
 </p>
 <p align="center">
-  <b>Contacto: <a href="https://wa.me/584142577312" target="_blank">+58 4142577312 (Haz clic para escribir)</a></b>
+  <b>Contacto: +58 4142577312</b>
 </p>
 
 ---
