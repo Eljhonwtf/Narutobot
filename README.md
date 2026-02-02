@@ -7,13 +7,21 @@
 ---
 
 <p align="center">
+  <img src="https://i.imgur.com/mODrR8a.gif" alt="Narutobot logo" width="350"/>
+  <br>
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=18&duration=4000&color=11FF11&center=true&vCenter=true&width=390&lines=Bienvenidos+a+Narutobot,+espero+lo+disfrutes..+❤️" alt="Bienvenida Narutobot"/>
+</p>
+
+...
+
+<p align="center">
   <img src="https://img.shields.io/badge/Naruto-Bot-orange?style=for-the-badge&logo=firefox&logoColor=white">
-  <img src="https://img.shields.io/badge/Obito%20%7C%20Dueño-red?style=for-the-badge&logo=github" />
+  <img src="https://img.shields.io/badge/Obito%20%7C%20Due%C3%B1o-red?style=for-the-badge&logo=github" />
   <img src="https://img.shields.io/badge/Estado-En_Desarrollo-yellow?style=for-the-badge&logo=tools&logoColor=white">
   <img src="https://img.shields.io/badge/WhatsApp-Contacto-green?style=for-the-badge&logo=whatsapp&logoColor=white" />
 </p>
 <p align="center">
-  <b>Contacto: +58 4142577312</b>
+  <b>Contacto: <a href="https://wa.me/584142577312" target="_blank">+58 4142577312 (Haz clic para escribir)</a></b>
 </p>
 
 ---
