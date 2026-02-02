@@ -22,5 +22,5 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 ### (OPCIÓN 1) INSTALACIÓN AUTOMÁTICA EN TERMUX
 <details>
 <summary>▼ Toca para ver más.</summary>
-termux-setup-storage
+``` bash termux-setup-storage
 
