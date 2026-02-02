@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/WhatsApp-Contacto-green?style=for-the-badge&logo=whatsapp&logoColor=white" />
 </p>
 <p align="center">
-  <b>Contacto: +58 4142577312</b>
+  <b>Contacto: <a href="https://wa.me/584142577312" target="_blank">+58 4142577312 (Haz clic para escribir)</a></b>
 </p>
 
 ---
