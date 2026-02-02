@@ -23,3 +23,9 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 
 ### Instalación Automática en Termux
 1. Abre Termux en tu Android y ejecuta:
+
+termux-setup-storage
+apt update && apt upgrade -y
+pkg install git nodejs ffmpeg libwebp -y
+wget -O install.sh https://raw.githubusercontent.com/jhonsystem/NarutoBot-MD/main/install.sh
+bash install.sh
