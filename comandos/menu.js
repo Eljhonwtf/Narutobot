@@ -25,13 +25,13 @@ module.exports = {
     const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
     const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
-    let menuTxt = `✨ *NARUTOBOT SYSTEM* ✨\n\n`;
+    let menuTxt = `🧙‍♂️ *𝑵𝒂𝒓𝒖𝒕𝒐 𝒃𝒐𝒕 𝒎𝒖𝒍𝒕𝒊 𝒅𝒆𝒗𝒊𝒄𝒆* 🧙‍♂️\n\n`;
     menuTxt += `👤 *Usuario:* ${pushName}\n`;
     menuTxt += `🇻🇪 *Venezuela* | ${totalComandos} Comandos\n\n`;
 
     // ═══════════════════════════════
-    menuTxt += `🔧 *ADMINISTRACIÓN*\n\n`;
-    menuTxt += `/admins\n> Mencionar administradores\n\n`;
+    menuTxt += `🔧 *𝑨𝒄𝒂 𝒕𝒊𝒆𝒏𝒆𝒔 𝒍𝒂 𝒍𝒊𝒔𝒕𝒂 𝒅𝒆𝒍 𝒃𝒐𝒕* 👋\n\n`;
+    menuTxt += 𝐴𝑑𝑚𝑖𝑛𝑠 Mencionar administradores\n\n`;
     menuTxt += `/antilink\n> Activar anti-enlaces\n\n`;
     menuTxt += `/kick\n> Eliminar usuario\n\n`;
     menuTxt += `/add\n> Agregar usuario\n\n`;
