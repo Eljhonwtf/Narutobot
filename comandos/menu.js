@@ -1,4 +1,4 @@
-const fs = require('fs');
+ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
@@ -31,9 +31,12 @@ module.exports = {
 
     // ADMIN - SIN ESPACIOS EXTRAS
     menuTxt += `🔧 *𝐀𝐃𝐌𝐈𝐍𝐈𝐒𝐓𝐑𝐀𝐂𝐈𝐎𝐍* 👑\n`;
-    menuTxt += `/admins > 𝑀𝑒𝓃𝒸𝒾𝑜𝓃𝒶𝓇 𝒶𝒹𝓂𝒾𝓃𝓈\n`;
-    menuTxt += `/antilink > 𝒜𝒸𝓉𝒾𝓋𝒶𝓇 𝒶𝓃𝓉𝒾-𝑒𝓃𝓁𝒶𝒸𝑒𝓈\n`;
-    menuTxt += `/kick > 𝐸𝓁𝒾𝓂𝒾𝓃𝒶𝓇 𝓊𝓈𝓊𝒶𝓇𝒾𝑜\n`;
+    menuTxt += `/admins
+ > 𝑀𝑒𝓃𝒸𝒾𝑜𝓃𝒶𝓇 𝒶𝒹𝓂𝒾𝓃𝓈\n`;
+    menuTxt += `/antilink
+ > 𝒜𝒸𝓉𝒾𝓋𝒶𝓇 𝒶𝓃𝓉𝒾-𝑒𝓃𝓁𝒶𝒸𝑒𝓈\n`;
+    menuTxt += `/kick
+ > 𝐸𝓁𝒾𝓂𝒾𝓃𝒶𝓇 𝓊𝓈𝓊𝒶𝓇𝒾𝑜\n`;
     menuTxt += `/add > 𝒜𝑔𝓇𝑒𝑔𝒶𝓇 𝓊𝓈𝓊𝒶𝓇𝒾𝑜\n`;
     menuTxt += `/promote > 𝐷𝒶𝓇 𝒶𝒹𝓂𝒾𝓃\n`;
     menuTxt += `/demote > 𝒬𝓊𝒾𝓉𝒶𝓇 𝒶𝒹𝓂𝒾𝓃\n`;
