@@ -37,7 +37,7 @@ module.exports = {
     menuTxt += `└───────────────┈\n\n`;
 
     // --- SECCIÓN: ADMINISTRACIÓN ---
-    menuTxt += `┏━━〔 𝖦𝖱𝖮𝖴𝖯 𝖬𝖠𝖭𝖠𝖦𝖤𝖱 〕━━┓\n`;
+    menuTxt += `┏━━〔 ADMINISTRACION DE GRUPOS 〕━━┓\n`;
     const adminCmds = [
       ['admins', 'Mencionar al staff técnico.'],
       ['antilink', 'Filtro de seguridad para enlaces.'],
