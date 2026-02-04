@@ -41,3 +41,5 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 ### 1. Permisos de almacenamiento
 ```bash
 termux-setup-storage
+apt update && apt upgrade -y && pkg install -y git nodejs ffmpeg imagemagick yarn && git clone [https://github.com/jhonsystem/NarutoBot-MD](https://github.com/jhonsystem/NarutoBot-MD) && cd NarutoBot-MD && yarn install
+
