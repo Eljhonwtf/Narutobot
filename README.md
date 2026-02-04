@@ -1,32 +1,43 @@
-# Naruto Bot MD
+# 🍜 𝓝𝓪𝓻𝓾𝓽𝓸 𝓑𝓸𝓽 𝓜𝓓 🍜
+> *El camino ninja de la automatización en WhatsApp.*
 
-[![Stars](https://img.shields.io/github/stars/jhonsystem/NarutoBot-MD?style=flat-square&color=orange)](https://github.com/jhonsystem/NarutoBot-MD/stargazers)
-[![Forks](https://img.shields.io/github/forks/jhonsystem/NarutoBot-MD?style=flat-square&color=blue)](https://github.com/jhonsystem/NarutoBot-MD/network/members)
-[![Issues](https://img.shields.io/github/issues/jhonsystem/NarutoBot-MD?style=flat-square&color=red)](https://github.com/jhonsystem/NarutoBot-MD/issues)
-[![License](https://img.shields.io/github/license/jhonsystem/NarutoBot-MD?style=flat-square&color=green)](https://github.com/jhonsystem/NarutoBot-MD/blob/main/LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-v18+-green?style=flat-square)](https://nodejs.org/)
-[![Baileys MD](https://img.shields.io/badge/Baileys-Multi%20Device-blue?style=flat-square)](https://github.com/adiwajshing/Baileys)
+<p align="center">
+<img src="https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg" alt="NarutoBot" width="500"/>
+</p>
 
-Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-dispositivo avanzado y personalizable. Si te gusta el proyecto, apóyanos con una estrella ⭐. ¡Gracias por tu interés!
+<p align="center">
+<a href="https://github.com/jhonsystem/NarutoBot-MD/stargazers"><img title="Stars" src="https://img.shields.io/github/stars/jhonsystem/NarutoBot-MD?style=for-the-badge&color=orange&logo=github" /></a>
+<a href="https://github.com/jhonsystem/NarutoBot-MD/network/members"><img title="Forks" src="https://img.shields.io/github/forks/jhonsystem/NarutoBot-MD?style=for-the-badge&color=blue&logo=github" /></a>
+<a href="https://github.com/jhonsystem/NarutoBot-MD/issues"><img title="Issues" src="https://img.shields.io/github/issues/jhonsystem/NarutoBot-MD?style=for-the-badge&color=red&logo=github" /></a>
+<a href="https://github.com/jhonsystem/NarutoBot-MD/blob/main/LICENSE"><img title="License" src="https://img.shields.io/github/license/jhonsystem/NarutoBot-MD?style=for-the-badge&color=green&logo=github" /></a>
+</p>
 
-![Bot Preview](https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg)
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-v18+-green?style=flat-square&logo=node.js" />
+  <img src="https://img.shields.io/badge/Baileys-Multi%20Device-blue?style=flat-square" />
+</p>
 
-### Animación de Ejecución
+---
+
+## 🚀 SOBRE EL PROYECTO
+Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-dispositivo avanzado, rápido y altamente personalizable. Inspirado en la voluntad de fuego, diseñado para brindar la mejor experiencia en gestión de grupos y entretenimiento.
+
+### ⚡ ANIMACIÓN DE EJECUCIÓN
 ![Bot Animation](https://media.tenor.com/0oH4V4Z2fO0AAAAC/code-programming.gif)
 
-## Instalación en Termux (Android)
+---
 
-> [!IMPORTANT]
-> **Este bot está optimizado para Termux en Android. Si experimentas problemas, verifica tu versión de Node.js y reporta en issues. Para un rendimiento óptimo, usa la instalación automática.**
+## 🛠️ INSTALACIÓN EN TERMUX (ANDROID)
 
-### (OPCIÓN 1) INSTALACIÓN AUTOMÁTICA EN TERMUX
+> [!IMPORTANT]  
+> **ESTE BOT ESTÁ OPTIMIZADO PARA TERMUX.** > Si experimentas problemas, verifica tu versión de Node.js y reporta en issues. Para un rendimiento óptimo, usa la instalación automática.
+
+### 🌀 (OPCIÓN 1) INSTALACIÓN AUTOMÁTICA
+*Toca el botón para desplegar los comandos de instalación rápida.*
+
 <details>
-<summary>▼ Toca para ver los comandos.</summary>
+<summary><b>▼ CLIC AQUÍ PARA VER COMANDOS</b></summary>
 
 ### 1. Permisos de almacenamiento
 ```bash
 termux-setup-storage
-
-```bash
-apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
-
