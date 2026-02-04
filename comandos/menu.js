@@ -25,8 +25,8 @@ module.exports = {
     const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
     const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
-    let menuTxt = `🏌️‍♂️ *𝓝𝓪𝓻𝓾𝓽𝓸𝓑𝓸𝓽 𝓜𝓾𝓵𝓽𝓲* 🏌️‍♂️\n\n`;
-    menuTxt += `🚀 *ℎ𝑜𝑙𝑎* 👋 ${pushName}\n`;
+    let menuTxt = `🏌️‍♂️ *𝐼𝑁𝐹𝑂𝑅𝑀𝐴𝐶𝐼𝑂𝑁 𝐷𝐸𝐿 𝐵𝑂𝑇* 🏌️‍♂️\n\n`;
+    menuTxt += `𝐻𝑜𝑙𝑎 𝑏𝑖𝑒𝑛𝑣𝑒𝑛𝑖𝑑𝑜 ${pushName} 𝑎𝑐𝑎 𝑡𝑒 𝑑𝑑𝑗𝑜 𝑙𝑎 𝑖𝑛𝑓𝑟𝑜𝑚𝑎𝑐𝑖𝑜𝑛 𝑑𝑒𝑙 𝑏𝑜𝑡😊\n`;
     menuTxt += `🇻🇪 *𝒱𝑒𝓃𝑒𝓏𝓊𝑒𝓁𝒶* | ${totalComandos} 𝒸𝑜𝓂𝒶𝓃𝒹𝑜𝓈 | ⚡ *𝐄𝐬𝐭𝐚𝐝𝐨:* 🟢 𝒪𝓃𝓁𝒾𝓃𝑒 🚀\n\n`;
 
     // ADMIN - SIN ESPACIOS EXTRAS
