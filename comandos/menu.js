@@ -7,6 +7,14 @@ module.exports = {
     const from = msg.key.remoteJid;
     const pushName = msg.pushName || 'Usuario';
 
+    // --- REACCIÓN AUTOMÁTICA AL USUARIO ---
+    await sock.sendMessage(from, { 
+      react: { 
+        text: "🍥", 
+        key: msg.key 
+      } 
+    });
+
     const contarComandos = (dir) => {
       let total = 0;
       if (!fs.existsSync(dir)) return 0;
@@ -28,7 +36,7 @@ module.exports = {
     const mins = Math.floor((uptime % 3600) / 60);
     const thumbUrl = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
-    // --- DISEÑO ESTILO GATA-LIKE (NARUTOBOT) ---
+    // --- DISEÑO ESTILO GATA-LIKE (NARUTOBOT MD) ---
     let menuTxt = `┏━━━━━━━━━━━━━━━━━━━━━┓\n`;
     menuTxt += `┃  ✨ *ミ★ 𝘕𝘈𝘙𝘜𝘛𝘖𝘉𝘖𝘛 𝘔𝘋 ★彡* ✨\n`;
     menuTxt += `┗━━━━━━━━━━━━━━━━━━━━━┛\n\n`;
@@ -50,42 +58,72 @@ module.exports = {
     // --- SECCIÓN: ADMINISTRACIÓN ---
     menuTxt += `╭━━〔 🛡️ *𝖠𝖣𝖬𝖨𝖲𝖳𝖱𝖠𝖢𝖨𝖮𝖭* 〕━━┈\n`;
     const adminCmds = [
-      ['admins', 'Mencionar staff'],
-      ['kick', 'Remover usuario'],
-      ['tagall', 'Mención total'],
-      ['antilink', 'Seguridad link']
+      ['admins', 'Mencionar al staff'],
+      ['kick', 'Remover un integrante'],
+      ['promote', 'Dar admin a alguien'],
+      ['demote', 'Quitar admin a alguien'],
+      ['tagall', 'Mencionar a todos'],
+      ['antilink', 'Seguridad anti-links'],
+      ['link', 'Enlace del grupo'],
+      ['resetlink', 'Restablecer enlace'],
+      ['infogp', 'Info del grupo'],
+      ['out', 'Salir del grupo']
     ];
     adminCmds.forEach(([cmd, desc]) => {
       menuTxt += `┋ ❒ */${cmd}*\n┋ ↳ _${desc}_\n`;
     });
     menuTxt += `╰━━━━━━━━━━━━━━━━━━━━━┈\n\n`;
 
-    // --- SECCIÓN: UTILIDADES ---
-    menuTxt += `╭━━〔 ⚙️ *𝖴𝖳𝖨𝖫𝖨𝖣𝖠𝖣𝖤𝖲* 〕━━┈\n`;
+    // --- SECCIÓN: HERRAMIENTAS ---
+    menuTxt += `╭━━〔 ⚙️ *𝖧𝖤𝖱𝖱𝖠𝖬𝖨𝖤𝖭𝖳𝖠𝖲* 〕━━┈\n`;
     const utilCmds = [
-      ['ping', 'Velocidad bot'],
-      ['ia', 'Cerebro IA'],
-      ['perfil', 'Mis datos'],
-      ['update', 'Actualizar']
+      ['ia', 'Inteligencia Artificial'],
+      ['tr', 'Traductor de texto'],
+      ['ping', 'Velocidad del bot'],
+      ['perfil', 'Mis datos de usuario'],
+      ['info', 'Información del bot'],
+      ['listcm', 'Lista de comandos'],
+      ['listgp', 'Lista de grupos'],
+      ['update', 'Actualizar sistema'],
+      ['fix', 'Reparar errores']
     ];
     utilCmds.forEach(([cmd, desc]) => {
       menuTxt += `┋ ❒ */${cmd}*\n┋ ↳ _${desc}_\n`;
     });
     menuTxt += `╰━━━━━━━━━━━━━━━━━━━━━┈\n\n`;
 
-    // --- SECCIÓN: ZONA MIX ---
+    // --- SECCIÓN: CONFIGURACIÓN ---
+    menuTxt += `╭━━〔 🏮 *𝖢𝖮𝖭𝖥𝖨𝖦 / 𝖮𝖶𝖭𝖤𝖱* 〕━━┈\n`;
+    const configCmds = [
+      ['setname', 'Cambiar nombre GP'],
+      ['setdesc', 'Cambiar descripción'],
+      ['bc', 'Transmisión oficial'],
+      ['autodm', 'Mensaje directo auto'],
+      ['join', 'Unir bot a grupo'],
+      ['unreg', 'Eliminar registro'],
+      ['delete', 'Eliminar mensaje'],
+      ['bug', 'Reportar fallo']
+    ];
+    configCmds.forEach(([cmd, desc]) => {
+      menuTxt += `┋ ❒ */${cmd}*\n┋ ↳ _${desc}_\n`;
+    });
+    menuTxt += `╰━━━━━━━━━━━━━━━━━━━━━┈\n\n`;
+
+    // --- SECCIÓN: MIX & JUEGOS ---
     menuTxt += `╭━━〔 🎮 *𝖹𝖮𝖭𝖠 𝖬𝖨𝖷* 〕━━┈\n`;
     const mixCmds = [
-      ['tiktok', 'Videos HD'],
-      ['doxeo', 'Fake Tracker'],
-      ['bug', 'Reportar fallo']
+      ['tiktok', 'Descargar videos'],
+      ['doxeo', 'Simular rastreo'],
+      ['ppt', 'Piedra, papel o tijera'],
+      ['ext', 'Extraer contenido'],
+      ['menu', 'Ver este menú']
     ];
     mixCmds.forEach(([cmd, desc]) => {
       menuTxt += `┋ ❒ */${cmd}*\n┋ ↳ _${desc}_\n`;
     });
     menuTxt += `╰━━━━━━━━━━━━━━━━━━━━━┈\n\n`;
 
-    menuTxt += `> 🍥 *© 𝖩𝗁𝗈𝗇 𝖦𝗎𝖾𝗋𝗋𝖺 | 𝖭𝖺𝗋𝗎𝗍𝗈𝖡ο𝗍 𝖢𝗈𝗋𝖾*`;
+    menuTxt += `> 🍥 *© 𝖩𝗁𝗈𝗇 𝖦𝗎𝖾𝗋𝗋𝖺 | 𝖭𝖺𝗋𝗎𝗍𝗈𝖡ο𝗍 𝖢ο𝗋𝖾*`;
 
     await sock.sendMessage(from, {
       text: menuTxt,
