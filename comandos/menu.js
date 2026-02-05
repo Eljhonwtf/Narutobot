@@ -71,8 +71,8 @@ module.exports = {
       text: menuTxt,
       contextInfo: {
         externalAdReply: {
-          title: "☄️ 𝘕𝘢𝘳𝘶𝘵𝘰𝘣𝘰𝘵 𝘚𝘺𝘴𝘵𝘦𝘮 ☄️",
-          body: "Jhxxn🏌️‍♂️ - Official Dev",
+          title: "🚀 𝘕𝘢𝘳𝘶𝘵𝘰𝘣𝘰𝘵 2026 🚀",
+          body: "𝐽ℎ𝑥𝑛𝑛 🏌️‍♂️ - 𝐷𝑢𝑒𝑛̃𝑜 𝑜𝑓𝑖𝑐𝑖𝑎𝑙",
           mediaType: 1,
           renderLargerThumbnail: true,
           thumbnailUrl: thumbUrl,
