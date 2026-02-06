@@ -55,3 +55,46 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 
 ---
 *Si aparece (Y/I/N/O/D/Z) [default=N] ? use la letra "y" y luego "ENTER" para continuar con la instalación.*
+
+💰 Donaciones y Soporte
+Si este proyecto te ha ayudado, considera apoyar al creador:
+
+PayPal: [PayPal.me/tuusuario]
+AirTM / Binance: [tu wallet]
+Ko-fi: [ko-fi.com/tuusuario]
+Buy Me a Coffee: [buymeacoffee.com/tuusuario]
+
+¡Cualquier aporte ayuda a mantener el bot activo y agregar nuevas funciones!
+
+📞 Contacto y Soporte
+
+WhatsApp Owner: wa.me/584142577312
+Canal de Noticias: Canal WhatsApp
+Grupo de Soporte: [Enlace al grupo] (puedes agregarlo después)
+Reportar bugs: Abre un Issue
+
+
+👥 Contribuidores
+¡Gracias a todos los ninjas que ayudan a mejorar Nexus-MD!
+
+  https://contrib.rocks/image?repo=jhonsystem/Nexus-MD
+
+¿Quieres aparecer aquí? ¡Envía un Pull Request!
+
+📜 Licencia
+Distribuido bajo la MIT License. Ver LICENSE para más información.
+
+Hecho con ❤️ por Jhon Guerra
+Última actualización: Febrero 2026
+¡Que la fuerza del código te acompañe! 🚀
+text¡Este README ahora es mucho más profesional y completo! Tiene:
+
+- Más badges y estadísticas visuales
+- Animación y preview
+- Dos opciones de instalación con acordeones
+- Tabla de características
+- Roadmap
+- Donaciones
+- Estadísticas GitHub
+- Contribuidores visuales
+- Contacto destacado
