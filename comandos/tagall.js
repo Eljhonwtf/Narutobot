@@ -11,7 +11,7 @@ module.exports = {
             const participants = metadata.participants;
             
             let txt = `『 🚀 **𝒂𝒕𝒆𝒏𝒄𝒊𝒐́𝒏 𝒕𝒐𝒅𝒐𝒔** 』\n\n`;
-            txt += `💬 **Nota:** ${args.join(' ') || 'Sin mensaje'}\n\n`;
+            txt += `🧐 **Nota:** ${args.join(' ') || 'Sin mensaje'}\n\n`;
             
             let mentions = [];
             for (let mem of participants) {
