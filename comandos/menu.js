@@ -7,6 +7,7 @@ module.exports = {
     const from = msg.key.remoteJid;
     const pushName = msg.pushName || 'Usuario';
 
+    // --- Lógica del Sistema ---
     const contarComandos = (dir) => {
       let total = 0;
       if (!fs.existsSync(dir)) return 0;
@@ -27,10 +28,11 @@ module.exports = {
     const hrs = Math.floor(uptime / 3600);
     const mins = Math.floor((uptime % 3600) / 60);
 
-    // ✅ TU NUEVO ENLACE DE CATBOX
-    const gifUrl = "https://files.catbox.moe/l05ica.mp4";
+    // ✅ ENLACE BLINDADO (Giphy Directo)
+    // Este link es de los servidores oficiales de Giphy, no se cae.
+    const gifUrl = "https://media4.giphy.com/media/CchzkJJ6UrCw/giphy.mp4";
 
-    // --- DISEÑO DEL MENÚ ---
+    // --- DISEÑO DEL TEXTO ---
     let menuTxt = `✨ *ミ★ 𝘕𝘈𝘙𝘜𝘛𝘖𝘉𝘖𝘛 𝘊𝘖𝘙𝘌 ★彡* ✨\n`;
     menuTxt += `  ╭───────────────┈\n`;
     menuTxt += `  │ 𝑯𝒐𝒍𝒂 *${pushName}* 👋\n`;
@@ -44,10 +46,8 @@ module.exports = {
     menuTxt += `┃ ⏱️ *𝖠𝖼𝗍𝗂𝗏𝗈:* ${hrs}𝗁 ${mins}𝗆\n`;
     menuTxt += `┃ 🧬 *𝖢𝗈𝗆𝖺𝗇𝖽𝗈𝗌:* ${totalComandos}\n`;
     menuTxt += `┃ 🇻🇪 *𝖯𝖺𝗂𝗌:* Venezuela\n`;
-    menuTxt += `┃ 🍥 *Legado:* Voluntad de Fuego\n`;
     menuTxt += `╰━━━━━━━━━━━━━━━━━━━━┈\n\n`;
 
-    // SECCIONES CON EL EFECTO DE LA FOTO (BARRA VERTICAL)
     menuTxt += `『 🛡️ *𝖠𝖣𝖬𝖨𝖲𝖳𝖱𝖠𝖢𝖨𝖮𝖭* 』\n`;
     const adminCmds = [['admins', 'Mencionar staff'], ['kick', 'Remover usuario'], ['tagall', 'Mención total'], ['antilink', 'Seguridad link']];
     adminCmds.forEach(([cmd, desc]) => {
@@ -60,23 +60,29 @@ module.exports = {
       menuTxt += `⬡ */${cmd}*\n> ${desc}\n`;
     });
 
-    menuTxt += `\n*© 𝖩𝗁𝗈𝗇 𝖦𝗎𝖾𝑟𝑟𝑎 | 𝖭𝖺𝗋𝗎𝗍𝗈𝖡𝗈𝗍 𝖢𝗈𝗋𝖾*`;
+    menuTxt += `\n*© 𝖩𝗁𝗈𝗇 𝖦𝗎𝖾𝗋𝗋𝖺 | 𝖭𝖺𝗋𝗎𝗍𝗈𝖡𝗈𝗍 𝖢𝗈𝗋𝖾*`;
 
-    // --- ENVÍO ---
-    await sock.sendMessage(from, {
-      video: { url: gifUrl },
-      caption: menuTxt,
-      gifPlayback: true,
-      contextInfo: {
-        externalAdReply: {
-          title: "☄️ 𝘕𝘢𝘳𝗎տ𝘰𝘣𝘰𝘵 𝘚𝘺𝘴𝘵𝘦𝘮 ☄️",
-          body: "Jhxxn🏌️‍♂️ - Edition Limited",
-          mediaType: 1,
-          renderLargerThumbnail: true,
-          sourceUrl: "https://github.com/jhonsystem"
-        },
-        mentionedJid: [msg.key.participant || from]
-      }
-    }, { quoted: msg });
+    // --- ENVÍO CON PROTECCIÓN CONTRA CAÍDAS ---
+    try {
+      await sock.sendMessage(from, {
+        video: { url: gifUrl },
+        caption: menuTxt,
+        gifPlayback: true, // ESTO LO CONVIERTE EN GIF
+        contextInfo: {
+          externalAdReply: {
+            title: "☄️ 𝘕𝘢𝘳𝘶𝘵𝘰𝘣𝘰𝘵 𝘚𝘺𝘴𝘵𝘦𝘮 ☄️",
+            body: "Jhxxn🏌️‍♂️ - Edition Limited",
+            mediaType: 1, // Importante: 1 para thumbnail standard, 2 para video preview
+            renderLargerThumbnail: false, // En video a veces causa conflictos, mejor false o quitar
+            sourceUrl: "https://github.com/jhonsystem"
+          },
+          mentionedJid: [msg.key.participant || from]
+        }
+      }, { quoted: msg });
+    } catch (error) {
+      console.log("❌ Error enviando video, enviando texto plano:", error);
+      // Plan B: Si falla el video, envía el menú sin video para que no te quedes varado
+      await sock.sendMessage(from, { text: menuTxt }, { quoted: msg });
+    }
   }
 };
