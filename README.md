@@ -38,3 +38,6 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 **1. Configurar almacenamiento:**
 ```bash
 termux-setup-storage
+
+```bash
+apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
