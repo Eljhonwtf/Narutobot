@@ -33,11 +33,50 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 > [!IMPORTANT]  
 > **ESTE BOT ESTÁ OPTIMIZADO PARA TERMUX.** > Ejecuta los comandos bloque por bloque para asegurar una instalación correcta.
 
-### 🌀 PASOS DE INSTALACIÓN MANUAL
-
-**1. Configurar almacenamiento:**
+### **❀ Instalación manual por termux**
+> Nota: Copie y pegue los comandos en termux uno por uno.
 ```bash
 termux-setup-storage
+```
 
 ```bash
 apt update && apt upgrade && pkg install -y git nodejs ffmpeg imagemagick yarn
+```
+
+```bash
+git clone https://github.com/Eljhonwtf/jg.git
+```
+
+```bash
+yarn install
+```
+
+```bash
+npm install
+```
+
+```bash
+npm update
+```
+
+```bash
+npm start
+```
+
+> Si aparece (Y/I/N/O/D/Z) [default=N] ? use la letra "y" + "ENTER" para continuar con la instalación
+
+### **🜸 Activar en caso de detenerse en termux**
+
+> Si después de instalar el bot en Termux se detiene (pantalla en blanco, pérdida de conexión a Internet, reinicio del dispositivo), sigue estos pasos:
+
+❒ Abre Termux y navega al directorio del bot:
+   
+   ```bash
+    cd jg
+   ```
+
+❒ Inicia el bot nuevamente:
+  
+   ```bash
+    npm start
+   ```
