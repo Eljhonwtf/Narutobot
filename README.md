@@ -33,7 +33,7 @@ Este es el repositorio oficial de **Naruto Bot MD**. Un bot de WhatsApp multi-di
 > [!IMPORTANT]  
 > **ESTE BOT ESTÁ OPTIMIZADO PARA TERMUX.** > Ejecuta los comandos bloque por bloque para asegurar una instalación correcta.
 
-### **❀ Instalación manual por termux**
+### **🚀 Instalación manual por termux**
 > Nota: Copie y pegue los comandos en termux uno por uno.
 ```bash
 termux-setup-storage
@@ -60,7 +60,7 @@ npm update
 ```
 
 ```bash
-npm start
+node index.js
 ```
 
 > Si aparece (Y/I/N/O/D/Z) [default=N] ? use la letra "y" + "ENTER" para continuar con la instalación
@@ -72,11 +72,11 @@ npm start
 ❒ Abre Termux y navega al directorio del bot:
    
    ```bash
-    cd jg
+    cd Narutobot
    ```
 
 ❒ Inicia el bot nuevamente:
   
    ```bash
-    npm start
+    node index.js
    ```
