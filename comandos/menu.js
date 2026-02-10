@@ -28,7 +28,7 @@ module.exports = {
         const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
         
         // --- MULTIMEDIA ---
-        const gifUrl = "https://media4.giphy.com/media/CchzkJJ6UrCw/giphy.mp4";
+        const gifUrl = "https://tenor.com/sigPM5jpzuc.gif";
 
         // --- LISTA DE COMANDOS (Tus 32 comandos exactos) ---
         const listaComandos = [
