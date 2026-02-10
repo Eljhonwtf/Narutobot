@@ -30,7 +30,7 @@ module.exports = {
 
     // ✅ ENLACE BLINDADO (Giphy Directo)
     // Este link es de los servidores oficiales de Giphy, no se cae.
-    const gifUrl = "https://media4.giphy.com/media/CchzkJJ6UrCw/giphy.mp4";
+    const gifUrl = "https://files.catbox.moe/gkfjku.mp4";
 
     // --- DISEÑO DEL TEXTO ---
     let menuTxt = `✨ *ミ★ 𝘕𝘈𝘙𝘜𝘛𝘖𝘉𝘖𝘛 𝘊𝘖𝘙𝘌 ★彡* ✨\n`;
