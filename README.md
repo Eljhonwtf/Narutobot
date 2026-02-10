@@ -80,3 +80,17 @@ node index.js
    ```bash
     node index.js
    ```
+👤 𝓒𝓸𝓷𝓽𝓪𝓬𝓽𝓸 & 𝓢𝓸𝓹𝓸𝓻𝓽𝓮
+Si necesitas ayuda o quieres reportar un error, utiliza nuestros canales oficiales:
+
+Red Social Enlace
+👤 Owner WhatsApp Obito
+📢 Canal Novedades Narutobot
+🛡️ Grupo Comunidad
+
+📜 𝓛𝓲𝓬𝓮𝓷𝓼𝓲𝓪
+Este proyecto está bajo la licencia MIT. Eres libre de usarlo siempre que mantengas los créditos del autor.
+<p align="center">
+<img src="https://media.tenor.com/0oH4V4Z2fO0AAAAC/code-programming.gif" width="200"/>
+
+<b>Hecho con ❤️ por Obito
