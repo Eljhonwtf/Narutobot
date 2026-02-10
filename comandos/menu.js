@@ -27,10 +27,10 @@ module.exports = {
 
         const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
         
-        // --- MULTIMEDIA ---
-        const gifUrl = "https://tenor.com/sigPM5jpzuc.gif";
+        // ✅ TU NUEVO VIDEO DE GITHUB
+        const gifUrl = "https://github.com/user-attachments/assets/3419adbd-a87c-4be5-932e-027dd3208bf8";
 
-        // --- LISTA DE COMANDOS (Tus 32 comandos exactos) ---
+        // --- LISTA DE COMANDOS (Tus 32 comandos) ---
         const listaComandos = [
             "IA", "admins", "antilink", "autodm", "bc", "bug", "delete", "demote",
             "doxeo", "ext", "fix", "info", "infogp", "join", "kick", "link",
@@ -43,11 +43,11 @@ module.exports = {
 
         // Sección Stats
         menuTxt += `┌──『 📊 *𝒔𝒕𝒂𝒕𝒔* 』\n`;
-        menuTxt += `│ 📂 Total: ${totalComandos} archivos\n`; // Usa el conteo real del bot
+        menuTxt += `│ 📂 Total: ${totalComandos} archivos\n`;
         menuTxt += `│ ⚡ Estado: Online\n`;
         menuTxt += `└─────────────────────────\n\n`;
 
-        // Sección Inventario (Generación automática de la lista)
+        // Sección Inventario
         menuTxt += `┌──『 🛠️ *𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐* 』\n`;
         listaComandos.forEach((cmd, index) => {
             menuTxt += `│ ${index + 1}. /${cmd}\n`;
@@ -63,7 +63,7 @@ module.exports = {
             await sock.sendMessage(from, {
                 video: { url: gifUrl },
                 caption: menuTxt,
-                gifPlayback: true,
+                gifPlayback: true, // Esto hace que se vea como un GIF infinito
                 contextInfo: {
                     externalAdReply: {
                         title: "☄️ 𝐍𝐀𝐑𝐔𝐓𝐎𝐁𝐎𝐓 𝐒𝐘𝐒𝐓𝐄𝐌 ☄️",
@@ -78,7 +78,7 @@ module.exports = {
             }, { quoted: msg });
 
         } catch (error) {
-            console.log("❌ Error enviando video:", error);
+            console.log("❌ Error enviando menú:", error);
             await sock.sendMessage(from, { text: menuTxt }, { quoted: msg });
         }
     }
