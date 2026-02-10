@@ -1,5 +1,5 @@
 # 🍜 𝓝𝓪𝓻𝓾𝓽𝓸 𝓑𝓸𝓽 𝓜𝓓 🍜
-> *El camino ninja de la automatización en WhatsApp.*
+> *El camino de la automatización en WhatsApp.*
 
 <p align="center">
 <img src="https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg" alt="NarutoBot" width="500"/>
