@@ -2,84 +2,87 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
-    name: 'menu',
-    alias: ['help', 'comandos'],
-    category: 'util',
-    run: async (sock, msg, body, args) => {
-        const from = msg.key.remoteJid;
-        const pushName = msg.pushName || "Usuario";
+  name: 'menu',
+  run: async (sock, msg, body, args, isOwner) => {
+    const from = msg.key.remoteJid;
+    const pushName = msg.pushName || 'Usuario';
 
-        // --- LÓGICA DE CONTEO ---
-        const contarComandos = (dir) => {
-            let total = 0;
-            if (!fs.existsSync(dir)) return 0;
-            const archivos = fs.readdirSync(dir);
-            for (const archivo of archivos) {
-                const ruta = path.join(dir, archivo);
-                if (fs.statSync(ruta).isDirectory()) {
-                    total += contarComandos(ruta);
-                } else if (archivo.endsWith('.js')) {
-                    total++;
-                }
-            }
-            return total;
-        };
-
-        const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
-        
-        // ✅ TU NUEVO VIDEO DE GITHUB
-        const gifUrl = "https://github.com/user-attachments/assets/3419adbd-a87c-4be5-932e-027dd3208bf8";
-
-        // --- LISTA DE COMANDOS (Tus 32 comandos) ---
-        const listaComandos = [
-            "IA", "admins", "antilink", "autodm", "bc", "bug", "delete", "demote",
-            "doxeo", "ext", "fix", "info", "infogp", "join", "kick", "link",
-            "listcm", "listgp", "menu", "out", "perfil", "ping", "ppt", "promote",
-            "resetlink", "setdesc", "setname", "tagall", "tiktok", "tr", "unreg", "update"
-        ];
-
-        // --- CONSTRUCCIÓN DEL DISEÑO ---
-        let menuTxt = `『 🚀 *𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎 𝒄𝒐𝒓𝒆* 🏌🏽‍♂️ 』\n\n`;
-
-        // Sección Stats
-        menuTxt += `┌──『 📊 *𝒔𝒕𝒂𝒕𝒔* 』\n`;
-        menuTxt += `│ 📂 Total: ${totalComandos} archivos\n`;
-        menuTxt += `│ ⚡ Estado: Online\n`;
-        menuTxt += `└─────────────────────────\n\n`;
-
-        // Sección Inventario
-        menuTxt += `┌──『 🛠️ *𝒊𝒏𝒗𝒆𝒏𝒕𝒂𝒓𝒊𝒐* 』\n`;
-        listaComandos.forEach((cmd, index) => {
-            menuTxt += `│ ${index + 1}. /${cmd}\n`;
-        });
-        menuTxt += `└─────────────────────────\n\n`;
-
-        // Footer
-        menuTxt += `🚀 *𝒔𝒚𝒔𝒕𝒆𝒎:* Escaneo completado.\n`;
-        menuTxt += `🏌🏽‍♂️ _𝒃𝒚 𝒏𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝒔𝒚𝒔𝒕𝒆𝒎_`;
-
-        // --- ENVÍO DEL MENSAJE ---
-        try {
-            await sock.sendMessage(from, {
-                video: { url: gifUrl },
-                caption: menuTxt,
-                gifPlayback: true, // Esto hace que se vea como un GIF infinito
-                contextInfo: {
-                    externalAdReply: {
-                        title: "☄️ 𝐍𝐀𝐑𝐔𝐓𝐎𝐁𝐎𝐓 𝐒𝐘𝐒𝐓𝐄𝐌 ☄️",
-                        body: "Obito - System Admin",
-                        thumbnailUrl: "https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg", 
-                        mediaType: 1,
-                        renderLargerThumbnail: true,
-                        sourceUrl: "https://github.com/Eljhonwtf/Narutobot"
-                    },
-                    mentionedJid: [msg.participant || from]
-                }
-            }, { quoted: msg });
-
-        } catch (error) {
-            console.log("❌ Error enviando menú:", error);
-            await sock.sendMessage(from, { text: menuTxt }, { quoted: msg });
+    // --- Lógica del Sistema ---
+    const contarComandos = (dir) => {
+      let total = 0;
+      if (!fs.existsSync(dir)) return 0;
+      const archivos = fs.readdirSync(dir);
+      for (const archivo of archivos) {
+        const ruta = path.join(dir, archivo);
+        if (fs.statSync(ruta).isDirectory()) {
+          total += contarComandos(ruta);
+        } else if (archivo.endsWith('.js')) {
+          total++;
         }
+      }
+      return total;
+    };
+
+    const totalComandos = contarComandos(path.join(__dirname, '../comandos'));
+    const uptime = process.uptime();
+    const hrs = Math.floor(uptime / 3600);
+    const mins = Math.floor((uptime % 3600) / 60);
+
+    // ✅ ENLACE BLINDADO (Giphy Directo)
+    // Este link es de los servidores oficiales de Giphy, no se cae.
+    const gifUrl = "https://media4.giphy.com/media/CchzkJJ6UrCw/giphy.mp4";
+
+    // --- DISEÑO DEL TEXTO ---
+    let menuTxt = `✨ *ミ★ 𝘕𝘈𝘙𝘜𝘛𝘖𝘉𝘖𝘛 𝘊𝘖𝘙𝘌 ★彡* ✨\n`;
+    menuTxt += `  ╭───────────────┈\n`;
+    menuTxt += `  │ 𝑯𝒐𝒍𝒂 *${pushName}* 👋\n`;
+    menuTxt += `  │ 𝑩𝒊𝒆𝒏𝒗𝒆𝒏𝒊𝒅𝒐 𝒂 𝒍𝒂 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒄𝒊ó𝒏 𝒅𝒆𝒍 𝒃𝒐𝒕,\n`;
+    menuTxt += `  │ 𝒆𝒔𝒑𝒆𝒓𝒐 𝒕𝒆 𝒈𝒖𝒔𝒕𝒆 𝒆𝒔𝒕𝒆 𝒎𝒆𝒏ú. ✨\n`;
+    menuTxt += `  ╰───────────────┈\n\n`;
+
+    menuTxt += `╭━━〔 🛸 *𝗜𝗡𝗙𝗢 𝗗𝗘𝗟 𝗦𝗜𝗦𝗧𝗘𝗠𝗔* 🛸 〕━━┈\n`;
+    menuTxt += `┃ 🤖 *𝖡𝗈𝗍:* Narutobot MD\n`;
+    menuTxt += `┃ 👤 *𝖣𝗎𝖾𝗇̃𝗈:* Jhxxn🏌️‍♂️\n`;
+    menuTxt += `┃ ⏱️ *𝖠𝖼𝗍𝗂𝗏𝗈:* ${hrs}𝗁 ${mins}𝗆\n`;
+    menuTxt += `┃ 🧬 *𝖢𝗈𝗆𝖺𝗇𝖽𝗈𝗌:* ${totalComandos}\n`;
+    menuTxt += `┃ 🇻🇪 *𝖯𝖺𝗂𝗌:* Venezuela\n`;
+    menuTxt += `╰━━━━━━━━━━━━━━━━━━━━┈\n\n`;
+
+    menuTxt += `『 🛡️ *𝖠𝖣𝖬𝖨𝖲𝖳𝖱𝖠𝖢𝖨𝖮𝖭* 』\n`;
+    const adminCmds = [['admins', 'Mencionar staff'], ['kick', 'Remover usuario'], ['tagall', 'Mención total'], ['antilink', 'Seguridad link']];
+    adminCmds.forEach(([cmd, desc]) => {
+      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`;
+    });
+
+    menuTxt += `\n『 ⚙️ *𝖴𝖳𝖨𝖫𝖨𝖣𝖠𝖣𝖤𝖲* 』\n`;
+    const utilCmds = [['ping', 'Velocidad bot'], ['ia', 'Cerebro IA'], ['perfil', 'Mis datos'], ['update', 'Actualizar']];
+    utilCmds.forEach(([cmd, desc]) => {
+      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`;
+    });
+
+    menuTxt += `\n*© 𝖩𝗁𝗈𝗇 𝖦𝗎𝖾𝗋𝗋𝖺 | 𝖭𝖺𝗋𝗎𝗍𝗈𝖡𝗈𝗍 𝖢𝗈𝗋𝖾*`;
+
+    // --- ENVÍO CON PROTECCIÓN CONTRA CAÍDAS ---
+    try {
+      await sock.sendMessage(from, {
+        video: { url: gifUrl },
+        caption: menuTxt,
+        gifPlayback: true, // ESTO LO CONVIERTE EN GIF
+        contextInfo: {
+          externalAdReply: {
+            title: "☄️ 𝘕𝘢𝘳𝘶𝘵𝘰𝘣𝘰𝘵 𝘚𝘺𝘴𝘵𝘦𝘮 ☄️",
+            body: "Jhxxn🏌️‍♂️ - Edition Limited",
+            mediaType: 1, // Importante: 1 para thumbnail standard, 2 para video preview
+            renderLargerThumbnail: false, // En video a veces causa conflictos, mejor false o quitar
+            sourceUrl: "https://github.com/jhonsystem"
+          },
+          mentionedJid: [msg.key.participant || from]
+        }
+      }, { quoted: msg });
+    } catch (error) {
+      console.log("❌ Error enviando video, enviando texto plano:", error);
+      // Plan B: Si falla el video, envía el menú sin video para que no te quedes varado
+      await sock.sendMessage(from, { text: menuTxt }, { quoted: msg });
     }
+  }
 };
