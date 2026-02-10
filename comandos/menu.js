@@ -74,7 +74,7 @@ module.exports = {
             body: "Jhxxn🏌️‍♂️ - Edition Limited",
             mediaType: 1, // Importante: 1 para thumbnail standard, 2 para video preview
             renderLargerThumbnail: false, // En video a veces causa conflictos, mejor false o quitar
-            sourceUrl: "https://github.com/jhonsystem"
+            sourceUrl: "https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg"
           },
           mentionedJid: [msg.key.participant || from]
         }
