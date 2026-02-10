@@ -65,7 +65,7 @@ module.exports = {
     // --- ENVÍO CON PROTECCIÓN CONTRA CAÍDAS ---
     try {
       await sock.sendMessage(from, {
-        video: { url: gifUrl },
+        video: { url: https://w0.peakpx.com/wallpaper/211/68/HD-wallpaper-naruto-kyuubi-mode-naruto-anime-artist-artwork-digital-art.jpg },
         caption: menuTxt,
         gifPlayback: true, // ESTO LO CONVIERTE EN GIF
         contextInfo: {
