@@ -28,7 +28,7 @@ module.exports = {
     const hrs = Math.floor(uptime / 3600);
     const mins = Math.floor((uptime % 3600) / 60);
 
-    // ✅ RECURSO MP4 (Sin miniaturas externas)
+    // ✅ RECURSO MP4
     const videoUrl = "https://files.catbox.moe/gkfjku.mp4"; 
 
     // --- DISEÑO DE MENÚ ESTILO PROFESIONAL ---
@@ -44,26 +44,42 @@ module.exports = {
     menuTxt += `│ 🧬 *Cmds:* ${totalComandos}\n`;
     menuTxt += `└─────────────────────────\n\n`;
 
-    // SECCIÓN: ADMINISTRACIÓN (Estilo Imagen: Comando arriba, Info abajo)
+    // SECCIÓN: GESTIÓN GRUPAL
     menuTxt += `*『 🛠️ 𝐆𝐄𝐒𝐓𝐈Ó𝐍 𝐆𝐑𝐔𝐏𝐀𝐋 』*\n`;
     const adminCmds = [
-      ['admins', 'Mencionar staff'], 
-      ['kick', 'Remover usuario'], 
-      ['tagall', 'Mención total'], 
-      ['antilink', 'Seguridad link']
+      ['admins', 'Mencionar staff'], ['kick', 'Remover usuario'], 
+      ['promote', 'Dar admin'], ['demote', 'Quitar admin'],
+      ['tagall', 'Mención total'], ['antilink', 'Seguridad link'],
+      ['infogp', 'Info del grupo'], ['link', 'Enlace del grupo'],
+      ['resetlink', 'Revocar enlace'], ['setname', 'Cambiar nombre'],
+      ['setdesc', 'Cambiar descripción'], ['out', 'Bot sale del grupo']
     ];
     adminCmds.forEach(([cmd, desc]) => {
-      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`; // El "│" genera el efecto visual de la imagen
+      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`;
     });
 
+    // SECCIÓN: UTILIDADES Y CONFIGURACIÓN
     menuTxt += `\n*『 ⚙️ 𝐔𝐓𝐈𝐋𝐈𝐃𝐀𝐃𝐄𝐒 』*\n`;
     const utilCmds = [
-      ['ping', 'Velocidad del bot'], 
-      ['ia', 'Cerebro Anubis AI'], 
-      ['perfil', 'Mis datos'], 
-      ['update', 'Actualizar repositorio']
+      ['ping', 'Velocidad del bot'], ['info', 'Info del sistema'],
+      ['perfil', 'Mis datos'], ['update', 'Actualizar bot'],
+      ['listgp', 'Lista de grupos'], ['listcm', 'Lista comandos'],
+      ['fix', 'Reparar errores'], ['delete', 'Borrar mensajes'],
+      ['tr', 'Traductor de texto'], ['unreg', 'Anular registro'],
+      ['ext', 'Extraer datos'], ['join', 'Unirse vía link']
     ];
     utilCmds.forEach(([cmd, desc]) => {
+      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`;
+    });
+
+    // SECCIÓN: ENTRETENIMIENTO Y OTROS
+    menuTxt += `\n*『 🎭 𝐄𝐍𝐓𝐑𝐄𝐓𝐄𝐍𝐈𝐌𝐈𝐄𝐍𝐓𝐎 』*\n`;
+    const funCmds = [
+      ['tiktok', 'Descargar videos'], ['ppt', 'Piedra, papel o tijera'],
+      ['doxeo', 'Simular doxeo'], ['bc', 'Difusión (Broadcast)'],
+      ['autodm', 'Mensaje directo auto'], ['bug', 'Reportar errores']
+    ];
+    funCmds.forEach(([cmd, desc]) => {
       menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`;
     });
 
