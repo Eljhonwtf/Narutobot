@@ -28,56 +28,60 @@ module.exports = {
     const hrs = Math.floor(uptime / 3600);
     const mins = Math.floor((uptime % 3600) / 60);
 
-    // ✅ RECURSO MP4 (Anubis)
+    // ✅ RECURSO MP4 (Sin miniaturas externas)
     const videoUrl = "https://files.catbox.moe/gkfjku.mp4"; 
 
-    // --- DISEÑO DE MENÚ PROFESIONAL ---
-    let menuTxt = `  ╔════════════════════╗\n`;
+    // --- DISEÑO DE MENÚ ESTILO PROFESIONAL ---
+    let menuTxt = `╔════════════════════╗\n`;
     menuTxt += `     ◈  *𝐀𝐍𝐔𝐁𝐈𝐒 - 𝐒𝐘𝐒𝐓𝐄𝐌* ◈\n`;
-    menuTxt += `  ╚════════════════════╝\n\n`;
+    menuTxt += `╚════════════════════╝\n\n`;
 
-    menuTxt += `  👋 ¡Hola, *${pushName}*!\n`;
-    menuTxt += `  Soy el guardián de tus chats.\n\n`;
+    menuTxt += `👋 ¡Hola, *${pushName}*!\n\n`;
 
-    menuTxt += `┌───〔 🛡️ *𝐄𝐒𝐓𝐀𝐃𝐎 𝐃𝐄𝐋 𝐁𝐎𝐓* 〕───\n`;
+    menuTxt += `┌───〔 🛡️ *𝐄𝐒𝐓𝐀𝐃𝐎* 〕───\n`;
     menuTxt += `│ 👤 *Owner:* Obito\n`;
-    menuTxt += `│ 🤖 *Nombre:* Anubis\n`;
-    menuTxt += `│ ⏱️ *Uptime:* ${hrs}h ${mins}m\n`;
-    menuTxt += `│ 🧬 *Total Cmds:* ${totalComandos}\n`;
+    menuTxt += `│ ⏱️ *Activo:* ${hrs}h ${mins}m\n`;
+    menuTxt += `│ 🧬 *Cmds:* ${totalComandos}\n`;
     menuTxt += `└─────────────────────────\n\n`;
 
-    // SECCIÓN: ADMINISTRACIÓN
-    menuTxt += `┏━━〔 🛠️ *𝐆𝐄𝐒𝐓𝐈Ó𝐍 𝐆𝐑𝐔𝐏𝐀𝐋* 〕━━┓\n`;
-    const adminCmds = [['admins', 'Tag Staff'], ['kick', 'Eliminar'], ['tagall', 'Mencionar'], ['antilink', 'Seguridad']];
+    // SECCIÓN: ADMINISTRACIÓN (Estilo Imagen: Comando arriba, Info abajo)
+    menuTxt += `*『 🛠️ 𝐆𝐄𝐒𝐓𝐈Ó𝐍 𝐆𝐑𝐔𝐏𝐀𝐋 』*\n`;
+    const adminCmds = [
+      ['admins', 'Mencionar staff'], 
+      ['kick', 'Remover usuario'], 
+      ['tagall', 'Mención total'], 
+      ['antilink', 'Seguridad link']
+    ];
     adminCmds.forEach(([cmd, desc]) => {
-      menuTxt += `┃ ⬡ /${cmd.padEnd(10)} ⮕ ${desc}\n`;
+      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`; // El "│" genera el efecto visual de la imagen
     });
-    menuTxt += `┗━━━━━━━━━━━━━━━━━━━━━━┛\n\n`;
 
-    // SECCIÓN: UTILIDADES
-    menuTxt += `┏━━〔 ⚙️ *𝐇𝐄𝐑𝐑𝐀𝐌𝐈𝐄𝐍𝐓𝐀𝐒* 〕━━┓\n`;
-    const utilCmds = [['ping', 'MS Latencia'], ['ia', 'Asistente AI'], ['perfil', 'Tus Datos'], ['update', 'Sincronizar']];
+    menuTxt += `\n*『 ⚙️ 𝐔𝐓𝐈𝐋𝐈𝐃𝐀𝐃𝐄𝐒 』*\n`;
+    const utilCmds = [
+      ['ping', 'Velocidad del bot'], 
+      ['ia', 'Cerebro Anubis AI'], 
+      ['perfil', 'Mis datos'], 
+      ['update', 'Actualizar repositorio']
+    ];
     utilCmds.forEach(([cmd, desc]) => {
-      menuTxt += `┃ ⬡ /${cmd.padEnd(10)} ⮕ ${desc}\n`;
+      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`;
     });
-    menuTxt += `┗━━━━━━━━━━━━━━━━━━━━━━┛\n\n`;
 
-    menuTxt += `_“El juicio ha comenzado por orden de **Obito**.”_\n`;
-    menuTxt += `*© 2026 Anubis Core System*`;
+    menuTxt += `\n_“El juicio ha comenzado por orden de **Obito**.”_\n`;
+    menuTxt += `*© 2026 Anubis Core*`;
 
-    // --- ENVÍO EXCLUSIVO DE VIDEO ---
+    // --- ENVÍO PURAMENTE VIDEO ---
     try {
       await sock.sendMessage(from, {
         video: { url: videoUrl },
         caption: menuTxt,
-        gifPlayback: true, // Se reproduce automáticamente
+        gifPlayback: true,
         contextInfo: {
-          // Se eliminó externalAdReply para quitar cualquier miniatura o link externo
           mentionedJid: [msg.key.participant || from]
         }
       }, { quoted: msg });
     } catch (error) {
-      console.log("❌ Error al enviar el video:", error);
+      console.log("❌ Error en el envío:", error);
       await sock.sendMessage(from, { text: menuTxt }, { quoted: msg });
     }
   }
