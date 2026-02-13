@@ -34,7 +34,7 @@ module.exports = {
       { cmd: 'listgp',   desc: 'Lista de grupos donde está el bot' },
       { cmd: 'listcm',   desc: 'Uso exclusivo del owner' },
       { cmd: 'fix',      desc: 'Reparar errores' },
-      { cmd: 'delete',   desc: 'Borrar mensajes de usuarios (el bot debe ser admind' },
+      { cmd: 'delete',   desc: 'Borrar mensajes de usuarios (el bot debe ser admin' },
       { cmd: 'tr',       desc: 'Traductor de mensajes' },
       { cmd: 'unreg',    desc: 'Anular registro' },
       { cmd: 'ext',      desc: 'Uso exclusivo del owne' },
