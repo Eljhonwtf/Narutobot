@@ -31,7 +31,7 @@ module.exports = {
     // ✅ RECURSO MP4
     const videoUrl = "https://files.catbox.moe/gkfjku.mp4"; 
 
-    // --- DISEÑO DE MENÚ ESTILO PROFESIONAL ---
+    // --- DISEÑO DE MENÚ ---
     let menuTxt = `╔════════════════════╗\n`;
     menuTxt += `     ◈  *𝐀𝐍𝐔𝐁𝐈𝐒 - 𝐒𝐘𝐒𝐓𝐄𝐌* ◈\n`;
     menuTxt += `╚════════════════════╝\n\n`;
@@ -54,8 +54,10 @@ module.exports = {
       ['resetlink', 'Revocar enlace'], ['setname', 'Cambiar nombre'],
       ['setdesc', 'Cambiar descripción'], ['out', 'Bot sale del grupo']
     ];
+    
+    // 👇 AQUÍ ESTÁ EL CAMBIO
     adminCmds.forEach(([cmd, desc]) => {
-      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`;
+      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`; // Se agregó el ">" antes de la descripción
     });
 
     // SECCIÓN: UTILIDADES Y CONFIGURACIÓN
@@ -68,8 +70,10 @@ module.exports = {
       ['tr', 'Traductor de texto'], ['unreg', 'Anular registro'],
       ['ext', 'Extraer datos'], ['join', 'Unirse vía link']
     ];
+    
+    // 👇 AQUÍ TAMBIÉN
     utilCmds.forEach(([cmd, desc]) => {
-      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`;
+      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`; 
     });
 
     // SECCIÓN: ENTRETENIMIENTO Y OTROS
@@ -79,14 +83,16 @@ module.exports = {
       ['doxeo', 'Simular doxeo'], ['bc', 'Difusión (Broadcast)'],
       ['autodm', 'Mensaje directo auto'], ['bug', 'Reportar errores']
     ];
+    
+    // 👇 Y AQUÍ
     funCmds.forEach(([cmd, desc]) => {
-      menuTxt += `⬡ */${cmd}*\n│ ${desc}\n`;
+      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`; 
     });
 
     menuTxt += `\n_“El juicio ha comenzado por orden de **Obito**.”_\n`;
     menuTxt += `*© 2026 Anubis Core*`;
 
-    // --- ENVÍO PURAMENTE VIDEO ---
+    // --- ENVÍO ---
     try {
       await sock.sendMessage(from, {
         video: { url: videoUrl },
