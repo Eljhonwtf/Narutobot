@@ -59,7 +59,10 @@ module.exports = {
     menuTxt += `💡 *Instrucción:* Utilice los comandos listados abajo anteponiendo cualquier prefijo configurado.\n`;
 
 
+
+
     // SECCIÓN: GESTIÓN GRUPAL
+
     menuTxt += `*『 🛠️ 𝐆𝐄𝐒𝐓𝐈Ó𝐍 𝐆𝐑𝐔𝐏𝐀𝐋 』*\n`;
     const adminCmds = [
       ['admins', ' Mencionar staff'], ['kick', 'Remover usuario'], 
