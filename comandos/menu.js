@@ -7,7 +7,53 @@ module.exports = {
     const from = msg.key.remoteJid;
     const pushName = msg.pushName || 'Usuario';
 
-    // --- Lógica del Sistema ---
+    // ==========================================
+    //       LISTADO DE COMANDOS (EDITA AQUÍ)
+    // ==========================================
+
+    const adminCmds = [
+      { cmd: 'admins',    desc: 'Mencionar al staff' },
+      { cmd: 'kick',      desc: 'Remover usuario' },
+      { cmd: 'promote',   desc: 'Dar administrador' },
+      { cmd: 'demote',    desc: 'Quitar administrador' },
+      { cmd: 'tagall',    desc: 'Mención total' },
+      { cmd: 'antilink',  desc: 'Seguridad de enlaces' },
+      { cmd: 'infogp',    desc: 'Información del grupo' },
+      { cmd: 'link',      desc: 'Enlace del grupo' },
+      { cmd: 'resetlink', desc: 'Revocar enlace' },
+      { cmd: 'setname',   desc: 'Cambiar nombre' },
+      { cmd: 'setdesc',   desc: 'Cambiar descripción' },
+      { cmd: 'out',       desc: 'Bot abandona el grupo' }
+    ];
+
+    const utilCmds = [
+      { cmd: 'ping',     desc: 'Velocidad del bot' },
+      { cmd: 'info',     desc: 'Información del sistema' },
+      { cmd: 'perfil',   desc: 'Mis datos personales' },
+      { cmd: 'update',   desc: 'Actualizar sistema' },
+      { cmd: 'listgp',   desc: 'Lista de grupos' },
+      { cmd: 'listcm',   desc: 'Lista de comandos' },
+      { cmd: 'fix',      desc: 'Reparar errores' },
+      { cmd: 'delete',   desc: 'Borrar mensajes' },
+      { cmd: 'tr',       desc: 'Traductor de texto' },
+      { cmd: 'unreg',    desc: 'Anular registro' },
+      { cmd: 'ext',      desc: 'Extraer datos' },
+      { cmd: 'join',     desc: 'Unirse vía enlace' }
+    ];
+
+    const funCmds = [
+      { cmd: 'tiktok',   desc: 'Descargar videos' },
+      { cmd: 'ppt',      desc: 'Piedra, papel o tijera' },
+      { cmd: 'doxeo',    desc: 'Simular rastreo' },
+      { cmd: 'bc',       desc: 'Difusión global' },
+      { cmd: 'autodm',   desc: 'Mensaje directo automático' },
+      { cmd: 'bug',      desc: 'Reportar fallos' }
+    ];
+
+    // ==========================================
+    //           LÓGICA DEL SISTEMA
+    // ==========================================
+
     const contarComandos = (dir) => {
       let total = 0;
       if (!fs.existsSync(dir)) return 0;
@@ -27,17 +73,12 @@ module.exports = {
     const uptime = process.uptime();
     const hrs = Math.floor(uptime / 3600);
     const mins = Math.floor((uptime % 3600) / 60);
-
-    // ✅ RECURSO MP4
+    const fecha = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
     const videoUrl = "https://files.catbox.moe/gkfjku.mp4"; 
 
-        // --- DISEÑO DE MENÚ: ELITE SYSTEM 2026 ---
-    
-    const fecha = new Date().toLocaleDateString('es-ES', { 
-      day: '2-digit', 
-      month: 'long', 
-      year: 'numeric' 
-    });
+    // ==========================================
+    //           CONSTRUCCIÓN DEL MENÚ
+    // ==========================================
 
     let menuTxt = `『 💻 *𝐍𝐀𝐑𝐔𝐓𝐎𝐁𝐎𝐓 - 𝐎𝐏𝐄𝐑𝐀𝐓𝐈𝐕𝐄 𝐒𝐘𝐒𝐓𝐄𝐌* 』\n`;
     menuTxt += ` 🛡️  ᴀᴅᴠᴀɴᴄᴇᴅ  ᴍᴜʟᴛɪ-ᴅᴇᴠɪᴄᴇ  ɪɴᴛᴇʀꜰᴀᴄᴇ\n`;
@@ -56,69 +97,39 @@ module.exports = {
     menuTxt += `┃ 📅 **Fecha:** ${fecha}\n`;
     menuTxt += `┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
 
-    menuTxt += `💡 *Instrucción:* Utilice los comandos listados abajo anteponiendo cualquier prefijo configurado.\n`;
+    menuTxt += `💡 *Instrucción:* Utilice los comandos listados abajo anteponiendo cualquier prefijo configurado.\n\n`;
 
-
-
-
-    // SECCIÓN: GESTIÓN GRUPAL
-
+    // Renderizar Categoría: GESTIÓN
     menuTxt += `*『 🛠️ 𝐆𝐄𝐒𝐓𝐈Ó𝐍 𝐆𝐑𝐔𝐏𝐀𝐋 』*\n`;
-    const adminCmds = [
-      ['admins', ' Mencionar staff'], ['kick', 'Remover usuario'], 
-      ['promote', 'Dar admin'], ['demote', 'Quitar admin'],
-      ['tagall', 'Mención total'], ['antilink', 'Seguridad link'],
-      ['infogp', 'Info del grupo'], ['link', 'Enlace del grupo'],
-      ['resetlink', 'Revocar enlace'], ['setname', 'Cambiar nombre'],
-      ['setdesc', 'Cambiar descripción'], ['out', 'Bot sale del grupo']
-    ];
-    
-    // 👇 AQUÍ ESTÁ EL CAMBIO
-    adminCmds.forEach(([cmd, desc]) => {
-      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`; // Se agregó el ">" antes de la descripción
+    adminCmds.forEach(c => {
+      menuTxt += `⬡ */${c.cmd}*\n> ${c.desc}\n`;
     });
 
-    // SECCIÓN: UTILIDADES Y CONFIGURACIÓN
+    // Renderizar Categoría: UTILIDADES
     menuTxt += `\n*『 ⚙️ 𝐔𝐓𝐈𝐋𝐈𝐃𝐀𝐃𝐄𝐒 』*\n`;
-    const utilCmds = [
-      ['ping', 'Velocidad del bot'], ['info', 'Info del sistema'],
-      ['perfil', 'Mis datos'], ['update', 'Actualizar bot'],
-      ['listgp', 'Lista de grupos'], ['listcm', 'Lista comandos'],
-      ['fix', 'Reparar errores'], ['delete', 'Borrar mensajes'],
-      ['tr', 'Traductor de texto'], ['unreg', 'Anular registro'],
-      ['ext', 'Extraer datos'], ['join', 'Unirse vía link']
-    ];
-    
-    // 👇 AQUÍ TAMBIÉN
-    utilCmds.forEach(([cmd, desc]) => {
-      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`; 
+    utilCmds.forEach(c => {
+      menuTxt += `⬡ */${c.cmd}*\n> ${c.desc}\n`;
     });
 
-    // SECCIÓN: ENTRETENIMIENTO Y OTROS
+    // Renderizar Categoría: ENTRETENIMIENTO
     menuTxt += `\n*『 🎭 𝐄𝐍𝐓𝐑𝐄𝐓𝐄𝐍𝐈𝐌𝐈𝐄𝐍𝐓𝐎 』*\n`;
-    const funCmds = [
-      ['tiktok', 'Descargar videos'], ['ppt', 'Piedra, papel o tijera'],
-      ['doxeo', 'Simular doxeo'], ['bc', 'Difusión (Broadcast)'],
-      ['autodm', 'Mensaje directo auto'], ['bug', 'Reportar errores']
-    ];
-    
-    // 👇 Y AQUÍ
-    funCmds.forEach(([cmd, desc]) => {
-      menuTxt += `⬡ */${cmd}*\n> ${desc}\n`; 
+    funCmds.forEach(c => {
+      menuTxt += `⬡ */${c.cmd}*\n> ${c.desc}\n`;
     });
 
-    menuTxt += `\n_“El juicio ha comenzado por orden de **Obito**.”_\n`;
-    menuTxt += `*© 2026 Anubis Core*`;
+    menuTxt += `\n_“El sistema ha sido verificado por **Obito**.”_\n`;
+    menuTxt += `*© 2026 Narutobot Core*`;
 
-    // --- ENVÍO ---
+    // ==========================================
+    //                ENVÍO (PUSH)
+    // ==========================================
+
     try {
       await sock.sendMessage(from, {
         video: { url: videoUrl },
         caption: menuTxt,
         gifPlayback: true,
-        contextInfo: {
-          mentionedJid: [msg.key.participant || from]
-        }
+        contextInfo: { mentionedJid: [msg.key.participant || from] }
       }, { quoted: msg });
     } catch (error) {
       console.log("❌ Error en el envío:", error);
