@@ -117,7 +117,9 @@ module.exports = {
       menuTxt += `⬡ */${c.cmd}*\n> ${c.desc}\n`;
     });
 
-    menuTxt += `\n_“El sistema ha sido verificado por **Obito**.”_\n`;
+    menuTxt += `\n_“El renacimiento de AkiraBot
+.”_\n`;
+
     menuTxt += `*© 2026 Narutobot Core*`;
 
     // ==========================================
