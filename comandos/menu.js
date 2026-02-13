@@ -12,48 +12,47 @@ module.exports = {
     // ==========================================
 
     const adminCmds = [
-            { cmd: 'group open/close', desc: 'Abrir o cerrar el chat' },
-      { cmd: 'antifake on/off', desc: 'Expulsar prefijos extranjeros' },
-      { cmd: 'hidetag',          desc: 'Mencionar a todos los miembros' },
-      { cmd: 'setmsg welcome',   desc: 'Configurar bienvenida' },
-      { cmd: 'setmsg bye',       desc: 'Configurar despedida' }
-
-      { cmd: 'admins',    desc: 'Mencionar a los admins' },
-      { cmd: 'kick',      desc: 'Eliminar a un usuario' },
-      { cmd: 'promote',   desc: 'Dar administrador' },
-      { cmd: 'demote',    desc: 'Quitar administrador' },
-      { cmd: 'tagall',    desc: 'Mención grupal' },
-      { cmd: 'antilink',  desc: 'Seguridad de enlaces' },
-      { cmd: 'infogp',    desc: 'Información del grupo' },
-      { cmd: 'link',      desc: 'Enlace del grupo' },
-      { cmd: 'resetlink', desc: 'Reestablecer enlace del grupo' },
-      { cmd: 'setname',   desc: 'Cambiar nombre del grupo' },
-      { cmd: 'setdesc',   desc: 'Cambiar descripción del grup' },
-      { cmd: 'out',       desc: 'Uso exclusivo del owner' }
+      { cmd: 'group open/close', desc: 'Abrir o cerrar el chat para participantes' },
+      { cmd: 'antifake on/off',  desc: 'Expulsar prefijos extranjeros automáticamente' },
+      { cmd: 'hidetag',          desc: 'Mencionar a todos los miembros (notificación)' },
+      { cmd: 'setmsg welcome',   desc: 'Configurar mensaje de bienvenida' },
+      { cmd: 'setmsg bye',       desc: 'Configurar mensaje de despedida' },
+      { cmd: 'admins',           desc: 'Mencionar a los administradores' },
+      { cmd: 'kick',             desc: 'Eliminar a un usuario del grupo' },
+      { cmd: 'promote',          desc: 'Dar administrador a un usuario' },
+      { cmd: 'demote',           desc: 'Quitar administrador a un usuario' },
+      { cmd: 'tagall',           desc: 'Mención grupal visible' },
+      { cmd: 'antilink',         desc: 'Seguridad de enlaces (Auto-kick)' },
+      { cmd: 'infogp',           desc: 'Información detallada del grupo' },
+      { cmd: 'link',             desc: 'Obtener enlace de invitación' },
+      { cmd: 'resetlink',        desc: 'Restablecer enlace del grupo' },
+      { cmd: 'setname',          desc: 'Cambiar nombre del grupo' },
+      { cmd: 'setdesc',          desc: 'Cambiar descripción del grupo' },
+      { cmd: 'out',              desc: 'Uso exclusivo del desarrollador' }
     ];
 
     const utilCmds = [
-      { cmd: 'ping',     desc: 'Velocidad del bot' },
-      { cmd: 'info',     desc: 'Información del sistema' },
-      { cmd: 'perfil',   desc: 'Perfil del usuario' },
-      { cmd: 'update',   desc: 'Uso exclusivo del owner' },
-      { cmd: 'listgp',   desc: 'Lista de grupos donde está el bot' },
-      { cmd: 'listcm',   desc: 'Uso exclusivo del owner' },
-      { cmd: 'fix',      desc: 'Reparar errores' },
-      { cmd: 'delete',   desc: 'Borrar mensajes de usuarios (el bot debe ser admin' },
+      { cmd: 'ping',     desc: 'Velocidad de respuesta del bot' },
+      { cmd: 'info',     desc: 'Información técnica del sistema' },
+      { cmd: 'perfil',   desc: 'Ver mi perfil de usuario' },
+      { cmd: 'update',   desc: 'Uso exclusivo del desarrollador' },
+      { cmd: 'listgp',   desc: 'Lista de grupos vinculados' },
+      { cmd: 'listcm',   desc: 'Uso exclusivo del desarrollador' },
+      { cmd: 'fix',      desc: 'Reparar errores de sesión' },
+      { cmd: 'delete',   desc: 'Borrar mensajes (requiere admin)' },
       { cmd: 'tr',       desc: 'Traductor de mensajes' },
-      { cmd: 'unreg',    desc: 'Anular registro' },
-      { cmd: 'ext',      desc: 'Uso exclusivo del owne' },
-      { cmd: 'join',     desc: 'El bot se un a un grupo (uso del owner)' }
+      { cmd: 'unreg',    desc: 'Anular registro del sistema' },
+      { cmd: 'ext',      desc: 'Uso exclusivo del desarrollador' },
+      { cmd: 'join',     desc: 'Unirse a un grupo vía enlace' }
     ];
 
     const funCmds = [
-      { cmd: 'tiktok',   desc: 'Descargar videos' },
-      { cmd: 'ppt',      desc: 'Piedra, papel o tijera' },
-      { cmd: 'doxeo',    desc: 'Doxeo falso' },
-      { cmd: 'bc',       desc: 'Difusión global' },
-      { cmd: 'autodm',   desc: 'Dar admin al owner' },
-      { cmd: 'bug',      desc: 'Reportar fallos' }
+      { cmd: 'tiktok',   desc: 'Descargar videos sin marca de agua' },
+      { cmd: 'ppt',      desc: 'Juego de piedra, papel o tijera' },
+      { cmd: 'doxeo',    desc: 'Simulación de rastreo (Broma)' },
+      { cmd: 'bc',       desc: 'Difusión de mensaje global' },
+      { cmd: 'autodm',   desc: 'Acceso directo al desarrollador' },
+      { cmd: 'bug',      desc: 'Reportar fallos en el sistema' }
     ];
 
     // ==========================================
@@ -123,9 +122,7 @@ module.exports = {
       menuTxt += `⬡ */${c.cmd}*\n> ${c.desc}\n`;
     });
 
-    menuTxt += `\n_“El renacimiento de AkiraBot
-.”_\n`;
-
+    menuTxt += `\n_“El renacimiento de AkiraBot.”_\n`;
     menuTxt += `*© 2026 Narutobot Core*`;
 
     // ==========================================
