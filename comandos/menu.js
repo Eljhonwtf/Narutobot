@@ -31,18 +31,33 @@ module.exports = {
     // ✅ RECURSO MP4
     const videoUrl = "https://files.catbox.moe/gkfjku.mp4"; 
 
-    // --- DISEÑO DE MENÚ ---
-    let menuTxt = `╔════════════════════╗\n`;
-    menuTxt += `     ◈  *𝐀𝐍𝐔𝐁𝐈𝐒 - 𝐒𝐘𝐒𝐓𝐄𝐌* ◈\n`;
-    menuTxt += `╚════════════════════╝\n\n`;
+        // --- DISEÑO DE MENÚ: ELITE SYSTEM 2026 ---
+    
+    const fecha = new Date().toLocaleDateString('es-ES', { 
+      day: '2-digit', 
+      month: 'long', 
+      year: 'numeric' 
+    });
 
-    menuTxt += `👋 ¡Hola, *${pushName}*!\n\n`;
+    let menuTxt = `『 💻 *𝐍𝐀𝐑𝐔𝐓𝐎𝐁𝐎𝐓 - 𝐎𝐏𝐄𝐑𝐀𝐓𝐈𝐕𝐄 𝐒𝐘𝐒𝐓𝐄𝐌* 』\n`;
+    menuTxt += ` 🛡️  ᴀᴅᴠᴀɴᴄᴇᴅ  ᴍᴜʟᴛɪ-ᴅᴇᴠɪᴄᴇ  ɪɴᴛᴇʀꜰᴀᴄᴇ\n`;
+    menuTxt += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n`;
 
-    menuTxt += `┌───〔 🛡️ *𝐄𝐒𝐓𝐀𝐃𝐎* 〕───\n`;
-    menuTxt += `│ 👤 *Owner:* Obito\n`;
-    menuTxt += `│ ⏱️ *Activo:* ${hrs}h ${mins}m\n`;
-    menuTxt += `│ 🧬 *Cmds:* ${totalComandos}\n`;
-    menuTxt += `└─────────────────────────\n\n`;
+    menuTxt += `👋 Estimado/a *${pushName}*,\n`;
+    menuTxt += `> Conexión establecida con éxito. El sistema está a su disposición.\n\n`;
+
+    menuTxt += `┏━━━〔 📂 *𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈Ó𝐍 𝐃𝐄𝐋 𝐒𝐄𝐑𝐕𝐈𝐃𝐎𝐑* 〕━━━\n`;
+    menuTxt += `┃ 👑 **Desarrollador:** Obito\n`;
+    menuTxt += `┃ 📟 **Identificador:** Narutobot v4.0\n`;
+    menuTxt += `┃ 🌐 **Modo:** Multi-Prefijo (Global)\n`;
+    menuTxt += `┃ ⚡ **Estado:** Operativo / Online\n`;
+    menuTxt += `┃ ⏳ **Uptime:** ${hrs}h ${mins}m\n`;
+    menuTxt += `┃ 📊 **Módulos:** ${totalComandos} Cargados\n`;
+    menuTxt += `┃ 📅 **Fecha:** ${fecha}\n`;
+    menuTxt += `┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+    menuTxt += `💡 *Instrucción:* Utilice los comandos listados abajo anteponiendo cualquier prefijo configurado.\n`;
+
 
     // SECCIÓN: GESTIÓN GRUPAL
     menuTxt += `*『 🛠️ 𝐆𝐄𝐒𝐓𝐈Ó𝐍 𝐆𝐑𝐔𝐏𝐀𝐋 』*\n`;
