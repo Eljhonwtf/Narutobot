@@ -12,41 +12,41 @@ module.exports = {
     // ==========================================
 
     const adminCmds = [
-      { cmd: 'admins',    desc: 'Mencionar al staff' },
-      { cmd: 'kick',      desc: 'Remover usuario' },
+      { cmd: 'admins',    desc: 'Mencionar a los admins' },
+      { cmd: 'kick',      desc: 'Eliminar a un usuario' },
       { cmd: 'promote',   desc: 'Dar administrador' },
       { cmd: 'demote',    desc: 'Quitar administrador' },
-      { cmd: 'tagall',    desc: 'Mención total' },
+      { cmd: 'tagall',    desc: 'Mención grupal' },
       { cmd: 'antilink',  desc: 'Seguridad de enlaces' },
       { cmd: 'infogp',    desc: 'Información del grupo' },
       { cmd: 'link',      desc: 'Enlace del grupo' },
-      { cmd: 'resetlink', desc: 'Revocar enlace' },
-      { cmd: 'setname',   desc: 'Cambiar nombre' },
-      { cmd: 'setdesc',   desc: 'Cambiar descripción' },
-      { cmd: 'out',       desc: 'Bot abandona el grupo' }
+      { cmd: 'resetlink', desc: 'Reestablecer enlace del grupo' },
+      { cmd: 'setname',   desc: 'Cambiar nombre del grupo' },
+      { cmd: 'setdesc',   desc: 'Cambiar descripción del grup' },
+      { cmd: 'out',       desc: 'Uso exclusivo del owner' }
     ];
 
     const utilCmds = [
       { cmd: 'ping',     desc: 'Velocidad del bot' },
       { cmd: 'info',     desc: 'Información del sistema' },
-      { cmd: 'perfil',   desc: 'Mis datos personales' },
-      { cmd: 'update',   desc: 'Actualizar sistema' },
-      { cmd: 'listgp',   desc: 'Lista de grupos' },
-      { cmd: 'listcm',   desc: 'Lista de comandos' },
+      { cmd: 'perfil',   desc: 'Perfil del usuario' },
+      { cmd: 'update',   desc: 'Uso exclusivo del owner' },
+      { cmd: 'listgp',   desc: 'Lista de grupos donde está el bot' },
+      { cmd: 'listcm',   desc: 'Uso exclusivo del owner' },
       { cmd: 'fix',      desc: 'Reparar errores' },
-      { cmd: 'delete',   desc: 'Borrar mensajes' },
-      { cmd: 'tr',       desc: 'Traductor de texto' },
+      { cmd: 'delete',   desc: 'Borrar mensajes de usuarios (el bot debe ser admind' },
+      { cmd: 'tr',       desc: 'Traductor de mensajes' },
       { cmd: 'unreg',    desc: 'Anular registro' },
-      { cmd: 'ext',      desc: 'Extraer datos' },
-      { cmd: 'join',     desc: 'Unirse vía enlace' }
+      { cmd: 'ext',      desc: 'Uso exclusivo del owne' },
+      { cmd: 'join',     desc: 'El bot se un a un grupo (uso del owner)' }
     ];
 
     const funCmds = [
       { cmd: 'tiktok',   desc: 'Descargar videos' },
       { cmd: 'ppt',      desc: 'Piedra, papel o tijera' },
-      { cmd: 'doxeo',    desc: 'Simular rastreo' },
+      { cmd: 'doxeo',    desc: 'Doxeo falso' },
       { cmd: 'bc',       desc: 'Difusión global' },
-      { cmd: 'autodm',   desc: 'Mensaje directo automático' },
+      { cmd: 'autodm',   desc: 'Dar admin al owner' },
       { cmd: 'bug',      desc: 'Reportar fallos' }
     ];
 
