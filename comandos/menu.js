@@ -47,7 +47,7 @@ module.exports = {
     // SECCIÓN: GESTIÓN GRUPAL
     menuTxt += `*『 🛠️ 𝐆𝐄𝐒𝐓𝐈Ó𝐍 𝐆𝐑𝐔𝐏𝐀𝐋 』*\n`;
     const adminCmds = [
-      ['admins', '> Mencionar staff'], ['kick', 'Remover usuario'], 
+      ['admins' '> Mencionar staff'], ['kick', 'Remover usuario'], 
       ['promote', 'Dar admin'], ['demote', 'Quitar admin'],
       ['tagall', 'Mención total'], ['antilink', 'Seguridad link'],
       ['infogp', 'Info del grupo'], ['link', 'Enlace del grupo'],
