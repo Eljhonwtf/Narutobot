@@ -12,6 +12,12 @@ module.exports = {
     // ==========================================
 
     const adminCmds = [
+            { cmd: 'group open/close', desc: 'Abrir o cerrar el chat' },
+      { cmd: 'antifake on/off', desc: 'Expulsar prefijos extranjeros' },
+      { cmd: 'hidetag',          desc: 'Mencionar a todos los miembros' },
+      { cmd: 'setmsg welcome',   desc: 'Configurar bienvenida' },
+      { cmd: 'setmsg bye',       desc: 'Configurar despedida' }
+
       { cmd: 'admins',    desc: 'Mencionar a los admins' },
       { cmd: 'kick',      desc: 'Eliminar a un usuario' },
       { cmd: 'promote',   desc: 'Dar administrador' },
