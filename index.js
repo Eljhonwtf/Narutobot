@@ -53,9 +53,11 @@ async function iniciarBot() {
         }
     });
 
-    // --- LOGICA DE BIENVENIDA Y DESPEDIDA (ESTILO JAVASCRIPT/MD) ---
+        // --- DETECTOR DE ENTRADAS Y SALIDAS CON CRÉDITOS ---
     sock.ev.on('group-participants.update', async (update) => {
         const { id, participants, action } = update;
+        const dbPath = path.join(__dirname, 'database', 'welcome-system.json');
+
         if (!fs.existsSync(dbPath)) return;
         const db = JSON.parse(fs.readFileSync(dbPath));
         if (!db[id] || !db[id].status) return;
@@ -67,13 +69,24 @@ async function iniciarBot() {
             try { 
                 ppUrl = await sock.profilePictureUrl(participant, 'image'); 
             } catch { 
-                ppUrl = 'https://files.catbox.moe/xr2m6u.jpg'; // Imagen de incógnito que pediste
+                ppUrl = 'https://files.catbox.moe/xr2m6u.jpg'; 
             }
 
             const userTag = `@${participant.split('@')[0]}`;
 
+            // Configuración del "Source" (Créditos)
+            const sourceInfo = {
+                externalAdReply: {
+                    title: 'Naruto Bot MD',
+                    body: 'Hecho con amor por Jhon ✨',
+                    mediaType: 1,
+                    previewType: 0,
+                    thumbnailUrl: 'https://files.catbox.moe/xr2m6u.jpg', // Puedes poner otra imagen pequeña aquí
+                    sourceUrl: 'https://github.com/' // O tu link de contacto
+                }
+            };
+
             if (action === 'add') {
-                // Diseño de Bienvenida
                 let wel = `❀ *Bienvenido* a *${groupMetadata.subject}*\n`;
                 wel += `✰ ${userTag}\n\n`;
                 wel += `${db[id].welcomeText || '•(=^●ω●^=)• Disfruta tu estadía en el grupo!'}\n\n`;
@@ -82,11 +95,11 @@ async function iniciarBot() {
                 await sock.sendMessage(id, { 
                     image: { url: ppUrl }, 
                     caption: wel, 
-                    mentions: [participant] 
+                    mentions: [participant],
+                    contextInfo: sourceInfo // <-- AQUÍ SE AGREGAN LOS CRÉDITOS
                 });
 
             } else if (action === 'remove') {
-                // Diseño de Despedida
                 let bye = `❀ *Adiós* de *${groupMetadata.subject}*\n`;
                 bye += `✰ ${userTag}\n\n`;
                 bye += `${db[id].byeText || '•(=^●ω●^=)• ¡Te esperamos pronto!'}\n\n`;
@@ -95,7 +108,8 @@ async function iniciarBot() {
                 await sock.sendMessage(id, { 
                     image: { url: ppUrl }, 
                     caption: bye, 
-                    mentions: [participant] 
+                    mentions: [participant],
+                    contextInfo: sourceInfo // <-- TAMBIÉN EN LA DESPEDIDA
                 });
             }
         }
