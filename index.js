@@ -11,7 +11,12 @@ const path = require('path');
 const pino = require('pino');
 
 const sessionPath = path.join(__dirname, 'sesion_bot');
-const dbPath = path.join(__dirname, 'database', 'welcome-system.json');
+const dbDir = path.join(__dirname, 'database');
+const dbPath = path.join(dbDir, 'welcome-system.json');
+
+// --- ASEGURAR QUE LA BASE DE DATOS EXISTA AL ARRANCAR ---
+if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
+if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, JSON.stringify({}, null, 2));
 
 const buscarComando = (dir, name) => {
     if (!fs.existsSync(dir)) return null;
@@ -37,7 +42,9 @@ async function iniciarBot() {
         auth: state,
         logger: pino({ level: 'silent' }),
         browser: ['Narutobot MD', 'Chrome', '1.0.0'],
-        printQRInTerminal: true
+        printQRInTerminal: true,
+        // Mejora la estabilidad de los eventos de grupo
+        getMessage: async (key) => { return { conversation: 'Narutobot' } }
     });
 
     sock.ev.on('creds.update', saveCreds);
@@ -53,16 +60,18 @@ async function iniciarBot() {
         }
     });
 
-        // --- DETECTOR DE ENTRADAS Y SALIDAS CON CRÉDITOS ---
+    // --- LOGICA AUTOMÁTICA DE BIENVENIDA Y DESPEDIDA ---
     sock.ev.on('group-participants.update', async (update) => {
         const { id, participants, action } = update;
-        const dbPath = path.join(__dirname, 'database', 'welcome-system.json');
-
-        if (!fs.existsSync(dbPath)) return;
+        
+        // Leer base de datos actualizada
         const db = JSON.parse(fs.readFileSync(dbPath));
         if (!db[id] || !db[id].status) return;
 
-        const groupMetadata = await sock.groupMetadata(id);
+        let groupMetadata;
+        try {
+            groupMetadata = await sock.groupMetadata(id);
+        } catch { return; }
 
         for (const participant of participants) {
             let ppUrl;
@@ -74,15 +83,15 @@ async function iniciarBot() {
 
             const userTag = `@${participant.split('@')[0]}`;
 
-            // Configuración del "Source" (Créditos)
+            // El "Source" que pediste (Créditos arriba de la foto)
             const sourceInfo = {
                 externalAdReply: {
-                    title: 'Naruto Bot MD',
+                    title: 'Narutobot System ✨',
                     body: 'Hecho con amor por Jhon ✨',
                     mediaType: 1,
                     previewType: 0,
-                    thumbnailUrl: 'https://files.catbox.moe/xr2m6u.jpg', // Puedes poner otra imagen pequeña aquí
-                    sourceUrl: 'https://github.com/' // O tu link de contacto
+                    thumbnailUrl: 'https://files.catbox.moe/xr2m6u.jpg',
+                    sourceUrl: 'https://github.com/JhonGuerra'
                 }
             };
 
@@ -90,26 +99,26 @@ async function iniciarBot() {
                 let wel = `❀ *Bienvenido* a *${groupMetadata.subject}*\n`;
                 wel += `✰ ${userTag}\n\n`;
                 wel += `${db[id].welcomeText || '•(=^●ω●^=)• Disfruta tu estadía en el grupo!'}\n\n`;
-                wel += `> ✐ Puedes usar *#help* para ver la lista de comandos.`;
+                wel += `> ✐ Puedes usar *#help* para ver los jutsus.`;
 
                 await sock.sendMessage(id, { 
                     image: { url: ppUrl }, 
                     caption: wel, 
                     mentions: [participant],
-                    contextInfo: sourceInfo // <-- AQUÍ SE AGREGAN LOS CRÉDITOS
+                    contextInfo: sourceInfo
                 });
 
             } else if (action === 'remove') {
                 let bye = `❀ *Adiós* de *${groupMetadata.subject}*\n`;
                 bye += `✰ ${userTag}\n\n`;
                 bye += `${db[id].byeText || '•(=^●ω●^=)• ¡Te esperamos pronto!'}\n\n`;
-                bye += `> ✐ La voluntad de fuego se mantiene en la aldea.`;
+                bye += `> ✐ La voluntad de fuego se mantiene viva.`;
 
                 await sock.sendMessage(id, { 
                     image: { url: ppUrl }, 
                     caption: bye, 
                     mentions: [participant],
-                    contextInfo: sourceInfo // <-- TAMBIÉN EN LA DESPEDIDA
+                    contextInfo: sourceInfo
                 });
             }
         }
@@ -141,7 +150,6 @@ async function iniciarBot() {
                     console.log(e);
                 }
             } else {
-                // --- RESPUESTA PARA COMANDO NO ENCONTRADO CON QUOTED ---
                 const errorTxt = `❌ *JUTSU DESCONOCIDO*\n\nEl comando *${prefix}${commandName}* no existe.\n\n💡 Escribe *#menu* para ver mis habilidades.`;
                 await sock.sendMessage(from, { text: errorTxt }, { quoted: msg });
             }
