@@ -53,7 +53,7 @@ async function iniciarBot() {
         }
     });
 
-    // --- EVENTO DE BIENVENIDA CORREGIDO ---
+    // --- LOGICA DE BIENVENIDA Y DESPEDIDA (ESTILO JAVASCRIPT/MD) ---
     sock.ev.on('group-participants.update', async (update) => {
         const { id, participants, action } = update;
         if (!fs.existsSync(dbPath)) return;
@@ -64,22 +64,40 @@ async function iniciarBot() {
 
         for (const participant of participants) {
             let ppUrl;
-            try { ppUrl = await sock.profilePictureUrl(participant, 'image'); } 
-            catch { ppUrl = 'https://files.catbox.moe/t089d8.jpg'; }
+            try { 
+                ppUrl = await sock.profilePictureUrl(participant, 'image'); 
+            } catch { 
+                ppUrl = 'https://files.catbox.moe/xr2m6u.jpg'; // Imagen de incógnito que pediste
+            }
 
             const userTag = `@${participant.split('@')[0]}`;
 
             if (action === 'add') {
-                let text = db[id].welcomeText || `Bienvenido ${userTag} a ${groupMetadata.subject}`;
-                text = text.replace('@user', userTag).replace('@group', groupMetadata.subject);
-                
+                // Diseño de Bienvenida
+                let wel = `❀ *Bienvenido* a *${groupMetadata.subject}*\n`;
+                wel += `✰ ${userTag}\n\n`;
+                wel += `${db[id].welcomeText || '•(=^●ω●^=)• Disfruta tu estadía en el grupo!'}\n\n`;
+                wel += `> ✐ Puedes usar *#help* para ver la lista de comandos.`;
+
                 await sock.sendMessage(id, { 
                     image: { url: ppUrl }, 
-                    caption: `╔════════════════════╗\n  ◈ *𝐍𝐄𝐖 𝐌𝐄𝐌𝐁𝐄𝐑* ◈\n╚════════════════════╝\n\n${text}\n\n🚩 *Narutobot System*`, 
+                    caption: wel, 
+                    mentions: [participant] 
+                });
+
+            } else if (action === 'remove') {
+                // Diseño de Despedida
+                let bye = `❀ *Adiós* de *${groupMetadata.subject}*\n`;
+                bye += `✰ ${userTag}\n\n`;
+                bye += `${db[id].byeText || '•(=^●ω●^=)• ¡Te esperamos pronto!'}\n\n`;
+                bye += `> ✐ La voluntad de fuego se mantiene en la aldea.`;
+
+                await sock.sendMessage(id, { 
+                    image: { url: ppUrl }, 
+                    caption: bye, 
                     mentions: [participant] 
                 });
             }
-            // Agrega aquí el 'remove' si deseas despedidas también
         }
     });
 
@@ -89,7 +107,7 @@ async function iniciarBot() {
 
         const from = msg.key.remoteJid;
         const body = (msg.message.conversation || msg.message.extendedTextMessage?.text || msg.message.imageMessage?.caption || "").toLowerCase();
-        
+
         const prefixes = ['/', '!', '.', '#'];
         const prefix = prefixes.find(p => body.startsWith(p));
 
@@ -100,18 +118,17 @@ async function iniciarBot() {
             const isOwner = sender.includes('584142577312');
 
             const commandPath = buscarComando(path.join(__dirname, 'comandos'), commandName);
-            
+
             if (commandPath) {
                 try {
                     const command = require(commandPath);
-                    // Pasamos sock, msg, etc. El comando debe usar { quoted: msg } internamente
                     await command.run(sock, msg, body, args, isOwner);
                 } catch (e) {
                     console.log(e);
                 }
             } else {
-                // --- RESPUESTA PARA COMANDO NO ENCONTRADO ---
-                const errorTxt = `❌ *COMANDO NO ENCONTRADO*\n\nEl comando *${prefix}${commandName}* no existe o está mal escrito.\n\n💡 Usa */menu* para ver la lista de jutsus disponibles.`;
+                // --- RESPUESTA PARA COMANDO NO ENCONTRADO CON QUOTED ---
+                const errorTxt = `❌ *JUTSU DESCONOCIDO*\n\nEl comando *${prefix}${commandName}* no existe.\n\n💡 Escribe *#menu* para ver mis habilidades.`;
                 await sock.sendMessage(from, { text: errorTxt }, { quoted: msg });
             }
         }
