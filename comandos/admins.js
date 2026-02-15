@@ -40,7 +40,7 @@ module.exports = {
                 mentions: groupAdmins.map(a => a.id),
                 contextInfo: {
                     externalAdReply: {
-                        title: "𝑨𝒅𝒎𝒊𝒏 𝑳𝒊𝒔𝒕 𝑽𝒆𝒓𝒊𝒇𝒊𝒆𝒅 🚀",
+                        title: "𝑨𝒅𝒎𝒊𝒏 𝑳𝒊𝒔𝒕 𝑽𝒆𝒓𝒊𝒇𝒊𝒆𝒅 😎",
                         body: `𝑵𝒂𝒓𝒖𝒕𝒐𝒃𝒐𝒕 𝟐𝟎𝟐𝟔`,
                         thumbnailUrl: thumbUrl,
                         mediaType: 1,
