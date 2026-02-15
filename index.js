@@ -2,25 +2,43 @@ const {
     default: makeWASocket, 
     useMultiFileAuthState, 
     DisconnectReason, 
-    fetchLatestBaileysVersion
+    fetchLatestBaileysVersion,
+    makeCacheableSignalKeyStore
 } = require('@whiskeysockets/baileys');
 const { Boom } = require('@hapi/boom');
-const qrcode = require('qrcode-terminal');
 const fs = require('fs');
 const path = require('path');
 const pino = require('pino');
+const readline = require('readline');
 
+// --- DATOS DE AUTORIDAD ---
+const ownerNumber = '584142577312'; 
 const sessionPath = path.join(__dirname, 'sesion_bot');
-const dbDir = path.join(__dirname, 'database');
-const dbPath = path.join(dbDir, 'welcome-system.json');
 
-if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
-if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, JSON.stringify({}, null, 2));
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
-// --- COLORES AGRESIVOS ---
+// --- PALETA DE COLORES EXTENDIDA ---
+const f_orange = '\x1b[38;5;202m'; // Naranja fuego
+const f_yellow = '\x1b[38;5;214m'; // Amarillo chakra
 const red = '\x1b[31m';
 const white = '\x1b[37m';
+const cyan = '\x1b[36m';
+const green = '\x1b[32m';
+const magenta = '\x1b[35m';
+const gray = '\x1b[90m';
 const reset = '\x1b[0m';
+
+// --- BANNER CON DEGRADADO NARUTO ---
+const imprimirBanner = () => {
+    console.clear();
+    console.log(`${f_orange}   _  _   _   ___  _   _ _____ ___    ____   ___ _____ `);
+    console.log(`${f_orange}  | \\| | /_\\ | _ \\| | | |_   _/ _ \\  | __ ) / _ \\_   _|`);
+    console.log(`${f_yellow}  | .  |/ _ \\|   /| |_| | | || (_) | |  _ \\| (_) || |  `);
+    console.log(`${f_yellow}  |_|\\_/_/ \\_\\_|_\\ \\___/  |_| \\___/  |____/ \\___/ |_|  `);
+    console.log(`${red}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    console.log(`${white}   [ 👑 OWNER: ${cyan}JHON${white} ]  [ ⚡ STATUS: ${green}ONLINE${white} ]  [ 🌀 V: 3.0 ]${reset}\n`);
+};
 
 const buscarComando = (dir, name) => {
     if (!fs.existsSync(dir)) return null;
@@ -28,11 +46,9 @@ const buscarComando = (dir, name) => {
     for (const archivo of archivos) {
         const rutaFull = path.join(dir, archivo);
         if (fs.statSync(rutaFull).isDirectory()) {
-            const resultado = buscarComando(rutaFull, name);
-            if (resultado) return resultado;
-        } else if (archivo.toLowerCase() === `${name.toLowerCase()}.js`) {
-            return rutaFull;
-        }
+            const res = buscarComando(rutaFull, name);
+            if (res) return res;
+        } else if (archivo.toLowerCase() === `${name.toLowerCase()}.js`) return rutaFull;
     }
     return null;
 };
@@ -41,86 +57,100 @@ async function iniciarBot() {
     const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
     const { version } = await fetchLatestBaileysVersion();
 
+    let usePairingCode = false;
+    let phoneNumber = "";
+
+    if (!state.creds.registered) {
+        imprimirBanner();
+        console.log(`${f_orange}┌──────────────────────────────────────────┐`);
+        console.log(`${white}│  ${f_yellow}[1]${white} Vincular con Código QR             │`);
+        console.log(`${white}│  ${f_yellow}[2]${white} Vincular con Código de 8 Dígitos   │`);
+        console.log(`${f_orange}└──────────────────────────────────────────┘${reset}`);
+        const opcion = await question(`\n${f_orange}➤ SELECCIONA MÉTODO:${reset} `);
+
+        if (opcion === '2') {
+            usePairingCode = true;
+            phoneNumber = await question(`${f_orange}➤ NÚMERO (Ej: 58414...):${reset} `);
+            phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
+        }
+    }
+
     const sock = makeWASocket({
         version,
-        auth: state,
+        auth: {
+            creds: state.creds,
+            keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" })),
+        },
         logger: pino({ level: 'silent' }),
-        browser: ['Warlord System', 'Chrome', '1.0.0'],
-        printQRInTerminal: true
+        browser: ["Ubuntu", "Chrome", "20.0.04"],
+        printQRInTerminal: !usePairingCode,
     });
+
+    if (usePairingCode && !sock.authState.creds.registered) {
+        setTimeout(async () => {
+            try {
+                let code = await sock.requestPairingCode(phoneNumber);
+                code = code?.match(/.{1,4}/g)?.join("-") || code;
+                console.log(`\n${white}╔════════════════════════════════════╗`);
+                console.log(`${white}║  ${f_orange}CÓDIGO NARUTO BOT:${reset} ${f_yellow}${code}${white}  ║`);
+                console.log(`${white}╚════════════════════════════════════╝\n`);
+            } catch (err) {
+                console.log(`${red}❌ Error al generar código.${reset}`);
+            }
+        }, 3000);
+    }
 
     sock.ev.on('creds.update', saveCreds);
 
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
-        if (connection === 'close') {
-            const statusCode = (lastDisconnect.error instanceof Boom) ? lastDisconnect.error.output.statusCode : 0;
-            if (statusCode !== DisconnectReason.loggedOut) iniciarBot();
-        } else if (connection === 'open') {
-            console.log(`\n${red}⚔️  WARLORD SYSTEM CONECTADO ⚔️${reset}`);
+        if (connection === 'open') {
+            imprimirBanner();
+            console.log(`${green}✅ CONEXIÓN ESTABLECIDA CON EL NODO KONOHA${reset}\n`);
+        } else if (connection === 'close') {
+            const code = (lastDisconnect.error instanceof Boom) ? lastDisconnect.error.output.statusCode : 0;
+            if (code !== DisconnectReason.loggedOut) iniciarBot();
         }
-    });
-
-    // --- LOGICA DE BIENVENIDA (Tu código original) ---
-    sock.ev.on('group-participants.update', async (update) => {
-        const { id, participants, action } = update;
-        try {
-            const db = JSON.parse(fs.readFileSync(dbPath));
-            if (!db[id] || !db[id].status) return;
-            const groupMetadata = await sock.groupMetadata(id);
-            for (const participant of participants) {
-                let ppUrl;
-                try { ppUrl = await sock.profilePictureUrl(participant, 'image'); } 
-                catch { ppUrl = 'https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg'; }
-                const userTag = `@${participant.split('@')[0]}`;
-                if (action === 'add') {
-                    await sock.sendMessage(id, { image: { url: ppUrl }, caption: `Bienvenido ${userTag} a ${groupMetadata.subject}`, mentions: [participant] });
-                }
-            }
-        } catch (e) { console.log("Error en bienvenida: ", e) }
     });
 
     sock.ev.on('messages.upsert', async (chatUpdate) => {
-        const msg = chatUpdate.messages[0];
-        if (!msg.message || msg.key.fromMe) return;
+        try {
+            const m = chatUpdate.messages[0];
+            if (!m.message || m.key.fromMe) return;
 
-        const from = msg.key.remoteJid;
-        const pushName = msg.pushName || 'Usuario';
-        const sender = msg.key.participant || msg.key.remoteJid;
-        
-        // --- LIMPIEZA CRÍTICA DEL NÚMERO ---
-        const senderLimpio = sender.replace(/[^0-9]/g, '');
-        const isOwner = senderLimpio === '584142577312'; 
+            const from = m.key.remoteJid;
+            const sender = m.key.participant || m.key.remoteJid;
+            const pushName = m.pushName || 'Shinobi';
+            const senderNumber = sender.replace(/[^0-9]/g, '');
+            
+            const isOwner = senderNumber === ownerNumber;
+            const isGroup = from.endsWith('@g.us');
+            const body = m.message.conversation || m.message.extendedTextMessage?.text || m.message.imageMessage?.caption || "";
+            
+            // --- LOGS MULTICOLOR (SÚPER VISUAL) ---
+            const hora = new Date().toLocaleTimeString();
+            console.log(`${gray}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}`);
+            console.log(`${f_orange}🕒 HORA   :${reset} ${white}${hora}`);
+            console.log(`${f_orange}👤 NOMBRE :${reset} ${cyan}${pushName} ${isOwner ? `${red}[HOKAGE]` : `${gray}[NINJA]`}`);
+            console.log(`${f_orange}📱 NÚMERO :${reset} ${green}${senderNumber}`);
+            console.log(`${f_orange}💬 MSG    :${reset} ${white}${body}`);
+            console.log(`${gray}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}`);
 
-        const body = (msg.message.conversation || msg.message.extendedTextMessage?.text || msg.message.imageMessage?.caption || "");
-        
-        // --- LOGS A LA IZQUIERDA ---
-        const hora = new Date().toLocaleTimeString();
-        console.log(`${red}╭───────────────────────────${reset}`);
-        console.log(`${red}│${white} 🕒 HORA: ${hora}`);
-        console.log(`${red}│${white} 👤 NAME: ${pushName}${isOwner ? ` ${red}[BOSS]` : ''}`);
-        console.log(`${red}│${white} 💬 MSG : ${body}`);
-        console.log(`${red}╰───────────────────────────${reset}`);
+            const prefixes = ['/', '!', '.', '#', '$'];
+            const prefix = prefixes.find(p => body.startsWith(p));
 
-        const prefixes = ['/', '!', '.', '#'];
-        const prefix = prefixes.find(p => body.startsWith(p));
+            if (prefix) {
+                const args = body.slice(prefix.length).trim().split(/\s+/);
+                const commandName = args.shift().toLowerCase();
+                const cmdFile = buscarComando(path.join(__dirname, 'comandos'), commandName);
 
-        if (prefix) {
-            const args = body.slice(prefix.length).trim().split(/\s+/);
-            const commandName = args.shift().toLowerCase();
-            const commandPath = buscarComando(path.join(__dirname, 'comandos'), commandName);
-
-            if (commandPath) {
-                try {
-                    delete require.cache[require.resolve(commandPath)];
-                    const command = require(commandPath);
-                    // Pasamos isOwner correctamente a tus comandos avanzados
-                    await command.run(sock, msg, body, args, isOwner);
-                } catch (e) { console.log(e); }
-            } else {
-                await sock.sendMessage(from, { text: `❌ Comando *${commandName}* no reconocido.` }, { quoted: msg });
+                if (cmdFile) {
+                    delete require.cache[require.resolve(cmdFile)];
+                    const cmd = require(cmdFile);
+                    await cmd.run(sock, m, body, args, isOwner, isGroup);
+                }
             }
-        }
+        } catch (e) { console.log(e); }
     });
 }
 
