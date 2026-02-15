@@ -1,52 +1,60 @@
 const { exec } = require('child_process');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = {
     name: 'update',
-    alias: ['actualizar', 'upgrade'],
+    alias: ['upd', 'actualizar'],
     run: async (sock, msg, body, args, isOwner) => {
-        // Validación de Seguridad
         if (!isOwner) return;
 
         const from = msg.key.remoteJid;
 
-        // Reacción de inicio
-        await sock.sendMessage(from, { react: { text: "⚙️", key: msg.key } });
-
         await sock.sendMessage(from, { 
-            text: `⚔️ *WARLORD SYSTEM: UPDATE* ⚔️\n\n> 📥 _Extrayendo datos del servidor central..._` 
+            text: `🌀 *NARUTO BOT: HOT RELOAD* 🌀\n\n> 🛠️ _Sincronizando pergaminos sin apagar el núcleo..._` 
         }, { quoted: msg });
 
-        // Ejecutamos una limpieza y luego el pull para evitar que se trabe
-        // 'git fetch --all && git reset --hard origin/main' es para forzar si hay errores
-        exec('git pull', (err, stdout, stderr) => {
+        // 1. Descargamos los cambios de GitHub
+        exec('git reset --hard HEAD && git pull', async (err, stdout, stderr) => {
             if (err) {
                 return sock.sendMessage(from, { 
-                    text: `❌ *CRITICAL ERROR*\n\n> *Detalle:* \n\`\`\`${err.message}\`\`\`` 
+                    text: `❌ *ERROR EN TRANSFERENCIA:* \n\n\`\`\`${err.message}\`\`\`` 
                 });
             }
 
-            if (stdout.includes('Already up to date.')) {
+            if (stdout.includes('Already up to date')) {
                 return sock.sendMessage(from, { 
-                    text: `🛡️ *WARLORD STATUS*\n\nEl sistema ya se encuentra en su versión más letal. No hay parches nuevos.` 
+                    text: `✨ *NARUTO BOT:* No hay jutsus nuevos en el repositorio.` 
                 });
             }
 
-            // Reporte de archivos modificados
-            const cambios = stdout.split('\n').filter(line => line.includes('|') || line.includes('changed')).join('\n');
+            // 2. RECARGA DE MEMORIA (La magia)
+            // Esta función busca todos los archivos en la carpeta comandos y limpia su caché
+            const carpetaComandos = path.join(__dirname, '../../comandos'); // Ajusta la ruta si es necesario
+            
+            const limpiarCache = (dir) => {
+                fs.readdirSync(dir).forEach(file => {
+                    const fullPath = path.join(dir, file);
+                    if (fs.statSync(fullPath).isDirectory()) {
+                        limpiarCache(fullPath);
+                    } else if (file.endsWith('.js')) {
+                        delete require.cache[require.resolve(fullPath)];
+                    }
+                });
+            };
 
-            const mensajeFinal = `✅ *SISTEMA ACTUALIZADO* ✅\n\n` +
-                `┏━━━━〔 📊 *INFORME* 〕━━━━┓\n\n` +
-                `📂 *ARCHIVOS:* \n\`\`\`${cambios}\`\`\`\n\n` +
-                `👤 *OPERADOR:* JHON\n` +
-                `┗━━━━━━━━━━━━━━━━━━━━┛\n\n` +
-                `🚀 *Reiniciando sistema en 3 segundos...*`;
+            try {
+                limpiarCache(path.join(__dirname, '../')); // Limpia la subcarpeta actual
+                // Si tienes los comandos en carpetas separadas, esto limpia TODO lo que esté en /comandos/
+                
+                const reporte = stdout.slice(0, 500);
+                await sock.sendMessage(from, { 
+                    text: `✅ *ACTUALIZACIÓN EXITOSA*\n\n*REPORTE:* \n\`\`\`${reporte}\`\`\`\n\n🔥 *SISTEMA RECARGADO:* Los cambios ya están activos sin reiniciar el bot.` 
+                }, { quoted: msg });
 
-            sock.sendMessage(from, { text: mensajeFinal }, { quoted: msg });
-
-            // Reinicio automático (Solo si usas 'pm2' o un script 'start.sh')
-            setTimeout(() => {
-                process.exit();
-            }, 3000);
+            } catch (e) {
+                await sock.sendMessage(from, { text: `⚠️ Archivos actualizados, pero error al recargar caché: ${e.message}` });
+            }
         });
     }
 };
