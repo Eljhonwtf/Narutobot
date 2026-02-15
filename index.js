@@ -14,9 +14,13 @@ const sessionPath = path.join(__dirname, 'sesion_bot');
 const dbDir = path.join(__dirname, 'database');
 const dbPath = path.join(dbDir, 'welcome-system.json');
 
-// --- ASEGURAR QUE LA BASE DE DATOS EXISTA ---
 if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 if (!fs.existsSync(dbPath)) fs.writeFileSync(dbPath, JSON.stringify({}, null, 2));
+
+// --- COLORES AGRESIVOS ---
+const red = '\x1b[31m';
+const white = '\x1b[37m';
+const reset = '\x1b[0m';
 
 const buscarComando = (dir, name) => {
     if (!fs.existsSync(dir)) return null;
@@ -26,7 +30,7 @@ const buscarComando = (dir, name) => {
         if (fs.statSync(rutaFull).isDirectory()) {
             const resultado = buscarComando(rutaFull, name);
             if (resultado) return resultado;
-        } else if (archivo === `${name}.js`) {
+        } else if (archivo.toLowerCase() === `${name.toLowerCase()}.js`) {
             return rutaFull;
         }
     }
@@ -41,8 +45,8 @@ async function iniciarBot() {
         version,
         auth: state,
         logger: pino({ level: 'silent' }),
-        browser: ['Narutobot MD', 'Chrome', '1.0.0'],
-        printQRInTerminal: true // Puedes ignorar el aviso de deprecated, aún funciona
+        browser: ['Warlord System', 'Chrome', '1.0.0'],
+        printQRInTerminal: true
     });
 
     sock.ev.on('creds.update', saveCreds);
@@ -51,45 +55,29 @@ async function iniciarBot() {
         const { connection, lastDisconnect } = update;
         if (connection === 'close') {
             const statusCode = (lastDisconnect.error instanceof Boom) ? lastDisconnect.error.output.statusCode : 0;
-            if (statusCode !== DisconnectReason.loggedOut) {
-                iniciarBot();
-            }
+            if (statusCode !== DisconnectReason.loggedOut) iniciarBot();
         } else if (connection === 'open') {
-            console.log('\n\x1b[32m✅ Narutobot conectado con éxito!\x1b[0m');
+            console.log(`\n${red}⚔️  WARLORD SYSTEM CONECTADO ⚔️${reset}`);
         }
     });
 
-    // --- LOGICA DE BIENVENIDA ---
+    // --- LOGICA DE BIENVENIDA (Tu código original) ---
     sock.ev.on('group-participants.update', async (update) => {
         const { id, participants, action } = update;
-        const db = JSON.parse(fs.readFileSync(dbPath));
-        if (!db[id] || !db[id].status) return;
-
-        const groupMetadata = await sock.groupMetadata(id);
-        for (const participant of participants) {
-            let ppUrl;
-            try { ppUrl = await sock.profilePictureUrl(participant, 'image'); } 
-            catch { ppUrl = 'https://files.catbox.moe/xr2m6u.jpg'; }
-
-            const userTag = `@${participant.split('@')[0]}`;
-            const sourceInfo = {
-                externalAdReply: {
-                    title: 'Narutobot System ✨',
-                    body: 'Hecho con amor por Jhon ✨',
-                    mediaType: 1,
-                    thumbnailUrl: 'https://files.catbox.moe/xr2m6u.jpg',
-                    sourceUrl: 'https://github.com/JhonGuerra'
+        try {
+            const db = JSON.parse(fs.readFileSync(dbPath));
+            if (!db[id] || !db[id].status) return;
+            const groupMetadata = await sock.groupMetadata(id);
+            for (const participant of participants) {
+                let ppUrl;
+                try { ppUrl = await sock.profilePictureUrl(participant, 'image'); } 
+                catch { ppUrl = 'https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg'; }
+                const userTag = `@${participant.split('@')[0]}`;
+                if (action === 'add') {
+                    await sock.sendMessage(id, { image: { url: ppUrl }, caption: `Bienvenido ${userTag} a ${groupMetadata.subject}`, mentions: [participant] });
                 }
-            };
-
-            if (action === 'add') {
-                let wel = `❀ *Bienvenido* a *${groupMetadata.subject}*\n✰ ${userTag}\n\n${db[id].welcomeText || '¡Disfruta tu estadía!'}\n\n> 🚩 *Narutobot System*`;
-                await sock.sendMessage(id, { image: { url: ppUrl }, caption: wel, mentions: [participant], contextInfo: sourceInfo });
-            } else if (action === 'remove') {
-                let bye = `❀ *Adiós* de *${groupMetadata.subject}*\n✰ ${userTag}\n\n${db[id].byeText || '¡Te esperamos pronto!'}\n\n> 🚩 *Narutobot System*`;
-                await sock.sendMessage(id, { image: { url: ppUrl }, caption: bye, mentions: [participant], contextInfo: sourceInfo });
             }
-        }
+        } catch (e) { console.log("Error en bienvenida: ", e) }
     });
 
     sock.ev.on('messages.upsert', async (chatUpdate) => {
@@ -99,17 +87,20 @@ async function iniciarBot() {
         const from = msg.key.remoteJid;
         const pushName = msg.pushName || 'Usuario';
         const sender = msg.key.participant || msg.key.remoteJid;
-        const body = (msg.message.conversation || msg.message.extendedTextMessage?.text || msg.message.imageMessage?.caption || "").toLowerCase();
         
-        const isOwner = sender.includes('584142577312');
+        // --- LIMPIEZA CRÍTICA DEL NÚMERO ---
+        const senderLimpio = sender.replace(/[^0-9]/g, '');
+        const isOwner = senderLimpio === '584142577312'; 
 
-        // --- AQUÍ REGRESAN TUS CONSOLE.LOG ---
+        const body = (msg.message.conversation || msg.message.extendedTextMessage?.text || msg.message.imageMessage?.caption || "");
+        
+        // --- LOGS A LA IZQUIERDA ---
         const hora = new Date().toLocaleTimeString();
-        const colorOwner = isOwner ? '\x1b[33m[OWNER]\x1b[0m' : '\x1b[36m[USER]\x1b[0m';
-        console.log(`\n\x1b[35m══════════════════════════════════════════\x1b[0m`);
-        console.log(`\x1b[37m[${hora}]\x1b[0m ${colorOwner} \x1b[32m${pushName}\x1b[0m`);
-        console.log(`\x1b[37mMensaje:\x1b[0m ${body}`);
-        console.log(`\x1b[35m══════════════════════════════════════════\x1b[0m`);
+        console.log(`${red}╭───────────────────────────${reset}`);
+        console.log(`${red}│${white} 🕒 HORA: ${hora}`);
+        console.log(`${red}│${white} 👤 NAME: ${pushName}${isOwner ? ` ${red}[BOSS]` : ''}`);
+        console.log(`${red}│${white} 💬 MSG : ${body}`);
+        console.log(`${red}╰───────────────────────────${reset}`);
 
         const prefixes = ['/', '!', '.', '#'];
         const prefix = prefixes.find(p => body.startsWith(p));
@@ -121,12 +112,13 @@ async function iniciarBot() {
 
             if (commandPath) {
                 try {
+                    delete require.cache[require.resolve(commandPath)];
                     const command = require(commandPath);
+                    // Pasamos isOwner correctamente a tus comandos avanzados
                     await command.run(sock, msg, body, args, isOwner);
                 } catch (e) { console.log(e); }
             } else {
-                const errorTxt = `❌ *JUTSU DESCONOCIDO*\n\nEl comando *${prefix}${commandName}* no existe.`;
-                await sock.sendMessage(from, { text: errorTxt }, { quoted: msg });
+                await sock.sendMessage(from, { text: `❌ Comando *${commandName}* no reconocido.` }, { quoted: msg });
             }
         }
     });
