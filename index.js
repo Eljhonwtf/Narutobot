@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const pino = require('pino');
 const readline = require('readline');
+const qrcode = require('qrcode-terminal');
 
 // --- DATOS DE AUTORIDAD ---
 const ownerNumber = '584142577312'; 
@@ -18,18 +19,16 @@ const sessionPath = path.join(__dirname, 'sesion_bot');
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
-// --- PALETA DE COLORES EXTENDIDA ---
-const f_orange = '\x1b[38;5;202m'; // Naranja fuego
-const f_yellow = '\x1b[38;5;214m'; // Amarillo chakra
+// --- PALETA DE COLORES ---
+const f_orange = '\x1b[38;5;202m';
+const f_yellow = '\x1b[38;5;214m';
 const red = '\x1b[31m';
 const white = '\x1b[37m';
 const cyan = '\x1b[36m';
 const green = '\x1b[32m';
-const magenta = '\x1b[35m';
 const gray = '\x1b[90m';
 const reset = '\x1b[0m';
 
-// --- BANNER CON DEGRADADO NARUTO ---
 const imprimirBanner = () => {
     console.clear();
     console.log(`${f_orange}   _  _   _   ___  _   _ _____ ___    ____   ___ _____ `);
@@ -37,7 +36,7 @@ const imprimirBanner = () => {
     console.log(`${f_yellow}  | .  |/ _ \\|   /| |_| | | || (_) | |  _ \\| (_) || |  `);
     console.log(`${f_yellow}  |_|\\_/_/ \\_\\_|_\\ \\___/  |_| \\___/  |____/ \\___/ |_|  `);
     console.log(`${red}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-    console.log(`${white}   [ 👑 OWNER: ${cyan}JHON${white} ]  [ ⚡ STATUS: ${green}ONLINE${white} ]  [ 🌀 V: 3.0 ]${reset}\n`);
+    console.log(`${white}   [ 👑 HOKAGE: ${cyan}JHON${white} ]  [ ⚡ STATUS: ${green}ONLINE${white} ]  [ 🌀 V: 3.1 ]${reset}\n`);
 };
 
 const buscarComando = (dir, name) => {
@@ -66,11 +65,11 @@ async function iniciarBot() {
         console.log(`${white}│  ${f_yellow}[1]${white} Vincular con Código QR             │`);
         console.log(`${white}│  ${f_yellow}[2]${white} Vincular con Código de 8 Dígitos   │`);
         console.log(`${f_orange}└──────────────────────────────────────────┘${reset}`);
-        const opcion = await question(`\n${f_orange}➤ SELECCIONA MÉTODO:${reset} `);
+        const opcion = await question(`\n${f_orange}➤ ELIGE TU CAMINO NINJA:${reset} `);
 
         if (opcion === '2') {
             usePairingCode = true;
-            phoneNumber = await question(`${f_orange}➤ NÚMERO (Ej: 58414...):${reset} `);
+            phoneNumber = await question(`${f_orange}➤ INGRESA TU NÚMERO (Ej: 584142577312):${reset} `);
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
         }
     }
@@ -83,33 +82,48 @@ async function iniciarBot() {
         },
         logger: pino({ level: 'silent' }),
         browser: ["Ubuntu", "Chrome", "20.0.04"],
-        printQRInTerminal: !usePairingCode,
+        printQRInTerminal: false, // DESACTIVADO para quitar el aviso amarillo
     });
 
+    // --- MANEJO DE VINCULACIÓN ---
     if (usePairingCode && !sock.authState.creds.registered) {
+        if (!phoneNumber) {
+            console.log(`${red}❌ Error: Número no proporcionado.${reset}`);
+            process.exit();
+        }
         setTimeout(async () => {
-            try {
-                let code = await sock.requestPairingCode(phoneNumber);
-                code = code?.match(/.{1,4}/g)?.join("-") || code;
-                console.log(`\n${white}╔════════════════════════════════════╗`);
-                console.log(`${white}║  ${f_orange}CÓDIGO NARUTO BOT:${reset} ${f_yellow}${code}${white}  ║`);
-                console.log(`${white}╚════════════════════════════════════╝\n`);
-            } catch (err) {
-                console.log(`${red}❌ Error al generar código.${reset}`);
-            }
+            let code = await sock.requestPairingCode(phoneNumber);
+            code = code?.match(/.{1,4}/g)?.join("-") || code;
+            console.log(`\n${white}╔════════════════════════════════════╗`);
+            console.log(`${white}║  ${f_orange}CÓDIGO DE ACCESO:${reset} ${f_yellow}${code}${white}     ║`);
+            console.log(`${white}╚════════════════════════════════════╝\n`);
         }, 3000);
     }
 
     sock.ev.on('creds.update', saveCreds);
 
     sock.ev.on('connection.update', (update) => {
-        const { connection, lastDisconnect } = update;
+        const { connection, lastDisconnect, qr } = update;
+
+        // Mostrar QR solo si se eligió la opción 1
+        if (qr && !usePairingCode) {
+            console.log(`${f_yellow}📷 Escanea el código QR para iniciar sesión:${reset}`);
+            qrcode.generate(qr, { small: true });
+        }
+
         if (connection === 'open') {
             imprimirBanner();
-            console.log(`${green}✅ CONEXIÓN ESTABLECIDA CON EL NODO KONOHA${reset}\n`);
+            console.log(`${green}✅ ALDEA DE LA HOJA CONECTADA (WhatsApp Online)${reset}\n`);
         } else if (connection === 'close') {
-            const code = (lastDisconnect.error instanceof Boom) ? lastDisconnect.error.output.statusCode : 0;
-            if (code !== DisconnectReason.loggedOut) iniciarBot();
+            const reason = new Boom(lastDisconnect?.error)?.output.statusCode;
+            console.log(`${red}⚠️ Conexión cerrada. Razón: ${reason}. Reintentando...${reset}`);
+            
+            if (reason !== DisconnectReason.loggedOut) {
+                iniciarBot();
+            } else {
+                console.log(`${red}❌ Sesión cerrada. Borra la carpeta ${sessionPath} y vuelve a vincular.${reset}`);
+                process.exit();
+            }
         }
     });
 
@@ -127,7 +141,7 @@ async function iniciarBot() {
             const isGroup = from.endsWith('@g.us');
             const body = m.message.conversation || m.message.extendedTextMessage?.text || m.message.imageMessage?.caption || "";
             
-            // --- LOGS MULTICOLOR (SÚPER VISUAL) ---
+            // --- LOGS PROFESIONALES ---
             const hora = new Date().toLocaleTimeString();
             console.log(`${gray}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${reset}`);
             console.log(`${f_orange}🕒 HORA   :${reset} ${white}${hora}`);
@@ -150,7 +164,7 @@ async function iniciarBot() {
                     await cmd.run(sock, m, body, args, isOwner, isGroup);
                 }
             }
-        } catch (e) { console.log(e); }
+        } catch (e) { console.error(`${red}Error en el mensaje: ${e.message}${reset}`); }
     });
 }
 
