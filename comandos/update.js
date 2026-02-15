@@ -2,46 +2,51 @@ const { exec } = require('child_process');
 
 module.exports = {
     name: 'update',
-    alias: ['actualizar', 'fixbot', 'upgrade'],
-    category: 'owner',
+    alias: ['actualizar', 'upgrade'],
     run: async (sock, msg, body, args, isOwner) => {
+        // Validación de Seguridad
         if (!isOwner) return;
 
         const from = msg.key.remoteJid;
 
-        // 1er Mensaje: Inicio de la secuencia
+        // Reacción de inicio
+        await sock.sendMessage(from, { react: { text: "⚙️", key: msg.key } });
+
         await sock.sendMessage(from, { 
-            text: `⚙️ *𝐍𝐀𝐑𝐔𝐓𝐎𝐁𝐎𝐓 𝐂𝐎𝐍𝐍𝐄𝐂𝐓*\n\n> 📥 _Sincronizando con el núcleo del repositorio..._` 
+            text: `⚔️ *WARLORD SYSTEM: UPDATE* ⚔️\n\n> 📥 _Extrayendo datos del servidor central..._` 
         }, { quoted: msg });
 
+        // Ejecutamos una limpieza y luego el pull para evitar que se trabe
+        // 'git fetch --all && git reset --hard origin/main' es para forzar si hay errores
         exec('git pull', (err, stdout, stderr) => {
             if (err) {
                 return sock.sendMessage(from, { 
-                    text: `❌ *𝐒𝐘𝐒𝐓𝐄𝐌 𝐅𝐀𝐈𝐋𝐔𝐑𝐄*\n\n> *Error detectado:* \n\`\`\`${err.message}\`\`\`` 
+                    text: `❌ *CRITICAL ERROR*\n\n> *Detalle:* \n\`\`\`${err.message}\`\`\`` 
                 });
             }
 
-            if (stdout.includes('Already up to date')) {
+            if (stdout.includes('Already up to date.')) {
                 return sock.sendMessage(from, { 
-                    text: `💎 *𝐒𝐘𝐒𝐓𝐄𝐌 𝐒𝐓𝐀𝐓𝐔𝐒*\n\nEl sistema ya opera en la versión más estable y reciente.` 
+                    text: `🛡️ *WARLORD STATUS*\n\nEl sistema ya se encuentra en su versión más letal. No hay parches nuevos.` 
                 });
             }
 
-            // --- PROCESAMIENTO DE DATOS ---
-            const stats = stdout.split('\n').filter(line => line.includes('changed') || line.includes('insertion') || line.includes('deletion')).join('\n');
-            const archivos = stdout.split('\n').filter(line => line.includes('|')).join('\n');
+            // Reporte de archivos modificados
+            const cambios = stdout.split('\n').filter(line => line.includes('|') || line.includes('changed')).join('\n');
 
-            // --- DISEÑO FINAL MEJORADO ---
-            const mensajeFinal = `✨ *𝐍𝐀𝐑𝐔𝐓𝐎𝐁𝐎𝐓 𝐔𝐏𝐆𝐑𝐀𝐃𝐄𝐃* ✨\n\n` +
-                `✅ El sistema ha sido optimizado con éxito.\n\n` +
-                `┏━━━━〔 📊 *𝐑𝐄𝐏𝐎𝐑𝐓𝐄* 〕━━━━┓\n\n` +
-                `📂 *𝐌𝐎𝐃𝐈𝐅𝐈𝐂𝐀𝐂𝐈𝐎𝐍𝐄𝐒:* \n\`\`\`${archivos}\`\`\`\n\n` +
-                `📈 *𝐄𝐒𝐓𝐀𝐃𝐈́𝐒𝐓𝐈𝐂𝐀𝐒:* \n\`\`\`${stats}\`\`\`\n\n` +
-                `👤 *𝐃𝐞𝐯:* _Obito_\n` +
+            const mensajeFinal = `✅ *SISTEMA ACTUALIZADO* ✅\n\n` +
+                `┏━━━━〔 📊 *INFORME* 〕━━━━┓\n\n` +
+                `📂 *ARCHIVOS:* \n\`\`\`${cambios}\`\`\`\n\n` +
+                `👤 *OPERADOR:* JHON\n` +
                 `┗━━━━━━━━━━━━━━━━━━━━┛\n\n` +
-                `🚀 _Reiniciando procesos para aplicar parches..._`;
+                `🚀 *Reiniciando sistema en 3 segundos...*`;
 
-            return sock.sendMessage(from, { text: mensajeFinal }, { quoted: msg });
+            sock.sendMessage(from, { text: mensajeFinal }, { quoted: msg });
+
+            // Reinicio automático (Solo si usas 'pm2' o un script 'start.sh')
+            setTimeout(() => {
+                process.exit();
+            }, 3000);
         });
     }
 };
