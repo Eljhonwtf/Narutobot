@@ -19,9 +19,9 @@ module.exports = async (conn, m, { command }) => {
             await m.reply("🔄 **Iniciando Git Pull y Reinicio...**\nSincronizando archivos con el repositorio.");
 
             // 2. Ejecutar la actualización
-            exec('git pull', async (err, stdout, stderr) => {
+            exec('git pull && npm install', async (err, stdout, stderr) => {
                 if (err) {
-                    return m.reply(`⚠️ **Error Git:**\n${err.message}`);
+                    return m.reply(`⚠️ **Error en la Actualización**:\n${stderr || err.message}`);
                 }
 
                 // 3. Enviar mensaje de éxito antes de apagar
