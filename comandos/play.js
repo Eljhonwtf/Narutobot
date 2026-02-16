@@ -1,84 +1,59 @@
 const yts = require('yt-search');
-const ytdl = require('@distube/ytdl-core'); // Usamos la librería corregida
+const ytdl = require('@distube/ytdl-core');
 const fs = require('fs');
 const path = require('path');
 
 module.exports = {
     name: 'play',
-    alias: ['reproducir', 'p', 'music'],
+    alias: ['p', 'musica'],
     run: async (sock, msg, body, args, isOwner) => {
         const from = msg.key.remoteJid;
-
-        if (!args.length) {
-            return sock.sendMessage(from, { 
-                text: '❌ *ERROR:* Escribe el nombre de la canción.\n> Ejemplo: .play Naruto Blue Bird' 
-            }, { quoted: msg });
-        }
+        if (!args.length) return sock.sendMessage(from, { text: '🌀 Escribe el nombre de la canción.' }, { quoted: msg });
 
         try {
-            // 1. BUSCAR VIDEO
-            const query = args.join(' ');
-            const search = await yts(query);
+            const search = await yts(args.join(' '));
             const video = search.all[0];
+            if (!video) return sock.sendMessage(from, { text: '❌ No encontrado.' }, { quoted: msg });
 
-            if (!video) {
-                return sock.sendMessage(from, { text: '⚠️ No encontré esa canción.' }, { quoted: msg });
-            }
-
-            // 2. FICHA TÉCNICA
-            const infoMsg = `
-┏━━━━〔 🎵 *NARUTO MUSIC* 〕━━━━┓
-┃
-┃ 🏷️ *TÍTULO:* ${video.title}
-┃ ⏱️ *TIEMPO:* ${video.timestamp}
-┃ 📅 *FECHA:* ${video.ago}
-┃ 👤 *AUTOR:* ${video.author.name}
-┃ 🔗 *URL:* ${video.url}
-┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-> _⏳ Descargando audio... espera un momento._`;
-
-            // Enviar imagen con info
+            // Enviamos la info con quoted
             await sock.sendMessage(from, { 
                 image: { url: video.thumbnail }, 
-                caption: infoMsg 
+                caption: `🎬 *TÍTULO:* ${video.title}\n⏱️ *DURACIÓN:* ${video.timestamp}\n\n> _📥 Descargando audio..._` 
             }, { quoted: msg });
 
-            // 3. DESCARGAR AUDIO
-            const nombreArchivo = `temp_${Date.now()}.mp3`;
-            const rutaArchivo = path.join(__dirname, `../${nombreArchivo}`);
+            const rutaArchivo = path.join(__dirname, `../temp_${Date.now()}.mp3`);
 
-            // Usamos cookies vacías o generamos un agente simple para evitar bloqueos
-            const stream = ytdl(video.url, { 
+            // CONFIGURACIÓN ANTI-BLOQUEO
+            const stream = ytdl(video.url, {
+                filter: 'audioonly',
                 quality: 'highestaudio',
-                filter: 'audioonly'
+                requestOptions: {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    }
+                }
             });
 
-            const fileStream = fs.createWriteStream(rutaArchivo);
-            
-            stream.pipe(fileStream);
+            const writer = fs.createWriteStream(rutaArchivo);
+            stream.pipe(writer);
 
-            fileStream.on('finish', async () => {
-                // 4. ENVIAR ARCHIVO
+            writer.on('finish', async () => {
                 await sock.sendMessage(from, { 
                     audio: { url: rutaArchivo }, 
                     mimetype: 'audio/mp4', 
-                    ptt: false, 
-                    fileName: `${video.title}.mp3`
+                    fileName: `${video.title}.mp3` 
                 }, { quoted: msg });
-
-                // 5. LIMPIEZA
-                fs.unlinkSync(rutaArchivo);
+                fs.unlinkSync(rutaArchivo); // Borrar temporal
             });
 
-            fileStream.on('error', (err) => {
+            writer.on('error', (err) => {
                 console.error(err);
-                sock.sendMessage(from, { text: '❌ Error al guardar el archivo.' }, { quoted: msg });
+                sock.sendMessage(from, { text: '❌ Error al guardar archivo.' });
             });
 
         } catch (e) {
-            console.error("Error en Play:", e);
-            await sock.sendMessage(from, { text: `❌ *FALLO:* YouTube rechazó la conexión. Intenta de nuevo.` }, { quoted: msg });
+            console.error(e);
+            await sock.sendMessage(from, { text: '⚠️ Error de YouTube: Intenta con otra canción o usa un enlace directo.' }, { quoted: msg });
         }
     }
 };
