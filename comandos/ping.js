@@ -25,7 +25,7 @@ module.exports = {
         report += `   👤 *RANGO:* ${isOwner ? 'SUPREMO (BOSS)' : 'USUARIO'}\n`;
         report += `   📡 *ESTADO:* NÚCLEO ESTABLE\n\n`;
         report += `   ─────────────────────────\n`;
-        report += `   © *WARLORD-DOMINATION* | 2026`;
+        report += `   © *NarutoBot 2026* | 2026`;
 
         // Envío directo del texto
         await sock.sendMessage(from, { 
