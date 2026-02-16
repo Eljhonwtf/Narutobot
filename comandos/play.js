@@ -6,54 +6,46 @@ module.exports = {
     run: async (sock, msg, body, args) => {
         const from = msg.key.remoteJid;
         const text = args.join(" ");
-        const owner = "584142577312";
-        const botImg = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
+        const owner = "584142577312"; //
+        const botImg = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg"; //
 
-        if (!text) return sock.sendMessage(from, { text: '⚔️ *Dime qué canción buscamos, Jefe.*' }, { quoted: msg });
+        if (!text) return sock.sendMessage(from, { text: '⚔️ *Jefe, dime qué canción buscamos.*' }, { quoted: msg });
 
         try {
             const search = await yts(text);
             const video = search.all[0];
-            if (!video) return sock.sendMessage(from, { text: '❌ No encontré nada.' });
+            if (!video) return sock.sendMessage(from, { text: '❌ No encontré la canción.' });
 
-            // Mensaje de carga Naruto
-            let teks = `┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n`;
-            teks += `┃  🏮  **NARUTO AUDIO** 🏮  ┃\n`;
-            teks += `┗━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n`;
-            teks += `  ◈ **OWNER:** +${owner}\n`;
-            teks += `  ◈ **TÍTULO:** ${video.title}\n\n`;
-            teks += `🚀 *Cargando desde Servidor Maestro...*`;
-
+            // Mensaje de espera con tu diseño
             await sock.sendMessage(from, {
                 image: { url: video.thumbnail },
-                caption: teks,
-                contextInfo: { externalAdReply: { title: 'NARUTO ELITE SYSTEM', body: `By Jhon ✨`, mediaType: 1, thumbnailUrl: botImg }}
+                caption: `┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃  🏮  **NARUTO AUDIO** 🏮  ┃\n┗━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n◈ **OWNER:** +${owner}\n◈ **TÍTULO:** ${video.title}\n\n🚀 *Descargando mediante Servidor Privado...*`,
+                contextInfo: { externalAdReply: { title: 'NARUTO SYSTEM V3', body: `By Jhon ✨`, mediaType: 1, thumbnailUrl: botImg }}
             }, { quoted: msg });
 
-            // USANDO API DE ÉLITE (Más estable)
-            const response = await axios.get(`https://api.zenkey.my.id/api/download/ytmp3?url=${video.url}&apikey=zenkey`);
-            const downloadUrl = response.data.result.download_url;
+            // Usando API de Akywane (Servidor estable)
+            const apiRes = await axios.get(`https://api.akywane.my.id/api/downloader/ytmp3?url=${video.url}`);
+            const dlUrl = apiRes.data.result.downloadUrl;
 
-            if (!downloadUrl) throw new Error('No se obtuvo URL de descarga');
+            if (!dlUrl) throw new Error();
 
+            // Enviamos el audio directamente
             await sock.sendMessage(from, { 
-                audio: { url: downloadUrl }, 
+                audio: { url: dlUrl }, 
                 mimetype: 'audio/mp4',
                 fileName: `${video.title}.mp3`
             }, { quoted: msg });
 
         } catch (e) {
-            console.error(e);
-            // TERCER RESPALDO DE EMERGENCIA
+            // Último recurso: Descarga Directa Alternativa
             try {
-                const resFallback = await axios.get(`https://api.vreden.my.id/api/ytmp3?url=${video.url}`);
+                const resAlt = await axios.get(`https://api.siputzx.my.id/api/d/ytmp3?url=${args[0] || video.url}`);
                 await sock.sendMessage(from, { 
-                    audio: { url: resFallback.data.result.download }, 
-                    mimetype: 'audio/mp4',
-                    fileName: `audio.mp3`
+                    audio: { url: resAlt.data.data.dl }, 
+                    mimetype: 'audio/mp4'
                 }, { quoted: msg });
             } catch (err) {
-                sock.sendMessage(from, { text: '⚠️ Sistema bajo mantenimiento masivo de YouTube. Intenta con otra canción o en unos minutos.' });
+                sock.sendMessage(from, { text: '⚠️ Jefe, los servidores de YouTube están caídos a nivel global para bots. Intenta de nuevo en unos minutos.' });
             }
         }
     }
