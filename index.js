@@ -82,7 +82,7 @@ async function iniciarBot() {
         },
         logger: pino({ level: 'silent' }),
         browser: ["Ubuntu", "Chrome", "20.0.04"],
-        printQRInTerminal: false, // DESACTIVADO para quitar el aviso amarillo
+        printQRInTerminal: false, // Ahora manejamos el QR manualmente para evitar el aviso
     });
 
     // --- MANEJO DE VINCULACIÓN ---
@@ -105,8 +105,10 @@ async function iniciarBot() {
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect, qr } = update;
 
-        // Mostrar QR solo si se eligió la opción 1
+        // Mostrar QR manualmente si no se usa Pairing Code
         if (qr && !usePairingCode) {
+            console.clear();
+            imprimirBanner();
             console.log(`${f_yellow}📷 Escanea el código QR para iniciar sesión:${reset}`);
             qrcode.generate(qr, { small: true });
         }
@@ -116,9 +118,8 @@ async function iniciarBot() {
             console.log(`${green}✅ ALDEA DE LA HOJA CONECTADA (WhatsApp Online)${reset}\n`);
         } else if (connection === 'close') {
             const reason = new Boom(lastDisconnect?.error)?.output.statusCode;
-            console.log(`${red}⚠️ Conexión cerrada. Razón: ${reason}. Reintentando...${reset}`);
-            
             if (reason !== DisconnectReason.loggedOut) {
+                console.log(`${gray}🕒 Reintentando conexión...${reset}`);
                 iniciarBot();
             } else {
                 console.log(`${red}❌ Sesión cerrada. Borra la carpeta ${sessionPath} y vuelve a vincular.${reset}`);
