@@ -3,58 +3,68 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = {
-    name: 'update',
-    alias: ['upd', 'actualizar'],
+    name: 'hotreload',
+    alias: ['hr', 'recargar', 'actualizar'],
     run: async (sock, msg, body, args, isOwner) => {
+        // 1. Verificación de Seguridad (Solo el Hokage)
         if (!isOwner) return;
 
         const from = msg.key.remoteJid;
 
         await sock.sendMessage(from, { 
-            text: `🌀 *NARUTOBOT: SYNCHRONIZATION* 🌀\n\n> 🛠️ _Invocando cambios desde el repositorio oficial..._` 
+            text: `🌀 *NARUTO BOT: REGENERACIÓN TOTAL* 🌀\n\n> 📥 _Sincronizando pergaminos y recargando chakra del sistema..._` 
         }, { quoted: msg });
 
-        // Ejecutamos git pull desde la raíz del bot
-        exec('git pull', async (err, stdout, stderr) => {
+        // 2. Ejecutar Git para bajar cambios de forma segura
+        // Usamos reset --hard para limpiar cualquier residuo local
+        exec('git fetch --all && git reset --hard origin/main && git pull', async (err, stdout, stderr) => {
             if (err) {
                 return sock.sendMessage(from, { 
-                    text: `❌ *ERROR DE CONEXIÓN:* \n\n\`\`\`${err.message}\`\`\`` 
-                });
+                    text: `❌ *ERROR DE SINCRONIZACIÓN:* \n\n\`\`\`${err.message}\`\`\`` 
+                }, { quoted: msg });
             }
 
             if (stdout.includes('Already up to date')) {
                 return sock.sendMessage(from, { 
-                    text: `✨ *NARUTOBOT:* El sistema ya está utilizando el último pergamino disponible (Sin cambios).` 
-                });
+                    text: `✨ *NARUTO BOT:* Todos los jutsus ya están en su versión más reciente.` 
+                }, { quoted: msg });
             }
 
-            // --- RECARGA DE MEMORIA DINÁMICA ---
-            // Buscamos la carpeta de comandos relativa a este archivo
-            const carpetaComandos = path.join(__dirname, '../'); // Sube un nivel a /comandos/
-
-            const limpiarCache = (dir) => {
-                if (!fs.existsSync(dir)) return;
-                fs.readdirSync(dir).forEach(file => {
-                    const fullPath = path.join(dir, file);
-                    if (fs.statSync(fullPath).isDirectory()) {
-                        limpiarCache(fullPath);
-                    } else if (file.endsWith('.js')) {
-                        // Borramos la memoria vieja para que el bot lea el archivo nuevo
-                        delete require.cache[require.resolve(fullPath)];
+            // 3. LA MAGIA: Limpieza profunda del Caché de Node.js
+            // Esta función recorre tus archivos y obliga al bot a "olvidar" el código viejo
+            const purgarMemoria = (dir) => {
+                const archivos = fs.readdirSync(dir);
+                for (const archivo of archivos) {
+                    const rutaFull = path.join(dir, archivo);
+                    if (fs.statSync(rutaFull).isDirectory()) {
+                        purgarMemoria(rutaFull); // Recurrsivo para subcarpetas
+                    } else if (archivo.endsWith('.js')) {
+                        // Eliminamos la referencia del archivo en la RAM
+                        delete require.cache[require.resolve(rutaFull)];
                     }
-                });
+                }
             };
 
             try {
-                limpiarCache(carpetaComandos); 
-                
-                const reporte = stdout.slice(0, 500);
+                // Limpiamos la carpeta de comandos y archivos base
+                const rutaComandos = path.join(__dirname, '../'); 
+                purgarMemoria(rutaComandos);
+
+                // Reporte visual de la actualización
+                const cambios = stdout.split('\n').filter(line => line.includes('|') || line.includes('changed')).join('\n');
+
                 await sock.sendMessage(from, { 
-                    text: `✅ *ACTUALIZACIÓN COMPLETADA*\n\n*REPORTE:* \n\`\`\`${reporte}\`\`\`\n\n🔥 *JUTSUS RECARGADOS:* He actualizado la memoria caché. Los cambios en comandos ya están listos para usar.` 
+                    text: `✅ *ACTUALIZACIÓN Y RECARGA EXITOSA* ✅\n\n` +
+                        `┏━━━━〔 📊 *CAMBIOS* 〕━━━━┓\n\n` +
+                        `📂 *ARCHIVOS MODIFICADOS:* \n\`\`\`${cambios}\`\`\`\n\n` +
+                        `🚀 *ESTADO:* Chakra recargado. Los comandos nuevos ya están activos.\n` +
+                        `┗━━━━━━━━━━━━━━━━━━━━┛`
                 }, { quoted: msg });
 
             } catch (e) {
-                await sock.sendMessage(from, { text: `⚠️ Pergaminos bajados, pero hubo un error al recargar la memoria: ${e.message}` });
+                await sock.sendMessage(from, { 
+                    text: `⚠️ Archivos bajados, pero hubo un error al recargar la memoria: ${e.message}` 
+                }, { quoted: msg });
             }
         });
     }
