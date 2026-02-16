@@ -1,69 +1,73 @@
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
 module.exports = {
-    name: 'hotreload',
-    alias: ['hr', 'recargar', 'actualizar'],
+    name: 'update',
+    alias: ['actualizar', 'gitpull'],
     run: async (sock, msg, body, args, isOwner) => {
-        // 1. Verificación de Seguridad (Solo el Hokage)
-        if (!isOwner) return;
+        // --- FILTRO DE SEGURIDAD (Solo tú: 584142577312) ---
+        const ownerNumber = '584142577312';
+        const sender = msg.key.participant || msg.key.remoteJid;
+        const senderNumber = sender.replace(/[^0-9]/g, '');
 
-        const from = msg.key.remoteJid;
+        if (senderNumber !== ownerNumber) {
+            return sock.sendMessage(msg.key.remoteJid, { 
+                text: '❌ *ACCESO DENEGADO:* Solo el Hokage puede actualizar los pergaminos de Konoha.' 
+            }, { quoted: msg });
+        }
 
-        await sock.sendMessage(from, { 
-            text: `🌀 *NARUTO BOT: REGENERACIÓN TOTAL* 🌀\n\n> 📥 _Sincronizando pergaminos y recargando chakra del sistema..._` 
+        await sock.sendMessage(msg.key.remoteJid, { 
+            text: '🌀 *NARUTO BOT: ACTUALIZACIÓN FORZADA* 🌀\n\n> 📥 _Sincronizando con el repositorio y recargando archivos..._' 
         }, { quoted: msg });
 
-        // 2. Ejecutar Git para bajar cambios de forma segura
-        // Usamos reset --hard para limpiar cualquier residuo local
+        // --- EJECUCIÓN DE GIT ---
+        // Usamos reset --hard para que los cambios en Termux no bloqueen el update
         exec('git fetch --all && git reset --hard origin/main && git pull', async (err, stdout, stderr) => {
             if (err) {
-                return sock.sendMessage(from, { 
-                    text: `❌ *ERROR DE SINCRONIZACIÓN:* \n\n\`\`\`${err.message}\`\`\`` 
+                try {
+                    const status = execSync('git status --porcelain').toString();
+                    return sock.sendMessage(msg.key.remoteJid, { 
+                        text: `⚠️ *CONFLICTO DETECTADO:* \n\n\`\`\`${status}\`\`\`\n\n> Intenta limpiar tu carpeta manualmente.` 
+                    }, { quoted: msg });
+                } catch (e) {
+                    return sock.sendMessage(msg.key.remoteJid, { text: `❌ *ERROR:* ${err.message}` }, { quoted: msg });
+                }
+            }
+
+            let response = stdout.toString();
+            if (response.includes('Already up to date')) {
+                return sock.sendMessage(msg.key.remoteJid, { 
+                    text: '✨ *NARUTO BOT:* El sistema ya cuenta con la versión más reciente.' 
                 }, { quoted: msg });
             }
 
-            if (stdout.includes('Already up to date')) {
-                return sock.sendMessage(from, { 
-                    text: `✨ *NARUTO BOT:* Todos los jutsus ya están en su versión más reciente.` 
-                }, { quoted: msg });
-            }
-
-            // 3. LA MAGIA: Limpieza profunda del Caché de Node.js
-            // Esta función recorre tus archivos y obliga al bot a "olvidar" el código viejo
-            const purgarMemoria = (dir) => {
-                const archivos = fs.readdirSync(dir);
-                for (const archivo of archivos) {
-                    const rutaFull = path.join(dir, archivo);
-                    if (fs.statSync(rutaFull).isDirectory()) {
-                        purgarMemoria(rutaFull); // Recurrsivo para subcarpetas
-                    } else if (archivo.endsWith('.js')) {
-                        // Eliminamos la referencia del archivo en la RAM
-                        delete require.cache[require.resolve(rutaFull)];
+            // --- MAGIA: HOT RELOAD (Recarga de archivos JS) ---
+            // Esta función limpia el caché de Node.js para que use los archivos nuevos
+            const reloadModules = (dir) => {
+                const files = fs.readdirSync(dir);
+                for (const file of files) {
+                    const fullPath = path.join(dir, file);
+                    if (fs.statSync(fullPath).isDirectory()) {
+                        if (!fullPath.includes('node_modules')) reloadModules(fullPath);
+                    } else if (file.endsWith('.js')) {
+                        const absolutePath = path.resolve(fullPath);
+                        delete require.cache[require.resolve(absolutePath)]; // Limpia la RAM
                     }
                 }
             };
 
             try {
-                // Limpiamos la carpeta de comandos y archivos base
-                const rutaComandos = path.join(__dirname, '../'); 
-                purgarMemoria(rutaComandos);
+                // Recargamos la carpeta de comandos
+                const comandosPath = path.join(process.cwd(), 'comandos');
+                reloadModules(comandosPath);
 
-                // Reporte visual de la actualización
-                const cambios = stdout.split('\n').filter(line => line.includes('|') || line.includes('changed')).join('\n');
-
-                await sock.sendMessage(from, { 
-                    text: `✅ *ACTUALIZACIÓN Y RECARGA EXITOSA* ✅\n\n` +
-                        `┏━━━━〔 📊 *CAMBIOS* 〕━━━━┓\n\n` +
-                        `📂 *ARCHIVOS MODIFICADOS:* \n\`\`\`${cambios}\`\`\`\n\n` +
-                        `🚀 *ESTADO:* Chakra recargado. Los comandos nuevos ya están activos.\n` +
-                        `┗━━━━━━━━━━━━━━━━━━━━┛`
-                }, { quoted: msg });
+                const successMsg = `✅ *ACTUALIZACIÓN EXITOSA* ✅\n\n*REPORTE:* \n\`\`\`${response}\`\`\`\n\n🔥 *SISTEMA RECARGADO:* Los cambios ya están activos sin apagar el bot.`;
+                await sock.sendMessage(msg.key.remoteJid, { text: successMsg }, { quoted: msg });
 
             } catch (e) {
-                await sock.sendMessage(from, { 
-                    text: `⚠️ Archivos bajados, pero hubo un error al recargar la memoria: ${e.message}` 
+                await sock.sendMessage(msg.key.remoteJid, { 
+                    text: `✅ *GIT PULL OK*\n\n⚠️ Error al recargar RAM: ${e.message}\n> Reinicia manualmente si los cambios no se ven.` 
                 }, { quoted: msg });
             }
         });
