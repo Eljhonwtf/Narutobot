@@ -11,49 +11,50 @@ module.exports = {
         const from = msg.key.remoteJid;
 
         await sock.sendMessage(from, { 
-            text: `🌀 *NARUTO BOT: HOT RELOAD* 🌀\n\n> 🛠️ _Sincronizando pergaminos sin apagar el núcleo..._` 
+            text: `🌀 *NARUTOBOT: SYNCHRONIZATION* 🌀\n\n> 🛠️ _Invocando cambios desde el repositorio oficial..._` 
         }, { quoted: msg });
 
-        // 1. Descargamos los cambios de GitHub
-        exec('git reset --hard HEAD && git pull', async (err, stdout, stderr) => {
+        // Ejecutamos git pull desde la raíz del bot
+        exec('git pull', async (err, stdout, stderr) => {
             if (err) {
                 return sock.sendMessage(from, { 
-                    text: `❌ *ERROR EN TRANSFERENCIA:* \n\n\`\`\`${err.message}\`\`\`` 
+                    text: `❌ *ERROR DE CONEXIÓN:* \n\n\`\`\`${err.message}\`\`\`` 
                 });
             }
 
             if (stdout.includes('Already up to date')) {
                 return sock.sendMessage(from, { 
-                    text: `✨ *NARUTO BOT:* No hay jutsus nuevos en el repositorio.` 
+                    text: `✨ *NARUTOBOT:* El sistema ya está utilizando el último pergamino disponible (Sin cambios).` 
                 });
             }
 
-            // 2. RECARGA DE MEMORIA (La magia)
-            // Esta función busca todos los archivos en la carpeta comandos y limpia su caché
-            const carpetaComandos = path.join(__dirname, '../../comandos'); // Ajusta la ruta si es necesario
-            
+            // --- RECARGA DE MEMORIA DINÁMICA ---
+            // Buscamos la carpeta de comandos relativa a este archivo
+            const carpetaComandos = path.join(__dirname, '../'); // Sube un nivel a /comandos/
+
             const limpiarCache = (dir) => {
+                if (!fs.existsSync(dir)) return;
                 fs.readdirSync(dir).forEach(file => {
                     const fullPath = path.join(dir, file);
                     if (fs.statSync(fullPath).isDirectory()) {
                         limpiarCache(fullPath);
                     } else if (file.endsWith('.js')) {
+                        // Borramos la memoria vieja para que el bot lea el archivo nuevo
                         delete require.cache[require.resolve(fullPath)];
                     }
                 });
             };
 
             try {
-                limpiarCache(path.join(__dirname, '../')); // Limpia la subcarpeta actual
-                // Si tienes los comandos en carpetas separadas, esto limpia TODO lo que esté en /comandos/
+                limpiarCache(carpetaComandos); 
                 
                 const reporte = stdout.slice(0, 500);
                 await sock.sendMessage(from, { 
-                    text: `✅ *ACTUALIZACIÓN EXITOSA*\n\n*REPORTE:* \n\`\`\`${reporte}\`\`\`\n\n🔥 *SISTEMA RECARGADO:* Los cambios ya están activos sin reiniciar el bot.` 
+                    text: `✅ *ACTUALIZACIÓN COMPLETADA*\n\n*REPORTE:* \n\`\`\`${reporte}\`\`\`\n\n🔥 *JUTSUS RECARGADOS:* He actualizado la memoria caché. Los cambios en comandos ya están listos para usar.` 
                 }, { quoted: msg });
 
             } catch (e) {
-                await sock.sendMessage(from, { text: `⚠️ Archivos actualizados, pero error al recargar caché: ${e.message}` });
+                await sock.sendMessage(from, { text: `⚠️ Pergaminos bajados, pero hubo un error al recargar la memoria: ${e.message}` });
             }
         });
     }
