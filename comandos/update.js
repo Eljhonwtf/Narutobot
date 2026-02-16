@@ -1,33 +1,47 @@
-// Comando .update (Solo para el Propietario)
-case 'update': {
-    const ownerNumber = "584142577312"; // Tu número registrado
-    const updateImage = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
+const { exec } = require('child_process');
 
-    // Verificación de seguridad
+/**
+ * Comando de Actualización y Reinicio Exclusivo
+ * Propietario: 584142577312
+ */
+module.exports = async (conn, m, { command }) => {
+    const ownerNumber = "584142577312"; 
+    const updateImage = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
     const senderNumber = m.sender.split('@')[0];
+
+    // 1. Bloqueo de seguridad total
     if (senderNumber !== ownerNumber) {
-        return m.reply("❌ Acceso denegado. Este comando solo puede ser ejecutado por el Propietario.");
+        return m.reply("❌ Acceso denegado. Este comando es exclusivo para el dueño del bot.");
     }
 
-    // Función asíncrona para evitar el error de la consola
-    const runUpdate = async () => {
+    if (command === 'update') {
         try {
-            await m.reply("🔄 **Iniciando actualización del sistema...**\nPor favor, espera un momento.");
-            
-            // Aquí va la lógica de actualización (ej. git pull)
-            // await exec("git pull"); 
+            await m.reply("🔄 **Iniciando Git Pull y Reinicio...**\nSincronizando archivos con el repositorio.");
 
-            await conn.sendMessage(m.chat, { 
-                image: { url: updateImage }, 
-                caption: `✅ **Actualización Exitosa**\n\nEl sistema se ha actualizado correctamente.\n\n**Owner:** +${ownerNumber}\n**Créditos:** Sistema de Gestión Exclusivo` 
-            }, { quoted: m });
-            
-        } catch (e) {
-            console.log(e);
-            m.reply("⚠️ Error durante la actualización.");
+            // 2. Ejecutar la actualización
+            exec('git pull', async (err, stdout, stderr) => {
+                if (err) {
+                    return m.reply(`⚠️ **Error Git:**\n${err.message}`);
+                }
+
+                // 3. Enviar mensaje de éxito antes de apagar
+                await conn.sendMessage(m.chat, { 
+                    image: { url: updateImage }, 
+                    caption: `✅ **Update Exitoso**\n\n` +
+                             `**Log:** ${stdout || 'Sin cambios.'}\n` +
+                             `**Owner:** +${ownerNumber}\n\n` +
+                             `🚀 *El bot se reiniciará en 3 segundos para aplicar los cambios...*`
+                }, { quoted: m });
+
+                // 4. Reinicio forzado
+                setTimeout(() => {
+                    process.exit(); // Esto cierra el proceso; si usas PM2 o sh, se reinicia solo.
+                }, 3000);
+            });
+
+        } catch (error) {
+            console.error(error);
+            m.reply("⚠️ Error crítico al actualizar.");
         }
-    };
-
-    runUpdate();
-    break;
-}
+    }
+};
