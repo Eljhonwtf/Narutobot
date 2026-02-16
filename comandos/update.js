@@ -1,47 +1,37 @@
 const { exec } = require('child_process');
 
-/**
- * Comando de Actualización y Reinicio Exclusivo
- * Propietario: 584142577312
- */
-module.exports = async (conn, m, { command }) => {
-    const ownerNumber = "584142577312"; 
-    const updateImage = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
-    const senderNumber = m.sender.split('@')[0];
+module.exports = {
+    name: 'update',
+    aliases: ['actualizar'],
+    run: async (sock, msg, body, args) => {
+        const from = msg.key.remoteJid;
+        const sender = msg.sender.split('@')[0];
+        
+        // Configuración Personalizada
+        const mainOwner = "584142577312"; //
+        const updateImage = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg"; //
+        
+        // LISTA BLANCA: Agrega aquí futuros números de confianza
+        const allowedOwners = [mainOwner, 'OTRO_NUMERO']; 
 
-    // 1. Bloqueo de seguridad total
-    if (senderNumber !== ownerNumber) {
-        return m.reply("❌ Acceso denegado. Este comando es exclusivo para el dueño del bot.");
-    }
-
-    if (command === 'update') {
-        try {
-            await m.reply("🔄 **Iniciando Git Pull y Reinicio...**\nSincronizando archivos con el repositorio.");
-
-            // 2. Ejecutar la actualización
-            exec('git pull && npm install', async (err, stdout, stderr) => {
-                if (err) {
-                    return m.reply(`⚠️ **Error en la Actualización**:\n${stderr || err.message}`);
-                }
-
-                // 3. Enviar mensaje de éxito antes de apagar
-                await conn.sendMessage(m.chat, { 
-                    image: { url: updateImage }, 
-                    caption: `✅ **Update Exitoso**\n\n` +
-                             `**Log:** ${stdout || 'Sin cambios.'}\n` +
-                             `**Owner:** +${ownerNumber}\n\n` +
-                             `🚀 *El bot se reiniciará en 3 segundos para aplicar los cambios...*`
-                }, { quoted: m });
-
-                // 4. Reinicio forzado
-                setTimeout(() => {
-                    process.exit(); // Esto cierra el proceso; si usas PM2 o sh, se reinicia solo.
-                }, 3000);
-            });
-
-        } catch (error) {
-            console.error(error);
-            m.reply("⚠️ Error crítico al actualizar.");
+        // Bloqueo de seguridad
+        if (!allowedOwners.includes(sender)) {
+            return sock.sendMessage(from, { text: '❌ *Solo el dueño (+584142577312) puede usar este comando.*' }); //
         }
+
+        await sock.sendMessage(from, { text: '🔄 *Sincronizando con GitHub y reiniciando núcleo...*' });
+
+        exec('git pull', async (err, stdout) => {
+            if (err) return sock.sendMessage(from, { text: `⚠️ Error: ${err.message}` });
+
+            await sock.sendMessage(from, {
+                image: { url: updateImage }, //
+                caption: `✅ **ACTUALIZACIÓN COMPLETADA**\n\n> **Log:** ${stdout}\n> **Owner:** +${sender}\n\n🚀 *Reiniciando automáticamente gracias al script start.sh...*`,
+                contextInfo: { externalAdReply: { title: 'NARUTO SYSTEM UPDATE', body: 'By Jhon ✨', mediaType: 1, thumbnailUrl: updateImage }} //
+            }, { quoted: msg });
+
+            // El bot se apaga, y el start.sh lo vuelve a prender al segundo
+            setTimeout(() => { process.exit(); }, 3000);
+        });
     }
 };
