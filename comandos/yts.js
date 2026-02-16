@@ -1,62 +1,46 @@
 const yts = require('yt-search');
 
 module.exports = {
-  name: 'yts', // Nombre principal
-  aliases: ['ytbuscar', 'ytsearch'], // Otros nombres que activan el comando
-  run: async (sock, msg, body, args, isOwner) => {
+  name: 'yts',
+  run: async (sock, msg, body, args) => {
     const from = msg.key.remoteJid;
     const text = args.join(" ");
+    const ownerNumber = "584142577312";
+    const defaultImg = "https://i.postimg.cc/nLQ2RwPz/Screenshot-2025-12-30-14-40-31-396-com-miui-gallery-edit.jpg";
 
-    // 1. Validar que el usuario escribió algo
-    if (!text) {
-        return sock.sendMessage(from, { 
-            text: '✨ *Por favor, ingresa una búsqueda para YouTube.*' 
-        }, { quoted: msg });
-    }
-
-    // 2. Enviar mensaje de espera
-    await sock.sendMessage(from, { text: '⏳ *Buscando en YouTube...*' }, { quoted: msg });
+    if (!text) return sock.sendMessage(from, { text: '🔍 ¿Qué canción buscamos?' });
 
     try {
-        // 3. Realizar la búsqueda
         const results = await yts(text);
-        const video = results.all[0]; // Tomamos el primer resultado para la miniatura
+        const videos = results.all.slice(0, 10);
 
-        if (!video) return sock.sendMessage(from, { text: '❌ No encontré resultados.' }, { quoted: msg });
+        // Formato de lista interactiva
+        const sections = [{
+            title: "🎵 RESULTADOS DE MÚSICA",
+            rows: videos.map((v, i) => ({
+                title: v.title,
+                rowId: `.play ${v.url}`, // AQUÍ: Llama al comando .play de arriba
+                description: `[${v.timestamp}] - Toca para descargar`
+            }))
+        }];
 
-        // 4. Formatear el texto (Estilo Obito)
-        let teks = `「✦」Resultados para: *${text}*\n\n`;
-        
-        // Mapeamos los primeros 5 resultados para no saturar el chat
-        const list = results.all.slice(0, 5).map(v => {
-            if (v.type === 'video') {
-                return `> ☁️ *Título:* ${v.title}\n> 🍬 *Canal:* ${v.author.name}\n> 🕝 *Duración:* ${v.timestamp}\n> 📆 *Subido:* ${v.ago}\n> 👀 *Vistas:* ${v.views}\n> 🔗 *Link:* ${v.url}`;
+        await sock.sendMessage(from, {
+            text: `✨ *Buscador de ${ownerNumber}*\nSelecciona una canción de la lista para enviártela automáticamente.`,
+            buttonText: "Click aquí para elegir ☁️",
+            sections,
+            footer: "Sistema de Audio Automático",
+            contextInfo: {
+                externalAdReply: {
+                    title: 'YouTube Music Player',
+                    mediaType: 1,
+                    thumbnailUrl: defaultImg,
+                    sourceUrl: "https://wa.me/584142577312"
+                }
             }
-        }).filter(v => v).join('\n\n••••••••••••••••••••••••••••••••••••\n\n');
-
-        teks += list;
-
-        // 5. Créditos (SourceInfo)
-        const contextInfo = {
-            externalAdReply: {
-                title: 'YouTube Search System',
-                body: 'Hecho con amor por Jhon ✨',
-                mediaType: 1,
-                thumbnailUrl: video.thumbnail, 
-                sourceUrl: video.url
-            }
-        };
-
-        // 6. Enviar resultado con la miniatura del primer video
-        await sock.sendMessage(from, { 
-            image: { url: video.thumbnail }, 
-            caption: teks,
-            contextInfo
         }, { quoted: msg });
 
     } catch (e) {
-        console.log(e);
-        await sock.sendMessage(from, { text: '❌ Ocurrió un error en la búsqueda.' }, { quoted: msg });
+        sock.sendMessage(from, { text: '❌ Error en la búsqueda.' });
     }
   }
 };
